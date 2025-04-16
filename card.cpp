@@ -22,7 +22,7 @@ struct Card {
 };
 
 class Deck {
-  std::vector<Card> cards;
+  std::vector<Card> deck;
 
  public:
   Deck() {
@@ -34,20 +34,24 @@ class Deck {
     for (int n = 0; n < 3; ++n) {
       for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 13; ++j) {
-          cards.emplace_back(suits[i], ranges[j], game_value[j]);
+          deck.emplace_back(suits[i], ranges[j], game_value[j]);
         }
       }
     }
   }
+
   void shuffle() {
     std::random_device rd;
     std::default_random_engine rng(rd());
-    std::shuffle(cards.begin(), cards.end(), rng);
+    std::shuffle(deck.begin(), deck.end(), rng);
   }
 
   Card drawCard() {
-    Card top = cards.back();
-    cards.pop_back();
+    Card top = deck.back();
+    deck.pop_back();
     return top;
   }
 };
+
+/*per deck.back chiedere se c'è bisogno della dereferenzazzione dell'ultimo
+ * elemento di deck per associarlo a top*/
