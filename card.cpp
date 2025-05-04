@@ -1,9 +1,7 @@
-#include "card.hpp"
-
 #include <algorithm>
 #include <random>
-#include <stdexcept>
-#include <string>
+
+#include "card.hpp"
 
 namespace el
 {
@@ -26,7 +24,7 @@ namespace el
                             "9", "10", "J", "Q", "K", "A"};
     int game_value[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
 
-    for (int n{0}; n < 3; ++n)
+    for (int n{0}; n < 3; ++n)      // 3 mazzi
     {
       for (int i{0}; i < 4; ++i)
       {

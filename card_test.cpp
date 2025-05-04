@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "card.cpp"
+#include "card.hpp"
 
 TEST_CASE("Deck shuffle")
 {
