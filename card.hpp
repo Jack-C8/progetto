@@ -4,18 +4,19 @@
 namespace el {
 
 struct Card {
-  std::string suit_;
-  std::string range_;
-  int game_value_;
-  bool face_;
+  std::string suit;
+  std::string range;
+  int game_value;
+  bool face;
 
-  Card(const std::string &suit, const std::string &range, int const game_value);
+  Card(const std::string &suit, const std::string &range, int const game_value,
+       bool const face);
 };
 
 bool operator==(const Card &one, const Card &other);
 
 class Deck {
-  std::vector<Card> deck_;
+  std::vector<Card> deck;
 
  public:
   Deck();

@@ -4,6 +4,8 @@
 
 #include "card.hpp"
 
+//mettere i trattini sotto
+
 namespace hd {
 int Hand::score() {
   int score = std::accumulate(

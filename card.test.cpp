@@ -4,8 +4,8 @@
 #include "doctest.h"
 
 TEST_CASE("Card construction") {
-  el::Card c1("Hearts", "A", 11);
-  el::Card c2("Clubs", "2", 2, false);
+  el::Card c1("Hearts", "A", 11, true);
+  el::Card c2("Diamonds", "A", 11, false);
   CHECK(c1.suit == "Hearts");
   CHECK(c1.range == "A");
   CHECK(c1.game_value == 11);
@@ -70,11 +70,26 @@ TEST_CASE("Deck basic construction") {
     }
     CHECK_THROWS_WITH(d1.topCard(), "Not enough cards, reset the game!");
   }
+  SUBCASE("Card operator==") {
+    el::Card c1{"Hearts", "2", 2, true};
+    el::Card c2{"Hearts", "3", 3, true};
+    el::Card c3{"Clubs", "2", 2, true};
+    el::Card c4{"Hearts", "2", 3, true};
+    el::Card c5{"Spades", "4", 4, true};
+    CHECK((c1 == c1) == true);
+    CHECK((c1 == c2) == false);
+    CHECK((c1 == c3) == false);
+    CHECK((c1 == c4) ==
+          true);  // operator== non deve tener conto del game_value della carta
+    CHECK((c1 == c5) == false);
+  }
+  SUBCASE("Draw the last constructed card") {
+    el::Card card{"Diamonds", "A", 11, true};
+    CHECK(d1.topCard() == card);
+    CHECK(d1.deck_size() == 155);
+  }
 }
 
 /*
-inline bool operator!=(Card const& left, Card const& right) {
-  return left.suit != right.suit || left.range != right.range;
-}
 aggiungo qui la ri-definizione di == perché all'interno del gioco
 è inutile ma molto utile per i vari test da fare sulle carte e sulle funzioni.*/
