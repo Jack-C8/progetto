@@ -1,33 +1,58 @@
+#include "hand.hpp"
+
 #include <numeric>
-#include <vector>
 
 #include "card.hpp"
 
 namespace hd {
+int Hand::score() {
+  int score = std::accumulate(
+      hand_.begin(), hand_.end(), 0,
+      [](int acc, el::Card card) { return acc + card.game_value_; });
 
-class Hand {
-  std::vector<el::Card> hand;
+  return score;
+}
 
- public:
-  void Draw(el::Deck& deck) {
-    el::Card top = deck.topCard();
-    hand.push_back(top);
+void Hand::Draw(el::Deck &deck) {
+  el::Card top = deck.topCard();
+  hand_.emplace_back(top);
+  if (score() > 21) {
+    for (auto it = hand_.begin(); it != hand_.end(); ++it) {
+      if (it->range_ == "A") {
+        it->game_value_ = 1;
+        break;
+      }
+    }
   }
+}
 
-  int player_score(std::vector<el::Card> player_hand) {
-    int score = {std::accumulate(
-        player_hand.begin(), player_hand.end(), 0,
-        [](int acc, el::Card card) { return acc + card.game_value; })};
-
-    return score;
-
-    /*questa è la funzione base di calcolo del punteggio con la quale
-     vengono calcolati tutti i punteggi*/
+void Hand::covered_Draw(el::Deck &deck) {
+  el::Card top = deck.topCard();
+  hand_.emplace_back(top);
+  top.face_ == false;
+  if (score() >
+      21)  // se sfori dai 21 controlla se ci sono degli assi, assegna al primo
+  {        // che trovi il valore 1 e esci dal ciclo
+    for (auto it{hand_.begin()}; it != hand_.end(); ++it) {
+      if (it->range_ == "A") {
+        it->game_value_ = 1;
+        break;
+      }
+    }
   }
-};
+}
+
+void Hand::reveal() {
+  for (auto it = hand_.begin(); it != hand_.end(); ++it) {
+    if (it->face_ == false) {
+      it->face_ = true;
+    }
+  }
+}
+
+std::vector<el::Card> Hand::hand() const { return hand_; }
 
 }  // namespace hd
-
 /*la funzione di calcolo è implementata correttamente (spero)
 per quanto riguarda il calcolo del valore dell'asso credo di aggiungere una
 funzione check all'interno da fare girare di default solo per controllare se la
