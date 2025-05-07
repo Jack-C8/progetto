@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <random>
-
+#include <stdexcept>
 #include "card.hpp"
 
 namespace el
@@ -45,7 +45,7 @@ namespace el
 
   Card Deck::topCard()
   {
-    if (deck_.size() > 30)
+    if (deck_.size() < 30)
     {
       throw std::runtime_error{"Not enough cards, reset the game!"};
     }
