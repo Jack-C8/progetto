@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
+#include "hand.hpp"
 #include "CardRenderer.hpp"
 #include "card.hpp"
 
@@ -114,6 +114,8 @@ int main() {
   el::Card carta5 = deck.topCard();
   el::Card carta6 = deck.topCard();
   el::Card carta7 = deck.topCard();
+  el::Card carta8 = deck.topCard();
+
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
 
@@ -168,10 +170,13 @@ int main() {
   sf::RectangleShape stand_button{
       RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0)};  // stand button
-
-  while (window.isOpen()) {
-    bool hit = false;
+                      int hit = 0;
+                      
+                      std::vector<el::Card> hit_cards{};
+                      while (window.isOpen()) {
+   
     sf::Event event;
+hd::Hand your_hand{};
 
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
@@ -179,7 +184,8 @@ int main() {
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
         if (hit_button.getGlobalBounds().contains(mousePos)) {
-         hit=true;
+          hit = ++hit;
+          hit_cards.push_back(deck.topCard());
         }
       }
     }
@@ -257,26 +263,17 @@ int main() {
     renderer.drawCard(window, carta4, 365, 475, 45);
     renderer.drawCard(window, carta5, 1033, 513, 315);
     renderer.drawCard(window, carta6, 1090, 460, 315);
-    // if( bool hit = true ){
-    //   renderer.drawCard(window,carta7,685,500,0);
-    //    hit=false;
-    // }
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window.close();
-      if (event.type == sf::Event::MouseButtonPressed &&
-          event.mouseButton.button == sf::Mouse::Left) {
-        sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-        if (hit_button.getGlobalBounds().contains(mousePos)) {
-          // renderer.drawCard(window,carta7,685,500,0);
-          hit= true;
-        }
-      }
+   
+    int i;
+    
+      for(i=0;i<hit_cards.size(); ++i){
+      
+    renderer.drawCard(window,hit_cards[i],685+75*(i),500,0);
+
+      
     }
-        if( bool hit = true ){
-      renderer.drawCard(window,carta7,685,500,0);
-       hit=false;
-    }
-    window.display();
+  
+  window.display();
   }
 
   return 0;
