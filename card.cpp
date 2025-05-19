@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <random>
 #include <stdexcept>
+
 #include "card.hpp"
 
 namespace el
@@ -45,7 +46,7 @@ namespace el
 
   Card Deck::topCard()
   {
-    if (deck_.size() < 30)
+    if (deck_.size() <= 30) // perchè 30? forse se meno di 52 ovvero meno di un mazzo?
     {
       throw std::runtime_error{"Not enough cards, reset the game!"};
     }
@@ -59,9 +60,14 @@ namespace el
   const std::vector<Card> &Deck::get_deck() const { return deck_; }
 } // namespace el
 
+
 /*per deck.back chiedere se c'è bisogno della dereferenziazzione dell'ultimo
  * elemento di deck per associarlo a top*/
 
 /* secondo me no, ho guardato su cppreference e deck.back ti restituisce una reference all'ultimo elemento
  ma non un iteratore, è un po' come quando come argomento di una funzione passi una reference
  e non il valore di per sè, non cambia nulla -J */
+
+ /* chiedere se il costruttore di card deve essere const o no, chiedere se vogliono che
+ mettiamo dei controlli nel costruttore di card che facciano in modo che le uniche carte
+ costruibili siano con i semi e le caratteristiche delle carte normali (no carta di seme "albero") */
