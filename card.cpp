@@ -3,15 +3,17 @@
 #include <algorithm>
 #include <random>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace el {
 
 Card::Card(const std::string &suit, const std::string &range,
            int const game_value, bool const face)
-    : suit{suit}, range{range}, game_value{game_value}, face{face} {}
+    : suit_{suit}, range_{range}, game_value_{game_value}, face_{face} {}
 
 bool operator==(const Card &one, const Card &other) {
-  if ((one.suit == other.suit) && (one.range == other.range)) {
+  if ((one.suit_ == other.suit_) && (one.range_ == other.range_)) {
     return true;
   }
   return false;
@@ -28,7 +30,7 @@ Deck::Deck() {
   {
     for (int i{0}; i < 4; ++i) {
       for (int j{0}; j < 13; ++j) {
-        deck.emplace_back(suits[i], ranges[j], game_value[j], face[j] = true);
+        deck_.emplace_back(suits[i], ranges[j], game_value[j], face[j] = true);
       }
     }
   }
@@ -37,21 +39,21 @@ Deck::Deck() {
 void Deck::shuffle() {
   std::random_device rd;
   std::default_random_engine rng(rd());
-  std::shuffle(deck.begin(), deck.end(), rng);
+  std::shuffle(deck_.begin(), deck_.end(), rng);
 }
 
 Card Deck::topCard() {
-  if (deck.size() < 30) {
+  if (deck_.size() < 30) {
     throw std::runtime_error{"Not enough cards, reset the game!"};
   }
-  Card top = deck.back();
-  deck.pop_back();
+  Card top = deck_.back();
+  deck_.pop_back();
   return top;
 }
 
-size_t Deck::deck_size() const { return deck.size(); }
+size_t Deck::deck_size() const { return deck_.size(); }
 
-const std::vector<Card> &Deck::get_deck() const { return deck; }
+const std::vector<Card> &Deck::get_deck() const { return deck_; }
 }  // namespace el
 
 /*per deck.back chiedere se c'è bisogno della dereferenziazzione dell'ultimo

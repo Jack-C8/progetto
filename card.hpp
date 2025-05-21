@@ -1,22 +1,27 @@
 #ifndef EL_CARD_HPP
 #define EL_CARD_HPP
+#include <algorithm>
+#include <random>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace el {
 
 struct Card {
-  std::string suit;
-  std::string range;
-  int game_value;
-  bool face;
+  std::string suit_;
+  std::string range_;
+  int game_value_;
+  bool face_;
 
-  Card(const std::string &suit, const std::string &range, int const game_value,
-       bool const face);
+  Card(const std::string &suit_, const std::string &range_,
+       int const game_value_, bool const face_);
 };
 
 bool operator==(const Card &one, const Card &other);
 
 class Deck {
-  std::vector<Card> deck;
+  std::vector<Card> deck_;
 
  public:
   Deck();
