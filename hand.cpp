@@ -12,7 +12,9 @@ namespace hd
 
       return score;
     }
-
+// int size(hd::Hand){
+//     return hand_.size();
+// };
     void Hand::Draw(el::Deck &deck)
     {
       el::Card top = deck.topCard();
