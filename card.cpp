@@ -1,11 +1,5 @@
 #include "card.hpp"
 
-#include <algorithm>
-#include <random>
-#include <stdexcept>
-#include <string>
-#include <vector>
-
 namespace el {
 
 Card::Card(const std::string &suit, const std::string &range,
@@ -43,7 +37,7 @@ void Deck::shuffle() {
 }
 
 Card Deck::topCard() {
-  if (deck_.size() < 30) {
+  if (deck_.size() > 30) {
     throw std::runtime_error{"Not enough cards, reset the game!"};
   }
   Card top = deck_.back();

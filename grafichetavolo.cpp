@@ -1,7 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <stdexcept>
 #include <string>
 #include <vector>
+#include "hand.hpp"
+#include "CardRenderer.hpp"
+#include "card.hpp"
 
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
@@ -99,6 +103,19 @@ std::vector<sf::Vector2f> createCircularPositions(sf::Vector2f center,
 }
 
 int main() {
+  el::Deck deck;
+  deck.shuffle();
+
+  CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
+  el::Card carta1 = deck.topCard();
+  el::Card carta2 = deck.topCard();
+  el::Card carta3 = deck.topCard();
+  el::Card carta4 = deck.topCard();
+  el::Card carta5 = deck.topCard();
+  el::Card carta6 = deck.topCard();
+  el::Card carta7 = deck.topCard();
+  el::Card carta8 = deck.topCard();
+
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
 
@@ -153,17 +170,23 @@ int main() {
   sf::RectangleShape stand_button{
       RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0)};  // stand button
-
-  while (window.isOpen()) {
+                      int hit = 0;
+                      
+                      std::vector<el::Card> hit_cards{};
+                      while (window.isOpen()) {
+   
     sf::Event event;
+hd::Hand your_hand{};
+
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-        // if (button.getGlobalBounds().contains(mousePos)) {
-        //   your_score += 10;
-        // }
+        if (hit_button.getGlobalBounds().contains(mousePos)) {
+          hit = ++hit;
+          hit_cards.push_back(deck.topCard());
+        }
       }
     }
 
@@ -234,9 +257,23 @@ int main() {
     for (const auto& letter : allLetters) window.draw(letter);
     window.draw(sprite);
     window.draw(sprite2);
+    renderer.drawCard(window, carta1, 640, 600, 0);
+    renderer.drawCard(window, carta2, 730, 600, 0);
+    renderer.drawCard(window, carta3, 310, 420, 45);
+    renderer.drawCard(window, carta4, 365, 475, 45);
+    renderer.drawCard(window, carta5, 1033, 513, 315);
+    renderer.drawCard(window, carta6, 1090, 460, 315);
+   
+    int i;
+    
+      for(i=0;i<hit_cards.size(); ++i){
+      
+    renderer.drawCard(window,hit_cards[i],685+75*(i),500,0);
 
-
-    window.display();
+      
+    }
+  
+  window.display();
   }
 
   return 0;

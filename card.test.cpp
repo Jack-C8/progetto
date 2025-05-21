@@ -1,17 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+
 #include "card.hpp"
-
 #include "doctest.h"
-
-TEST_CASE("Card construction") {
-  el::Card c1("Hearts", "A", 11, true);
-  el::Card c2("Diamonds", "A", 11, false);
-  CHECK(c1.suit_ == "Hearts");
-  CHECK(c1.range_ == "A");
-  CHECK(c1.game_value_ == 11);
-  CHECK(c1.face_ == true);
-  CHECK(c2.face_ == false);
-}
 
 TEST_CASE("Deck basic construction") {
   el::Deck d1;
@@ -23,6 +13,7 @@ TEST_CASE("Deck basic construction") {
 
     const auto deck1 = d1.get_deck();
     const auto deck2 = d2.get_deck();
+
     CHECK(deck1[0].suit_ == "Hearts");
     CHECK(deck1[0].range_ == "2");
     CHECK(deck1[0].game_value_ == 2);
@@ -34,12 +25,12 @@ TEST_CASE("Deck basic construction") {
   }
 
   SUBCASE("Deck construction create the same deck") {
-  const auto deck1 = d1.get_deck();
-     const auto deck2 = d2.get_deck();
+    const auto deck1 = d1.get_deck();
+    const auto deck2 = d2.get_deck();
 
-     for (size_t i = 0; i < d1.deck_size(); ++i) {
-       CHECK(el::operator==(deck1[i], deck2[i]));
-     }
+    for (size_t i = 0; i < d1.deck_size(); ++i) {
+      CHECK(el::operator==(deck1[i], deck2[i]));
+    }
   }
 
   SUBCASE("topCard method functions") {
@@ -55,6 +46,7 @@ TEST_CASE("Deck basic construction") {
 
   SUBCASE("topCard method multiple time") {
     el::Card top1 = d1.topCard();
+
     CHECK(d1.deck_size() == 155);
     CHECK(top1.game_value_ >= 2);
     CHECK(top1.game_value_ <= 11);

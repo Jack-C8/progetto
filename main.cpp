@@ -62,10 +62,11 @@ int main()
         // stampa carte sul tavolo man mano che vengono pescate
 
         bot_turn(deck, bot1_hand, 15);
+
         // turno giocatore
         if (/*giocatore clicca su double*/)
         {
-            // raddoppia la posta
+            player_bet = player_bet * 2;
         }
         while (/* giocatore non ha cliccato su "stand" */ || player_hand.score() >= 21)
         {
@@ -86,7 +87,7 @@ int main()
         {                           // la seconda condizione è per il "soft 17":
             dealer_hand.Draw(deck); // se il dealer ha 17 ma ha almeno un asso che sta valendo 11
             // stampa carta         //   deve pescare di nuovo (altrimenti pesca solo se ha meno di 17)
-        }
+        }                            // (l'asso può valere 1 o 11)
         bet_result(bot1_money, bot1_bet, bot1_hand, dealer_hand);
         bet_result(player_money, player_bet, player_hand, dealer_hand);
         bet_result(bot2_money, bot2_bet, bot2_hand, dealer_hand);

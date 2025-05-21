@@ -6,7 +6,7 @@
 
 //mettere i trattini sotto
 
-namespace hd {
+namespace el {
 int Hand::score() {
   int score = std::accumulate(
       hand_.begin(), hand_.end(), 0,

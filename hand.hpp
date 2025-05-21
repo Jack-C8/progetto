@@ -5,7 +5,7 @@
 
 #include "card.hpp"
 
-namespace hd{
+namespace el{
 
  class Hand
   {
