@@ -37,7 +37,7 @@ void Deck::shuffle() {
 }
 
 Card Deck::topCard() {
-  if (deck_.size() > 30) {
+  if (deck_.size() <= 30) {
     throw std::runtime_error{"Not enough cards, reset the game!"};
   }
   Card top = deck_.back();

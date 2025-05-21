@@ -1,26 +1,29 @@
-#ifndef  HD_HAND_HPP
+#ifndef HD_HAND_HPP
 #define HD_HAND_HPP
 
 #include <vector>
 
 #include "card.hpp"
 
-namespace el{
+namespace el
+{
 
- class Hand
-  {
-    std::vector<el::Card> hand_;
+    class Hand
+    {
+        std::vector<el::Card> hand_{};
 
-public:
-    int score();
+    public:
+        int size();
 
-    void Draw(el::Deck &deck);
+        int score();
 
-    void covered_Draw(el::Deck &deck);
+        void Draw(el::Deck &deck);
 
-    void reveal();
+        void covered_Draw(el::Deck &deck);
 
-    std::vector<el::Card> hand() const;
-  };
+        void reveal();
+
+        std::vector<el::Card> hand() const;
+    };
 }
-  #endif
+#endif

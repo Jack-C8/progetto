@@ -11,6 +11,16 @@ int Hand::score() {
   int score = std::accumulate(
       hand_.begin(), hand_.end(), 0,
       [](int acc, el::Card card) { return acc + card.game_value_; });
+namespace el
+{
+    int Hand::size() {
+      return static_cast<int>(hand_.size());
+    }
+
+    int Hand::score()
+    {
+      int score = std::accumulate(hand_.begin(), hand_.end(), 0, [](int acc, el::Card card)
+                                   { return acc + card.game_value_; });
 
   return score;
 }
