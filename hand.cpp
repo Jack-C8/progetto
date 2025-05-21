@@ -3,8 +3,12 @@
 #include "card.hpp"
 #include "hand.hpp"
 
-namespace hd
+namespace el
 {
+    int Hand::size() {
+      return static_cast<int>(hand_.size());
+    }
+
     int Hand::score()
     {
       int score = std::accumulate(hand_.begin(), hand_.end(), 0, [](int acc, el::Card card)
@@ -36,7 +40,7 @@ namespace hd
     {
       el::Card top = deck.topCard();
       hand_.emplace_back(top);
-      top.face_ == false;
+      top.face_ = false;
       if (score() > 21) // se sfori dai 21 controlla se ci sono degli assi, assegna al primo
       {                        // che trovi il valore 1 e esci dal ciclo
         for (auto it{hand_.begin()}; it != hand_.end(); ++it)

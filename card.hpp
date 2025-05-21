@@ -1,6 +1,9 @@
 #ifndef EL_CARD_HPP
 #define EL_CARD_HPP
 
+#include <string>
+#include <vector>
+
 namespace el
 {
 

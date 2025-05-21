@@ -2,9 +2,6 @@
 #include "card.hpp"
 #include <map>
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "card.hpp"
-#include <map>
 
 class CardRenderer {
  public:
