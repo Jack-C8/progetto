@@ -118,8 +118,8 @@ int main() {
   el::Card carta6 = deck.topCard();
   el::Card carta7 = deck.topCard();
   el::Card carta8 = deck.topCard();
-  // sf::RenderWindow first_window(sf::VideoMode(1430, 100), "Insert fishes",
-  //                               sf::Style::Default);
+  sf::RenderWindow first_window(sf::VideoMode(1430, 100), "Insert fishes",
+                                sf::Style::Default);
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
 
@@ -174,106 +174,131 @@ int main() {
   sf::RectangleShape stand_button{
       RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0)};  // stand button
-  int hit = 0;
-
+                        
   std::vector<el::Card> hit_cards{};
+  bool firstwindow_closed = false;
 
-  while (window.isOpen()) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window.close();
-      if (event.type == sf::Event::MouseButtonPressed &&
-          event.mouseButton.button == sf::Mouse::Left) {
-        sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-        if (hit_button.getGlobalBounds().contains(mousePos)) {
-          hit_cards.push_back(deck.topCard());
-          //your_score = your_hand.score();
-        }
+  if (firstwindow_closed = false) {
+    while (first_window.isOpen());
+    {
+      sf::Event event1;
+      while (first_window.pollEvent(event1)) {
+        if (event1.type == sf::Event::Closed) first_window.close();
       }
     }
-
-    window.clear(sf::Color(20, 20, 20));
-
-    drawcircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f,
-               sf::Color(210, 180, 140));
-    drawcircle(window, 715, 0, 320, sf::Color::Black, 5, sf::Color::White);
-
-    drawRect(window, 660, 740, 120, 120, sf::Color(139, 0, 0), 3.f,
-             sf::Color(212, 175, 55), 0);  // YOU
-    drawRect(window, 440, 741, 200, 120, sf::Color(210, 180, 140), 3.,
-             sf::Color(101, 67, 33), 0);  // fish slot
-    drawRect(window, 645, 600, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             0);  // card1 you
-    drawRect(window, 725, 600, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             0);  // card 2 you
-    drawRect(window, 725, 130, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             0);  // card 2 dealer
-    drawRect(window, 645, 130, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             0);  // card 1 dealer
-    drawRect(window, 310, 420, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             45);  // carta 1 P1
-    drawRect(window, 365, 475, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             45);  // carta 2 P1
-    drawRect(window, 1033, 513, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             315);  // carta 1 P2
-    drawRect(window, 1090, 460, 63, 88, sf::Color::White, 0.f, sf::Color::White,
-             315);  // carta 2P2
-    drawRect(window, 990, 415, 63, 88, sf::Color::Transparent, 1.f,
-             sf::Color::Yellow, 315);  // slot carta P2
-    drawRect(window, 410, 375, 63, 88, sf::Color::Transparent, 1.f,
-             sf::Color::Yellow, 45);  // slot carta P1
-    drawRect(window, 685, 500, 63, 88, sf::Color::Transparent, 1.f,
-             sf::Color::Yellow, 0);  // slot carta you
-
-    drawRect(window, 190, 540, 130, 130, sf::Color(10, 17, 114), 3.f,
-             sf::Color(212, 175, 55), 45);  // P1 box
-    drawRect(window, 1250, 530, 130, 130, sf::Color(10, 17, 114), 3.f,
-             sf::Color(212, 175, 55), 45);  // P2 box
-    window.draw(hit_button);
-    window.draw(double_button);
-    window.draw(split_button);
-    window.draw(stand_button);
-
-    // DrawText(window, font, "DEALER", 630, 20, 40, sf::Color::White, 0);
-    DrawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
-    DrawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
-    DrawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
-    DrawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
-    DrawText(window, font, "DOUBLE", 980, 820, 25, sf::Color::White, 0);
-    DrawText(window, font, "SPLIT", 867, 820, 25, sf::Color::White, 0);
-    DrawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
-    DrawText(window, font, "Current Score:", 765, 495, 15, sf::Color::Black, 0);
-    DrawText(window, font, std::to_string(your_score), 800, 510, 50,
-             sf::Color::Black, 0);
-    DrawText(window, font, "FISH BALANCE", 470, 750, 20, sf::Color::Black, 0);
-    DrawText(window, font, std::to_string(fishes_left), 470, 805, 30,
-             sf::Color::Black, 0);
-
-    for (int i = 0; i < redCircleCoords.size(); i++) {
-      drawcircle(window, redCircleCoords[i].x, redCircleCoords[i].y, 10,
-                 sf::Color(168, 0, 32), 2.f, sf::Color::White);
-      DrawText(window, font, std::to_string(17 + i), redCircleCoords[i].x - 5,
-               redCircleCoords[i].y - 7, 10, sf::Color::White, 0);
-    }
-
-    for (const auto& letter : allLetters) window.draw(letter);
-    window.draw(sprite);
-    window.draw(sprite2);
-    renderer.drawCard(window, carta1, 640, 600, 0);
-    renderer.drawCard(window, carta2, 730, 600, 0);
-    renderer.drawCard(window, carta3, 310, 420, 45);
-    renderer.drawCard(window, carta4, 365, 475, 45);
-    renderer.drawCard(window, carta5, 1033, 513, 315);
-    renderer.drawCard(window, carta6, 1090, 460, 315);
-
-    int i;
-
-    for (i = 0; i < hit_cards.size(); ++i) {
-      renderer.drawCard(window, hit_cards[i], 685, 500, 0);
-    }
-
-    window.display();
+    first_window.clear();
+    first_window.display();
+    firstwindow_closed = true;
   }
 
-  return 0;
+  if (firstwindow_closed = true) {
+    while (window.isOpen());
+    {
+      sf::Event event;
+      while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) window.close();
+        if (event.type == sf::Event::MouseButtonPressed &&
+            event.mouseButton.button == sf::Mouse::Left) {
+          sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+          if (hit_button.getGlobalBounds().contains(mousePos)) {
+            hit_cards.push_back(deck.topCard());
+            // your_score = your_hand.score();
+          }
+        }
+      }
+
+      window.clear(sf::Color(20, 20, 20));
+
+      drawcircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f,
+                 sf::Color(210, 180, 140));
+      drawcircle(window, 715, 0, 320, sf::Color::Black, 5, sf::Color::White);
+
+      drawRect(window, 660, 740, 120, 120, sf::Color(139, 0, 0), 3.f,
+               sf::Color(212, 175, 55), 0);  // YOU
+      drawRect(window, 440, 741, 200, 120, sf::Color(210, 180, 140), 3.,
+               sf::Color(101, 67, 33), 0);  // fish slot
+      drawRect(window, 645, 600, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               0);  // card1 you
+      drawRect(window, 725, 600, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               0);  // card 2 you
+      drawRect(window, 725, 130, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               0);  // card 2 dealer
+      drawRect(window, 645, 130, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               0);  // card 1 dealer
+      drawRect(window, 310, 420, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               45);  // carta 1 P1
+      drawRect(window, 365, 475, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               45);  // carta 2 P1
+      drawRect(window, 1033, 513, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               315);  // carta 1 P2
+      drawRect(window, 1090, 460, 63, 88, sf::Color::White, 0.f,
+               sf::Color::White,
+               315);  // carta 2P2
+      drawRect(window, 990, 415, 63, 88, sf::Color::Transparent, 1.f,
+               sf::Color::Yellow, 315);  // slot carta P2
+      drawRect(window, 410, 375, 63, 88, sf::Color::Transparent, 1.f,
+               sf::Color::Yellow, 45);  // slot carta P1
+      drawRect(window, 685, 500, 63, 88, sf::Color::Transparent, 1.f,
+               sf::Color::Yellow, 0);  // slot carta you
+
+      drawRect(window, 190, 540, 130, 130, sf::Color(10, 17, 114), 3.f,
+               sf::Color(212, 175, 55), 45);  // P1 box
+      drawRect(window, 1250, 530, 130, 130, sf::Color(10, 17, 114), 3.f,
+               sf::Color(212, 175, 55), 45);  // P2 box
+      window.draw(hit_button);
+      window.draw(double_button);
+      window.draw(split_button);
+      window.draw(stand_button);
+
+      // DrawText(window, font, "DEALER", 630, 20, 40, sf::Color::White, 0);
+      DrawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
+      DrawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
+      DrawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
+      DrawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
+      DrawText(window, font, "DOUBLE", 980, 820, 25, sf::Color::White, 0);
+      DrawText(window, font, "SPLIT", 867, 820, 25, sf::Color::White, 0);
+      DrawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
+      DrawText(window, font, "Current Score:", 765, 495, 15, sf::Color::Black,
+               0);
+      DrawText(window, font, std::to_string(your_score), 800, 510, 50,
+               sf::Color::Black, 0);
+      DrawText(window, font, "FISH BALANCE", 470, 750, 20, sf::Color::Black, 0);
+      DrawText(window, font, std::to_string(fishes_left), 470, 805, 30,
+               sf::Color::Black, 0);
+
+      for (int i = 0; i < redCircleCoords.size(); i++) {
+        drawcircle(window, redCircleCoords[i].x, redCircleCoords[i].y, 10,
+                   sf::Color(168, 0, 32), 2.f, sf::Color::White);
+        DrawText(window, font, std::to_string(17 + i), redCircleCoords[i].x - 5,
+                 redCircleCoords[i].y - 7, 10, sf::Color::White, 0);
+      }
+
+      for (const auto& letter : allLetters) window.draw(letter);
+      window.draw(sprite);
+      window.draw(sprite2);
+      renderer.drawCard(window, carta1, 640, 600, 0);
+      renderer.drawCard(window, carta2, 730, 600, 0);
+      renderer.drawCard(window, carta3, 310, 420, 45);
+      renderer.drawCard(window, carta4, 365, 475, 45);
+      renderer.drawCard(window, carta5, 1033, 513, 315);
+      renderer.drawCard(window, carta6, 1090, 460, 315);
+
+      int i;
+
+      for (i = 0; i < hit_cards.size(); ++i) {
+        renderer.drawCard(window, hit_cards[i], 685, 500, 0);
+      }
+
+      window.display();
+    }
+
+    return 0;
+  }
 }
