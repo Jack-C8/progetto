@@ -15,7 +15,7 @@ struct Card {
   bool face_;
 
   Card(const std::string &suit_, const std::string &range_,
-       int const game_value_, bool const face_);
+       int const game_value_, bool face_);
 };
 
 bool operator==(const Card &one, const Card &other);
