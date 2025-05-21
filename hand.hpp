@@ -21,12 +21,6 @@ class Hand {
   int hand_score();
 
   void hand_draw(el::Deck &deck);
-
-  void hand_covered_draw(el::Deck &deck);
-
-  void card_reveal();
-
-  std::vector<el::Card> hand() const;
 };
 }  // namespace el
 #endif
