@@ -10,9 +10,13 @@ namespace el
 
     class Hand
     {
-        std::vector<el::Card> hand_{};
+        std::vector<Card> hand_{};
 
     public:
+        Hand(Card c1, Card c2);
+
+        const Card element(int i) const;
+
         int size();
 
         int score();
