@@ -115,6 +115,12 @@ int main() {
   el::Card carta6 = deck.topCard();
   el::Card carta7 = deck.topCard();
   el::Card carta8 = deck.topCard();
+  el::Hand your_hand{carta1, carta2};
+
+
+
+  
+
 
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
@@ -176,7 +182,7 @@ int main() {
                       while (window.isOpen()) {
    
     sf::Event event;
-hd::Hand your_hand{};
+// hd::Hand your_hand{};
 
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
@@ -184,8 +190,14 @@ hd::Hand your_hand{};
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
         if (hit_button.getGlobalBounds().contains(mousePos)) {
-          hit = ++hit;
+          your_score=your_hand.score();
           hit_cards.push_back(deck.topCard());
+        }
+        if (carta1==carta2 && split_button.getGlobalBounds().contains(mousePos)){
+
+        }
+        if (double_button.getGlobalBounds().contains(mousePos)){
+          
         }
       }
     }
@@ -264,11 +276,11 @@ hd::Hand your_hand{};
     renderer.drawCard(window, carta5, 1033, 513, 315);
     renderer.drawCard(window, carta6, 1090, 460, 315);
    
-    int i;
     
-      for(i=0;i<hit_cards.size(); ++i){
+    
+      for(int i=2;i<your_hand.size(); ++i){
       
-    renderer.drawCard(window,hit_cards[i],685+75*(i),500,0);
+    renderer.drawCard(window,your_hand[i],685+75*(i),500,0);
 
       
     }
