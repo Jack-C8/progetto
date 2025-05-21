@@ -5,29 +5,28 @@
 
 #include "card.hpp"
 
-namespace el
-{
+namespace el {
 
-    class Hand
-    {
-        std::vector<Card> hand_{};
+class Hand {
+  std::vector<Card> hand_{};
 
-    public:
-        Hand(Card c1, Card c2);
+ public:
+  Hand(Card c1, Card c2);
+  Hand();
 
-        const Card element(int i) const;
+  const Card hand_element(int i) const;
 
-        int size();
+  int hand_size();
 
-        int score();
+  int hand_score();
 
-        void Draw(el::Deck &deck);
+  void hand_draw(el::Deck &deck);
 
-        void covered_Draw(el::Deck &deck);
+  void hand_covered_draw(el::Deck &deck);
 
-        void reveal();
+  void card_reveal();
 
-        std::vector<el::Card> hand() const;
-    };
-}
+  std::vector<el::Card> hand() const;
+};
+}  // namespace el
 #endif
