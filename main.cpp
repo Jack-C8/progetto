@@ -41,7 +41,7 @@ int main()
     while (/*giocatore non clicca pulsante esci*/ || soldi_player == 0) // turno completo di gioco
     {
 
-        int player_bet = ; // il giocatore deve sceglierlo dalla schermata
+        int player_bet = 10; // il giocatore deve sceglierlo dalla schermata
         int bot1_bet{10};
         int bot2_bet{10};
 
