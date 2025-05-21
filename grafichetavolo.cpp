@@ -3,10 +3,12 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "hand.hpp"
-#include "CardRenderer.hpp"
-#include "card.hpp"
 
+#include "CardRenderer.hpp"
+#include "Grafiche.hpp"
+#include "card.hpp"
+#include "hand.hpp"
+namespace el {
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
               float angle_of_rotation) {
@@ -101,6 +103,7 @@ std::vector<sf::Vector2f> createCircularPositions(sf::Vector2f center,
 
   return positions;
 }
+}  // namespace el
 
 int main() {
   el::Deck deck;
@@ -115,7 +118,8 @@ int main() {
   el::Card carta6 = deck.topCard();
   el::Card carta7 = deck.topCard();
   el::Card carta8 = deck.topCard();
-
+  // sf::RenderWindow first_window(sf::VideoMode(1430, 100), "Insert fishes",
+  //                               sf::Style::Default);
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
 
@@ -170,22 +174,20 @@ int main() {
   sf::RectangleShape stand_button{
       RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0)};  // stand button
-                      int hit = 0;
-                      
-                      std::vector<el::Card> hit_cards{};
-                      while (window.isOpen()) {
-   
-    sf::Event event;
-hd::Hand your_hand{};
+  int hit = 0;
 
+  std::vector<el::Card> hit_cards{};
+
+  while (window.isOpen()) {
+    sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
         if (hit_button.getGlobalBounds().contains(mousePos)) {
-          hit = ++hit;
           hit_cards.push_back(deck.topCard());
+          //your_score = your_hand.score();
         }
       }
     }
@@ -263,17 +265,14 @@ hd::Hand your_hand{};
     renderer.drawCard(window, carta4, 365, 475, 45);
     renderer.drawCard(window, carta5, 1033, 513, 315);
     renderer.drawCard(window, carta6, 1090, 460, 315);
-   
-    int i;
-    
-      for(i=0;i<hit_cards.size(); ++i){
-      
-    renderer.drawCard(window,hit_cards[i],685+75*(i),500,0);
 
-      
+    int i;
+
+    for (i = 0; i < hit_cards.size(); ++i) {
+      renderer.drawCard(window, hit_cards[i], 685, 500, 0);
     }
-  
-  window.display();
+
+    window.display();
   }
 
   return 0;
