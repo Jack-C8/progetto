@@ -1,7 +1,5 @@
 #include "hand.hpp"
-
 #include <numeric>
-
 #include "card.hpp"
 
 namespace el {
@@ -33,30 +31,6 @@ void Hand::hand_draw(Deck &deck) {
         it->game_value_ = 1;
         break;
       }
-    }
-  }
-}
-
-void Hand::hand_covered_draw(Deck &deck) {
-  Card top = deck.topCard();
-  hand_.emplace_back(top);
-  top.face_ = false;
-  if (hand_score() > 21)  // se sfori dai 21 controlla se ci sono degli assi,
-                          // assegna al primo
-  {                       // che trovi il valore 1 e esci dal ciclo
-    for (auto it{hand_.begin()}; it != hand_.end(); ++it) {
-      if (it->range_ == "A") {
-        it->game_value_ = 1;
-        break;
-      }
-    }
-  }
-}
-
-void Hand::card_reveal() {
-  for (auto it = hand_.begin(); it != hand_.end(); ++it) {
-    if (it->face_ == false) {
-      it->face_ = true;
     }
   }
 }
