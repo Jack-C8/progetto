@@ -9,8 +9,8 @@ TEST_CASE("Deck basic construction") {
   el::Deck d2;
 
   SUBCASE("Deck Basics") {
-    CHECK(d1.deck_size() == 156);
-    CHECK(d2.deck_size() == d1.deck_size());
+    CHECK(d1.size() == 156);
+    CHECK(d2.size() == d1.size());
 
     const auto deck1 = d1.get_deck();
     const auto deck2 = d2.get_deck();
@@ -29,36 +29,49 @@ TEST_CASE("Deck basic construction") {
     const auto deck1 = d1.get_deck();
     const auto deck2 = d2.get_deck();
 
-    for (size_t i = 0; i < d1.deck_size(); ++i) {
+    for (size_t i = 0; i < d1.size(); ++i) {
       CHECK(el::operator==(deck1[i], deck2[i]));
     }
   }
 
   SUBCASE("topCard method functions") {
-    size_t initial_size = d1.deck_size();
+    size_t initial_size = d1.size();
     el::Card top = d1.topCard();
     CHECK(top.suit_ == "Diamonds");
     CHECK(top.range_ == "A");
     CHECK(top.game_value_ == 11);
     CHECK(top.face_ == true);
-    CHECK(d1.deck_size() == (initial_size - 1));
-    CHECK(d1.deck_size() == 155);
+    CHECK(d1.size() == (initial_size - 1));
+    CHECK(d1.size() == 155);
   }
 
   SUBCASE("topCard method multiple time") {
-    el::Card top1 = d1.topCard();
+    d1.topCard();
+    CHECK(d1.size() == 155);
 
-    CHECK(d1.deck_size() == 155);
-    CHECK(top1.game_value_ >= 2);
-    CHECK(top1.game_value_ <= 11);
+    d1.topCard();
+    CHECK(d1.size() == 154);
 
-    el::Card top2 = d1.topCard();
-    CHECK(d1.deck_size() == 154);
-    CHECK(top2.game_value_ >= 2);
-    CHECK(top2.game_value_ <= 11);
+    d1.topCard();
+    d1.topCard();
+    d1.topCard();
+    d1.topCard();  // pesco le prime 6 carte e vedo se sono al punto giusto
+    CHECK(d1.size() == 150);
+    el::Card card1{"Diamonds", "10", 10, true};
+    CHECK(d1.topCard() == card1);
+    CHECK(d1.size() == 151);
+
+    for (int i{}; i < 14; ++i) {
+      d1.topCard();
+    }                                     // pesco le prime 20 carte
+    CHECK(d1.size() == 136);
+    el::Card card2{"Spades", "7", 7, true};
+    CHECK(d1.topCard() == card2);
+    CHECK(d1.size() == 135);
   }
+
   SUBCASE("Not enough cards, reset the game!") {
-    size_t count = (d1.deck_size() - 30);
+    size_t count = (d1.size() - 30);
     for (size_t i = 0; i < count; ++i) {
       d1.topCard();
     }
@@ -76,10 +89,5 @@ TEST_CASE("Deck basic construction") {
     CHECK((c1 == c4) ==
           true);  // operator== non deve tener conto del game_value della carta
     CHECK((c1 == c5) == false);
-  }
-  SUBCASE("Draw the last constructed card") {
-    el::Card card{"Diamonds", "A", 11, true};
-    CHECK(d1.topCard() == card);
-    CHECK(d1.deck_size() == 155);
   }
 }

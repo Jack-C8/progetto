@@ -14,11 +14,11 @@ class Hand {
   Hand(Card c1, Card c2);
   Hand();
 
-  const Card hand_element(int i) const;
+  const Card element(int i) const;
 
-  int hand_size();
+  int size();
 
-  int hand_score();
+  int score();
 
   void hand_draw(el::Deck &deck);
 };

@@ -9,14 +9,14 @@ Hand::Hand(Card c1, Card c2) {
   hand_.push_back(c2);
 }
 
-Hand::Hand() {};
+Hand::Hand() {}
 // secondo costruttore nullo su richiesta.
 
-const Card Hand::hand_element(int i) const { return hand_[i]; }
+const Card Hand::element(int i) const { return hand_[i]; }
 
-int Hand::hand_size() { return static_cast<int>(hand_.size()); }
+int Hand::size() { return static_cast<int>(hand_.size()); }
 
-int Hand::hand_score() {
+int Hand::score() {
   int score = std::accumulate(
       hand_.begin(), hand_.end(), 0,
       [](int acc, Card card) { return acc + card.game_value_; });
@@ -26,7 +26,7 @@ int Hand::hand_score() {
 void Hand::hand_draw(Deck &deck) {
   Card top = deck.topCard();
   hand_.emplace_back(top);
-  if (hand_score() > 21) {
+  if (score() > 21) {
     for (auto it = hand_.begin(); it != hand_.end(); ++it) {
       if (it->range_ == "A") {
         it->game_value_ = 1;
