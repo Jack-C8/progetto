@@ -7,18 +7,18 @@
 // azioni dei bot? -J
 
 void bot_turn(el::Deck deck, el::Hand hand, int n) {
-  if (hand.score() <= n) {  // bot 1: n=14 perchè appena più di metà delle carte
-    hand.Draw(deck);        // mi fanno stare dentro i 21
+  if (hand.hand_score() <= n) {  // bot 1: n=14 perchè appena più di metà delle carte
+    hand.hand_draw(deck);        // mi fanno stare dentro i 21
     // stampa carta sul tavolo     bot 2: n=17 perchè appena meno di un terzo
     // delle carte
   }  // mi fanno stare dentro i 21
 }
 
 void bet_result(int money, int bet, el::Hand hand, el::Hand dealer_hand) {
-  if (dealer_hand.score() > hand.score() || hand.score() > 21) {
+  if (dealer_hand.hand_score() > hand.hand_score() || hand.hand_score() > 21) {
     money -= bet;
   }
-  if (dealer_hand.score() < hand.score()) {
+  if (dealer_hand.hand_score() < hand.hand_score()) {
     money += bet;
   }
 }
@@ -46,15 +46,15 @@ int main() {
     el::Hand bot1_hand;
     el::Hand bot2_hand;
 
-    bot1_hand.Draw(deck);
-    player_hand.Draw(deck);
-    bot2_hand.Draw(deck);
-    dealer_hand.Draw(deck);
+    bot1_hand.hand_draw(deck);
+    player_hand.hand_draw(deck);
+    bot2_hand.hand_draw(deck);
+    dealer_hand.hand_draw(deck);
 
-    bot1_hand.Draw(deck);
-    player_hand.Draw(deck);
-    bot2_hand.Draw(deck);
-    dealer_hand.covered_Draw(deck);
+    bot1_hand.hand_draw(deck);
+    player_hand.hand_draw(deck);
+    bot2_hand.hand_draw(deck);
+    dealer_hand.covered_hand_draw(deck);
     // stampa carte sul tavolo man mano che vengono pescate
 
     bot_turn(deck, bot1_hand, 15);
@@ -64,9 +64,9 @@ int main() {
       player_bet = player_bet * 2;
     }
     while (/* giocatore non ha cliccato su "stand" */ ||
-           player_hand.score() >= 21) {
+           player_hand.hand_score() >= 21) {
       if (/*giocatore clicca hit*/) {
-        player_hand.Draw(deck);
+        player_hand.hand_draw(deck);
         // stampa carta sul tavolo
       }
     }
@@ -78,11 +78,11 @@ int main() {
     const auto iter = std::find_if(
         dealer_vector.begin(), dealer_vector.end(),
         [](el::Card c) { return c.range_ == "A" && c.game_value_ == 11; });
-    if (dealer_hand.score() <= 16 ||
-        (dealer_hand.score() == 17 &&
+    if (dealer_hand.hand_score() <= 16 ||
+        (dealer_hand.hand_score() == 17 &&
          iter != dealer_vector
                      .end())) {  // la seconda condizione è per il "soft 17":
-      dealer_hand.Draw(
+      dealer_hand.hand_draw(
           deck);  // se il dealer ha 17 ma ha almeno un asso che sta valendo 11
       // stampa carta         //   deve pescare di nuovo (altrimenti pesca solo
       // se ha meno di 17)

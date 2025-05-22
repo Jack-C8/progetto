@@ -22,5 +22,5 @@ class Hand {
 
   void hand_draw(el::Deck &deck);
 };
-}  // namespace el
+}
 #endif
