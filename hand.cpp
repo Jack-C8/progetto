@@ -20,6 +20,7 @@ int Hand::hand_score() {
   int score = std::accumulate(
       hand_.begin(), hand_.end(), 0,
       [](int acc, Card card) { return acc + card.game_value_; });
+  return score;
 }
 
 void Hand::hand_draw(Deck &deck) {
