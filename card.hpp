@@ -1,8 +1,6 @@
 #ifndef EL_CARD_HPP
 #define EL_CARD_HPP
-#include <algorithm>
-#include <random>
-#include <stdexcept>
+
 #include <string>
 #include <vector>
 

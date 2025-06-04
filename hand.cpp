@@ -1,5 +1,6 @@
-#include "hand.hpp"
 #include <numeric>
+
+#include "hand.hpp"
 #include "card.hpp"
 
 namespace el {
@@ -11,8 +12,7 @@ Hand::Hand(Card c1, Card c2) {
 
 Hand::Hand() {}
 // secondo costruttore nullo su richiesta.
-
-const Card Hand::element(int i) const { return hand_[i]; }
+const Card Hand::element(int i) const { return hand_[static_cast<int>(i)]; }
 
 int Hand::size() { return static_cast<int>(hand_.size()); }
 

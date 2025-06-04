@@ -1,8 +1,10 @@
+//#ifndef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+//#endif
 
 #include "hand.hpp"
-#include "card.hpp"
 
+#include "card.hpp"
 #include "doctest.h"
 
 TEST_CASE("Testing the Hand class methods") {
@@ -36,6 +38,6 @@ TEST_CASE("Testing the Hand class methods") {
 
   for (int i{}; i <= 50; ++i) {
     hand.hand_draw(deck);
+    CHECK(hand.size() == 5 + i);
   }
-  CHECK(hand.size() == 54);
 }

@@ -1,4 +1,6 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+//#ifndef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+//#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+//#endif
 
 #include "card.hpp"
 
@@ -57,17 +59,36 @@ TEST_CASE("Deck basic construction") {
     d1.topCard();
     d1.topCard();  // pesco le prime 6 carte e vedo se sono al punto giusto
     CHECK(d1.size() == 150);
-    el::Card card1{"Diamonds", "10", 10, true};
-    CHECK(d1.topCard() == card1);
-    CHECK(d1.size() == 151);
 
-    for (int i{}; i < 14; ++i) {
+    el::Card card1{"Diamonds", "8", 8, true};
+    CHECK(d1.topCard() == card1);
+    CHECK(d1.size() == 149);
+
+    for (int i{}; i < 13; ++i) {
       d1.topCard();
-    }                                     // pesco le prime 20 carte
+    }  // pesco le prime 20 carte
     CHECK(d1.size() == 136);
+
     el::Card card2{"Spades", "7", 7, true};
     CHECK(d1.topCard() == card2);
     CHECK(d1.size() == 135);
+
+    el::Deck d3{};
+    const auto deck3 = d3.get_deck();
+    std::string suits[] = {"Hearts", "Clubs", "Spades", "Diamonds"};
+    std::string ranges[] = {"2", "3",  "4", "5", "6", "7", "8",
+                            "9", "10", "J", "Q", "K", "A"};
+    int game_values[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
+    for (int n{0}; n < 3; ++n)  // 3 mazzi
+    {
+      for (int i{0}; i < 4; ++i) {
+        for (int j{0}; j < 13; ++j) {
+          CHECK(deck3[static_cast<size_t>(j + (13 * i))].suit_ == suits[i]);
+          CHECK(deck3[static_cast<size_t>(j + (13 * i))].range_ == ranges[j]);
+          CHECK(deck3[static_cast<size_t>(j + (13 * i))].game_value_ == game_values[j]);
+        }
+      }
+    }
   }
 
   SUBCASE("Not enough cards, reset the game!") {
@@ -79,15 +100,17 @@ TEST_CASE("Deck basic construction") {
   }
   SUBCASE("Card operator==") {
     el::Card c1{"Hearts", "2", 2, true};
-    el::Card c2{"Hearts", "3", 3, true};
+    el::Card c2{"Hearts", "3", 2, true};
     el::Card c3{"Clubs", "2", 2, true};
     el::Card c4{"Hearts", "2", 3, true};
     el::Card c5{"Spades", "4", 4, true};
+    el::Card c6{"Hearts", "2", 3, false};
     CHECK((c1 == c1) == true);
+    CHECK((c1 == c5) == false);
     CHECK((c1 == c2) == false);
     CHECK((c1 == c3) == false);
     CHECK((c1 == c4) ==
           true);  // operator== non deve tener conto del game_value della carta
-    CHECK((c1 == c5) == false);
+    CHECK((c1 == c6) == true);  // e non deve tener conto del face_value
   }
 }

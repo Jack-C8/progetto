@@ -1,3 +1,7 @@
+#include <algorithm>
+#include <random>
+#include <stdexcept>
+
 #include "card.hpp"
 
 namespace el {
