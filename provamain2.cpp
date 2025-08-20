@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <functional>
+
 #include "CardRenderer.hpp"
 // #include "Grafiche.hpp"
 #include "card.hpp"
@@ -131,51 +132,46 @@ void dealer(el::Deck& deck, el::Hand& hand) {
   }
 };
 struct GameState {
-    el::Deck deck;
-   
-    el::Hand your_hand;
-    el::Hand bot1_hand;
-    el::Hand bot2_hand;
-     el::Hand dealer_hand;
-     bool bot1_turn{true};
-     bool your_turn{false};
-     bool bot2_turn{false};
-     bool dealer_turn{false};
-     bool hit{false};
-     bool stand{false};
-     bool wait{false};
-     int your_score{0};
-    bool game_over{false};
+  el::Deck deck;
+  el::Hand your_hand;
+  el::Hand bot1_hand;
+  el::Hand bot2_hand;
+  el::Hand dealer_hand;
+  bool bot1_turn{true};
+  bool your_turn{false};
+  bool bot2_turn{false};
+  bool dealer_turn{false};
+  bool hit{false};
+  bool stand{false};
+  bool wait{false};
+  int your_score{0};
+  bool game_over{false};
 
-    GameState() : deck() {
-        deck.shuffle();
-       
-        your_hand = el::Hand(deck.topCard(), deck.topCard());
-        bot1_hand=el::Hand(deck.topCard(),deck.topCard());
-        bot2_hand=el::Hand(deck.topCard(),deck.topCard());
-         dealer_hand = el::Hand(deck.topCard(), deck.topCard());
-         your_score= your_hand.hand_score();
-    }
+  GameState() : deck() {
+    deck.shuffle();
+    your_hand = el::Hand(deck.topCard(), deck.topCard());
+    bot1_hand = el::Hand(deck.topCard(), deck.topCard());
+    bot2_hand = el::Hand(deck.topCard(), deck.topCard());
+    dealer_hand = el::Hand(deck.topCard(), deck.topCard());
+    your_score = your_hand.hand_score();
+  }
 };
 
 int main() {
-
-
-
   sf::Clock stop;
-  std::function<void()> afterWait; 
+  std::function<void()> afterWait;
   sf::RenderWindow first_window(sf::VideoMode(1430, 1000), "Insert fishes",
                                 sf::Style::Default);
-//  while (first_window.isOpen()) {
+  //  while (first_window.isOpen()) {
   //  sf::Event event;
-    //while (first_window.pollEvent(event)) {
-     // if (event.type == sf::Event::Closed) {
-     //   first_window.close();  // Chiude la prima finestra
-     // }
-   // }
+  // while (first_window.pollEvent(event)) {
+  // if (event.type == sf::Event::Closed) {
+  //   first_window.close();  // Chiude la prima finestra
+  // }
+  // }
 
   //  first_window.clear(sf::Color(20, 20, 20));
-   // first_window.display();
+  // first_window.display();
   //}
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
@@ -217,7 +213,6 @@ int main() {
   std::vector<sf::Vector2f> redCircleCoords =
       createCircularPositions({715.f, 50.f}, 400.f, 180.f, 180.f, 10);
 
-  
   float fishes_left{0.};
   sf::RectangleShape double_button{
       RectangularButton(window, 850, 810, 100, 50, sf::Color(150, 150, 150), 2,
@@ -234,23 +229,23 @@ int main() {
                         sf::Color::White, 0)};  // stand button
 
   std::vector<el::Card> hit_cards{};
-GameState state;
+  GameState state;
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
-     if (event.type== sf::Event::KeyPressed){ if (event.key.code == sf::Keyboard::R) {
-                    std::cout << "Restarting game...\n";
-                    state = GameState();
-                     
-                  
-}}
+      if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::R) {
+          std::cout << "Restarting game...\n";
+          state = GameState();
+        }
+      }
       if (event.type == sf::Event::Closed) {
         window.close();
       }
       if (state.wait && stop.getElapsedTime().asSeconds() > 2.f) {
-    state.wait = false;
-    afterWait(); // esegue l’azione prevista dopo i 2 secondi
-}
+        state.wait = false;
+        afterWait();  // esegue l’azione prevista dopo i 2 secondi
+      }
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
@@ -337,88 +332,79 @@ GameState state;
     renderer.drawCard(window, state.bot1_hand.hand_element(1), 365, 475, 45);
     renderer.drawCard(window, state.bot2_hand.hand_element(0), 1033, 513, 315);
     renderer.drawCard(window, state.bot2_hand.hand_element(1), 1090, 460, 315);
-    renderer.drawCard(window, state.dealer_hand.hand_element(0), 645, 130, 0);  // dealer card 1
-    renderer.drawCard(window, state.dealer_hand.hand_element(1), 725, 130, 0);  // dealer card 2
+    renderer.drawCard(window, state.dealer_hand.hand_element(0), 645, 130,
+                      0);  // dealer card 1
+    renderer.drawCard(window, state.dealer_hand.hand_element(1), 725, 130,
+                      0);  // dealer card 2
 
     if (state.bot1_turn == true) {
       bot1(state.deck, state.bot1_hand);
       state.bot1_turn = false;
-      state.wait=true;
-      
-stop.restart();
-afterWait = [&]() { state.your_turn = true; };
-      
-     
-      
-    }
-   else if (state.your_turn) {
+      state.wait = true;
+
+      stop.restart();
+      afterWait = [&]() { state.your_turn = true; };
+
+    } else if (state.your_turn) {
       if (state.hit) {
         state.your_hand.hand_draw(state.deck);
         state.your_score = state.your_hand.hand_score();
         state.hit = false;
-      }
-     else if (state.stand) {
+      } else if (state.stand) {
         state.stand = false;
         state.your_turn = false;
-        state.wait=true;
-      stop.restart();
-      afterWait=[&](){state.bot2_turn=true;};
-      
-     
-          // or bot1_turn depending on your desired flow
-      }
-       else if (state.your_score >= 21) {
+        state.wait = true;
+        stop.restart();
+        afterWait = [&]() { state.bot2_turn = true; };
+
+        // or bot1_turn depending on your desired flow
+      } else if (state.your_score >= 21) {
         std::cout << "hai perso godo" << std::endl;
         state.your_turn = false;
-        state.wait=true;
-       stop.restart();
-      afterWait=[&](){state.bot2_turn=true;};
-      
-      
-        
+        state.wait = true;
+        stop.restart();
+        afterWait = [&]() { state.bot2_turn = true; };
       }
     }
 
-   else if (state.bot2_turn == true) {
+    else if (state.bot2_turn == true) {
       bot2(state.deck, state.bot2_hand);
-      state.bot2_turn=false;
-      state.wait=true;
-     stop.restart();
-     afterWait=[&](){state.dealer_turn=true;};
-     
-     
+      state.bot2_turn = false;
+      state.wait = true;
+      stop.restart();
+      afterWait = [&]() { state.dealer_turn = true; };
+
+    } else if (state.dealer_turn == true) {
+      dealer(state.deck, state.dealer_hand);
+      state.dealer_turn = false;
     }
-   else if(state.dealer_turn==true){
-        dealer(state.deck,state.dealer_hand);
-state.dealer_turn=false;
-    }
-    
+
     for (int i = 2; i < state.your_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.your_hand.hand_element(i), 685 + 75 * (i - 2),
-                        500, 0);
+      renderer.drawCard(window, state.your_hand.hand_element(i),
+                        685 + 75 * (i - 2), 500, 0);
     }
     for (int i = 2; i < state.bot1_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.bot1_hand.hand_element(i), 310 + 55 * (i - 2),
-                        420 + 55 * (i - 2), 45);
+      renderer.drawCard(window, state.bot1_hand.hand_element(i),
+                        310 + 55 * (i - 2), 420 + 55 * (i - 2), 45);
     }
     for (int i = 2; i < state.bot2_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.bot2_hand.hand_element(i), 1033 + 55 * (i - 2),
-                        513 + 55 * (i - 2), 315);
+      renderer.drawCard(window, state.bot2_hand.hand_element(i),
+                        1033 + 55 * (i - 2), 513 + 55 * (i - 2), 315);
     }
     for (int i = 2; i < state.dealer_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.dealer_hand.hand_element(i), 645 + 55 * (i - 2),
-                        130 + 55 * (i - 2), 0);
+      renderer.drawCard(window, state.dealer_hand.hand_element(i),
+                        645 + 55 * (i - 2), 130 + 55 * (i - 2), 0);
     }
 
     window.display();
   }
-if(state.your_hand.hand_score()<=21 &&state.your_hand.hand_score()>state.dealer_hand.hand_score()){
-        std::cout<<"you won"<<std::endl;
-
-    }
-    if(state.your_hand.hand_score()<=21 &&state.dealer_hand.hand_score()>21){
-        std::cout<<"dealer busted you won"<<std::endl;
-        
-    }
+  if (state.your_hand.hand_score() <= 21 &&
+      state.your_hand.hand_score() > state.dealer_hand.hand_score()) {
+    std::cout << "you won" << std::endl;
+  }
+  if (state.your_hand.hand_score() <= 21 &&
+      state.dealer_hand.hand_score() > 21) {
+    std::cout << "dealer busted you won" << std::endl;
+  }
   return 0;
 }

@@ -2,7 +2,7 @@
 #define HD_HAND_HPP
 
 #include <vector>
-
+#include <numeric>
 #include "card.hpp"
 
 namespace el {
@@ -18,9 +18,11 @@ class Hand {
 
   int hand_size();
 
-  int hand_score();
+  int hand_score() const;
 
   void hand_draw(el::Deck &deck);
+
+  bool splittable_hand();
 };
 }
 #endif
