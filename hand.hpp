@@ -1,5 +1,5 @@
-#ifndef HD_HAND_HPP
-#define HD_HAND_HPP
+#ifndef El_HAND_HPP
+#define EL_HAND_HPP
 
 #include <vector>
 #include <numeric>
