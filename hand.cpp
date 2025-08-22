@@ -11,8 +11,6 @@ Hand::Hand(const Card c1, const Card c2) {
 
 Hand::Hand() {}
 
-const Card Hand::element(int i) const { return hand_[static_cast<int>(i)]; }
-
 int Hand::hand_size() { return static_cast<int>(hand_.size()); }
 
 int Hand::hand_score() const {
@@ -35,20 +33,21 @@ int Hand::hand_score() const {
 }
 
 void Hand::hand_draw(Deck& deck) {
+  if (hand_score() > 21) {
+    throw std::runtime_error{"You can't hit, your score is higher than 21"};
+  }
   Card top = deck.topCard();
   hand_.emplace_back(top);
-  if (hand_score() > 21) {
-    for (auto it = hand_.begin(); it != hand_.end(); ++it) {
-      if (it->range_ == "A") {
-        it->game_value_ = 1;
-        break;
-      }
-    }
-  }
 }
 Card Hand::hand_element(int number) const { return hand_[number]; }
 
-void Hand::add_card(const Card& c) { hand_.push_back(c); }
+void Hand::add_card(const Card& c) {
+  if (hand_score() > 21) {
+    throw std::runtime_error{"You can't hit, your score is higher than 21"};
+  }
+
+  hand_.push_back(c);
+}
 
 void Hand::remove_card() { hand_.pop_back(); }
 
@@ -79,6 +78,10 @@ Hand split(Hand& original, Deck& deck) {
 }
 
 bool blackjack(Hand& player_hand) {
-  if (player_hand.hand_size() == 2 && player_hand.hand_score() == 21) {return true;} else {return false;}
+  if (player_hand.hand_size() == 2 && player_hand.hand_score() == 21) {
+    return true;
+  } else {
+    return false;
+  }
 };
-}
+}  // namespace el

@@ -17,8 +17,6 @@ class Hand {
 
   Hand(const Card c1, const Card c2);
 
-  const Card element(int i) const;
-
   int hand_size();
 
   int hand_score() const;
