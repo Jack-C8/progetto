@@ -9,10 +9,11 @@ Hand::Hand(Card c1, Card c2) {
   hand_.push_back(c2);
 }
 
-Hand::Hand() {};
+Hand::Hand() {}
 // secondo costruttore nullo su richiesta.
+const Card Hand::element(int i) const { return hand_[static_cast<int>(i)]; }
 
-const Card Hand::hand_element(int i) const { return hand_[i]; }
+int Hand::size() { return static_cast<int>(hand_.size()); }
 
 int Hand::hand_size() { return static_cast<int>(hand_.size()); }
 
@@ -42,13 +43,21 @@ int Hand::hand_score() const {
 void Hand::hand_draw(Deck& deck) {
   Card top = deck.topCard();
   hand_.emplace_back(top);
-}
-
-bool Hand::splittable_hand() {
-  if (hand_.size() == 2 && hand_[0].range_ == hand_[1].range_) {
-    return true;
-  } else {
-    return false;
+  if (score() > 21) {
+    for (auto it = hand_.begin(); it != hand_.end(); ++it) {
+      if (it->range_ == "A") {
+        it->game_value_ = 1;
+        break;
+      }
+    }
   }
+
+  bool Hand::splittable_hand() {
+    if (hand_.size() == 2 && hand_[0].range_ == hand_[1].range_) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}  
 }
-}  // namespace el

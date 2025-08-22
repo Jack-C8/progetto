@@ -1,3 +1,7 @@
+#include <algorithm>
+#include <random>
+#include <stdexcept>
+
 #include "card.hpp"
 
 namespace el {
@@ -41,11 +45,11 @@ Card Deck::topCard() {
     throw std::runtime_error{"Not enough cards, reset the game!"};
   }
   Card top = deck_.back();
-  deck_.pop_back();
+  deck_.pop_back(); // toglie l'ultimo elemento del vettore
   return top;
 }
 
-size_t Deck::deck_size() const { return deck_.size(); }
+size_t Deck::size() const { return deck_.size(); }
 
 const std::vector<Card> &Deck::get_deck() const { return deck_; }
 }  // namespace el

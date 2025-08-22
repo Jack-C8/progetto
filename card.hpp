@@ -1,8 +1,6 @@
 #ifndef EL_CARD_HPP
 #define EL_CARD_HPP
-#include <algorithm>
-#include <random>
-#include <stdexcept>
+
 #include <string>
 #include <vector>
 
@@ -30,7 +28,7 @@ class Deck {
 
   Card topCard();
 
-  size_t deck_size() const;
+  size_t size() const;
 
   const std::vector<Card> &get_deck() const;
 };
