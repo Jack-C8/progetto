@@ -1,9 +1,6 @@
-//#ifndef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-//#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-//#endif
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "card.hpp"
-
 #include "doctest.h"
 
 TEST_CASE("Deck basic construction") {
@@ -57,7 +54,7 @@ TEST_CASE("Deck basic construction") {
     d1.topCard();
     d1.topCard();
     d1.topCard();
-    d1.topCard();  // pesco le prime 6 carte e vedo se sono al punto giusto
+    d1.topCard();
     CHECK(d1.size() == 150);
 
     el::Card card1{"Diamonds", "8", 8, true};
@@ -66,7 +63,7 @@ TEST_CASE("Deck basic construction") {
 
     for (int i{}; i < 13; ++i) {
       d1.topCard();
-    }  // pesco le prime 20 carte
+    }
     CHECK(d1.size() == 136);
 
     el::Card card2{"Spades", "7", 7, true};
@@ -110,7 +107,7 @@ TEST_CASE("Deck basic construction") {
     CHECK((c1 == c2) == false);
     CHECK((c1 == c3) == false);
     CHECK((c1 == c4) ==
-          true);  // operator== non deve tener conto del game_value della carta
-    CHECK((c1 == c6) == true);  // e non deve tener conto del face_value
+          true);
+    CHECK((c1 == c6) == true);
   }
 }

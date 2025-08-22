@@ -55,7 +55,10 @@ TEST_CASE("Testing the Hand class methods") {
     CHECK(hand.cansplit() == false);
 
     CHECK(hand4.hand_score() == 20);
-    CHECK(hand.cansplit() == true);
+    CHECK(hand4.cansplit() == true);
+    hand4.add_card(c1);
+    CHECK(hand4.hand_score() == 21);
+    CHECK(blackjack(hand4) == false);
 
     el::Hand splitted = split(hand4, deck);
     CHECK(splitted.hand_size() == 2);
@@ -69,17 +72,15 @@ TEST_CASE("Testing the Hand class methods") {
     CHECK(blackjack(hand4) == false);
   }
 
-  hand.hand_draw(deck);
-  CHECK(hand.hand_size() == 1);
-  hand.hand_draw(deck);
-  CHECK(hand.hand_size() == 2);
-  hand.hand_draw(deck);
-  CHECK(hand.hand_size() == 3);
-  hand.hand_draw(deck);
-  CHECK(hand.hand_size() == 4);
-
-  for (int i = 0; i <= 50; ++i) {
-    hand.hand_draw(deck);
-    CHECK(hand.hand_size() == 5 + i);
+  SUBCASE("All throws of the class") {
+    CHECK_THROWS_WITH(hand3.add_card(c3),
+                      "You can't hit, your score is the highest possible");
+    CHECK_THROWS_WITH(split(hand3, deck), "You can't split these cards!");
+    CHECK_THROWS_WITH(hand3.hand_draw(deck),
+                      "You can't hit, your score is the highest possible");
+    hand.add_card(c5);
+    hand.add_card(c3);
+    CHECK_THROWS_WITH(hand.add_card(c3),
+                      "You can't hit, your score is the highest possible");
   }
 }
