@@ -3,7 +3,6 @@
 //#endif
 
 #include "hand.hpp"
-
 #include "card.hpp"
 #include "doctest.h"
 

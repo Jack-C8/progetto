@@ -45,19 +45,11 @@ Card Deck::topCard() {
     throw std::runtime_error{"Not enough cards, reset the game!"};
   }
   Card top = deck_.back();
-  deck_.pop_back(); // toglie l'ultimo elemento del vettore
+  deck_.pop_back();
   return top;
 }
 
 size_t Deck::size() const { return deck_.size(); }
 
 const std::vector<Card> &Deck::get_deck() const { return deck_; }
-}  // namespace el
-
-/*per deck.back chiedere se c'è bisogno della dereferenziazzione dell'ultimo
- * elemento di deck per associarlo a top*/
-
-/* secondo me no, ho guardato su cppreference e deck.back ti restituisce una
- reference all'ultimo elemento ma non un iteratore, è un po' come quando come
- argomento di una funzione passi una reference e non il valore di per sè, non
- cambia nulla -J */
+}
