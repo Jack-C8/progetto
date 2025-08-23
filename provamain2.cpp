@@ -10,6 +10,7 @@
 // #include "Grafiche.hpp"
 #include "card.hpp"
 #include "hand.hpp"
+#include "methods.hpp"
 // namespace el {
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
@@ -106,57 +107,6 @@ std::vector<sf::Vector2f> createCircularPositions(sf::Vector2f center,
   return positions;
 }
 
-void bot1(el::Deck& deck, el::Hand& hand) {
-  while (hand.hand_score() <=
-         18) {             // bot 1: n=14 perchè appena più di metà dhdle carte
-    hand.hand_draw(deck);  // mi fanno stare dentro i 21
-    // stampa carta sul tavolo     bot 2: n=17 perchè appena meno di un terzo
-    // dhdle carte
-  }
-}
-void bot2(el::Deck& deck, el::Hand& hand) {
-  while (hand.hand_score() <=
-         17) {             // bot 1: n=14 perchè appena più di metà dhdle carte
-    hand.hand_draw(deck);  // mi fanno stare dentro i 21
-    // stampa carta sul tavolo     bot 2: n=17 perchè appena meno di un terzo
-    // dhdle carte
-  }
-}
-void dealer(el::Deck& deck, el::Hand& hand) {
-  while (hand.hand_score() <= 16)
-
-  {
-    hand.hand_draw(deck)
-        /* code */
-        ;
-  }
-};
-struct GameState {
-  el::Deck deck;
-  el::Hand your_hand;
-  el::Hand bot1_hand;
-  el::Hand bot2_hand;
-  el::Hand dealer_hand;
-  bool bot1_turn{true};
-  bool your_turn{false};
-  bool bot2_turn{false};
-  bool dealer_turn{false};
-  bool hit{false};
-  bool stand{false};
-  bool wait{false};
-  int your_score{0};
-  bool game_over{false};
-
-  GameState() : deck() {
-    deck.shuffle();
-    your_hand = el::Hand(deck.topCard(), deck.topCard());
-    bot1_hand = el::Hand(deck.topCard(), deck.topCard());
-    bot2_hand = el::Hand(deck.topCard(), deck.topCard());
-    dealer_hand = el::Hand(deck.topCard(), deck.topCard());
-    your_score = your_hand.hand_score();
-  }
-};
-
 int main() {
   sf::Clock stop;
   std::function<void()> afterWait;
@@ -229,14 +179,14 @@ int main() {
                         sf::Color::White, 0)};  // stand button
 
   std::vector<el::Card> hit_cards{};
-  GameState state;
+  el::GameState state;
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::R) {
           std::cout << "Restarting game...\n";
-          state = GameState();
+          state = el::GameState();
         }
       }
       if (event.type == sf::Event::Closed) {
@@ -338,7 +288,7 @@ int main() {
                       0);  // dealer card 2
 
     if (state.bot1_turn == true) {
-      bot1(state.deck, state.bot1_hand);
+      el::bot1(state.deck, state.bot1_hand);
       state.bot1_turn = false;
       state.wait = true;
 
@@ -359,7 +309,7 @@ int main() {
 
         // or bot1_turn depending on your desired flow
       } else if (state.your_score >= 21) {
-        std::cout << "hai perso godo" << std::endl;
+        std::cout << "you lose!" << std::endl;
         state.your_turn = false;
         state.wait = true;
         stop.restart();
@@ -368,14 +318,14 @@ int main() {
     }
 
     else if (state.bot2_turn == true) {
-      bot2(state.deck, state.bot2_hand);
+      el::bot2(state.deck, state.bot2_hand);
       state.bot2_turn = false;
       state.wait = true;
       stop.restart();
       afterWait = [&]() { state.dealer_turn = true; };
 
     } else if (state.dealer_turn == true) {
-      dealer(state.deck, state.dealer_hand);
+      el::dealer(state.deck, state.dealer_hand);
       state.dealer_turn = false;
     }
 
@@ -400,11 +350,11 @@ int main() {
   }
   if (state.your_hand.hand_score() <= 21 &&
       state.your_hand.hand_score() > state.dealer_hand.hand_score()) {
-    std::cout << "you won" << std::endl;
+    std::cout << "you won!" << std::endl;
   }
   if (state.your_hand.hand_score() <= 21 &&
       state.dealer_hand.hand_score() > 21) {
-    std::cout << "dealer busted you won" << std::endl;
+    std::cout << "dealer busted you won!" << std::endl;
   }
   return 0;
 }

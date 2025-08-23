@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "hand.hpp"
-
 #include "card.hpp"
+#include "methods.hpp"
 #include "doctest.h"
 
 TEST_CASE("Testing the Hand class methods") {
@@ -36,7 +36,7 @@ TEST_CASE("Testing the Hand class methods") {
     CHECK(hand1.hand_size() == 1);
     CHECK(hand1.hand_element(0) == c1);
     CHECK(hand1.hand_score() == 11);
-    CHECK(blackjack(hand1) == false);
+    CHECK(hand1.blackjack() == false);
 
     hand.add_card(c2);
     hand.add_card(c3);
@@ -51,25 +51,25 @@ TEST_CASE("Testing the Hand class methods") {
     CHECK(hand.hand_score() == 20);
 
     CHECK(hand3.hand_score() == 21);
-    CHECK(blackjack(hand3) == true);
+    CHECK(hand3.blackjack() == true);
     CHECK(hand.cansplit() == false);
 
     CHECK(hand4.hand_score() == 20);
     CHECK(hand4.cansplit() == true);
     hand4.add_card(c1);
     CHECK(hand4.hand_score() == 21);
-    CHECK(blackjack(hand4) == false);
+    CHECK(hand4.blackjack() == false);
 
     el::Hand splitted = split(hand4, deck);
     CHECK(splitted.hand_size() == 2);
     CHECK(splitted.hand_score() == 21);
-    CHECK(blackjack(splitted) == true);
+    CHECK(splitted.blackjack() == true);
     CHECK(hand4.hand_size() == 2);
     CHECK(hand4.hand_score() == 20);
     CHECK(hand4.cansplit() == true);
     hand4.add_card(c3);
     CHECK(hand4.hand_score() == 23);
-    CHECK(blackjack(hand4) == false);
+    CHECK(hand4.blackjack() == false);
   }
 
   SUBCASE("All throws of the class") {

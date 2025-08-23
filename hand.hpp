@@ -30,10 +30,11 @@ class Hand {
   void remove_card();
 
   bool cansplit();
-};
-Hand split(Hand& original, Deck& deck);
 
-bool blackjack(Hand& player_hand);
+  bool blackjack();
+};
+
+Hand split(Hand& original, Deck& deck);
 
 } 
 #endif

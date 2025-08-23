@@ -58,26 +58,8 @@ bool Hand::cansplit() {
   }
 }
 
-Hand split(Hand& original, Deck& deck) {
-  if (original.cansplit() == false) {
-    throw std::runtime_error{"You can't split these cards!"};
-  }
-
-  const Card c1 = original.hand_element(0);
-  const Card c2 = original.hand_element(1);
-
-  Hand splitted;
-  splitted.add_card(c2);
-  original.remove_card();
-
-  splitted.hand_draw(deck);
-  original.hand_draw(deck);
-
-  return splitted;
-}
-
-bool blackjack(Hand& player_hand) {
-  if (player_hand.hand_size() == 2 && player_hand.hand_score() == 21) {
+bool Hand::blackjack() {
+  if (hand_size() == 2 && hand_score() == 21) {
     return true;
   } else {
     return false;
