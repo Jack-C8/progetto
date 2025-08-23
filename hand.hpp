@@ -1,4 +1,4 @@
-#ifndef El_HAND_HPP
+#ifndef EL_HAND_HPP
 #define EL_HAND_HPP
 
 #include <numeric>
