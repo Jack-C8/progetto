@@ -19,5 +19,5 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
                                        const sf::Font& font,
                                        unsigned int charSize,
                                        sf::Vector2f center, float radius,
-                                       float startAngleDeg, float totalAngleDeg,
-                                       bool rotateLetters );
+                                       float startAngleDeg, float totalAngleDeg
+                                        );
