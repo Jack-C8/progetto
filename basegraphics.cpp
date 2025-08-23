@@ -60,8 +60,8 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
                                        const sf::Font& font,
                                        unsigned int charSize,
                                        sf::Vector2f center, float radius,
-                                       float startAngleDeg, float totalAngleDeg,
-                                       bool rotateLetters=true) {
+                                       float startAngleDeg, float totalAngleDeg
+                                       ) {
   std::vector<sf::Text> letters;
   float angleStep = totalAngleDeg / static_cast<float>(text.size() - 1);
 
@@ -75,7 +75,7 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
     sf::Text letter(text[i], font, charSize);
     letter.setPosition(x, y);
 
-    if (rotateLetters) letter.setRotation(angleDeg - 90.f);
+    letter.setRotation(angleDeg - 90.f);
 
     sf::FloatRect bounds = letter.getLocalBounds();
     letter.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
