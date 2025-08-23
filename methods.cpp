@@ -50,4 +50,4 @@ Hand split(Hand& original, Deck& deck) {
   return splitted;
 }
 
-} 
+}  // namespace el

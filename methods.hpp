@@ -16,14 +16,18 @@ struct GameState {
   Hand bot1_hand;
   Hand bot2_hand;
   Hand dealer_hand;
+  Hand splitted_hand{};
+  bool has_split{false};
   bool bot1_turn{true};
   bool your_turn{false};
+  bool split_turn{false};
   bool bot2_turn{false};
   bool dealer_turn{false};
   bool hit{false};
   bool stand{false};
   bool wait{false};
   int your_score{0};
+  int splitted_score{0};
   bool game_over{false};
 
   GameState();
