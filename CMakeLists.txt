@@ -48,7 +48,7 @@ target_link_libraries(blackjack PRIVATE sfml-graphics)
 if (BUILD_TESTING)
 
   # aggiungi l'eseguibile progetto.t
-  add_executable(blackjack.t card.test.cpp hand.test.cpp methods.main.test.cpp)
+  add_executable(blackjack.t card.test.cpp hand.test.cpp methods.test.cpp)
   # aggiungi l'eseguibile progetto.t alla lista dei test
   add_test(NAME blackjack.t COMMAND blackjack.t)
 

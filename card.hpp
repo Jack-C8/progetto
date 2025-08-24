@@ -9,10 +9,9 @@ struct Card {
   std::string suit_;
   std::string range_;
   int game_value_;
-  bool face_;
 
   Card(const std::string &suit_, const std::string &range_,
-       int const game_value_, bool face_);
+       int const game_value_);
 };
 
 bool operator==(const Card &one, const Card &other);
@@ -31,5 +30,5 @@ class Deck {
 
   const std::vector<Card> &get_deck() const;
 };
-}
+}  // namespace el
 #endif

@@ -1,16 +1,16 @@
+#include "card.hpp"
+
 #include <algorithm>
 #include <random>
 #include <stdexcept>
 
-#include "card.hpp"
-
 namespace el {
 
 Card::Card(const std::string &suit, const std::string &range,
-           int const game_value, bool const face)
-    : suit_{suit}, range_{range}, game_value_{game_value}, face_{face} {}
+           int const game_value)
+    : suit_{suit}, range_{range}, game_value_{game_value} {}
 
-bool operator==(const Card& one, const Card& other) {
+bool operator==(const Card &one, const Card &other) {
   if ((one.suit_ == other.suit_) && (one.range_ == other.range_)) {
     return true;
   }
@@ -22,13 +22,12 @@ Deck::Deck() {
   std::string ranges[] = {"2", "3",  "4", "5", "6", "7", "8",
                           "9", "10", "J", "Q", "K", "A"};
   int game_value[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
-  bool face[] = {true, false};
 
   for (int n{0}; n < 3; ++n)  // 3 mazzi
   {
     for (int i{0}; i < 4; ++i) {
       for (int j{0}; j < 13; ++j) {
-        deck_.emplace_back(suits[i], ranges[j], game_value[j], face[j] = true);
+        deck_.emplace_back(suits[i], ranges[j], game_value[j]);
       }
     }
   }
@@ -52,4 +51,4 @@ Card Deck::topCard() {
 size_t Deck::size() const { return deck_.size(); }
 
 const std::vector<Card> &Deck::get_deck() const { return deck_; }
-}
+}  // namespace el

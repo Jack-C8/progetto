@@ -17,12 +17,10 @@ TEST_CASE("Deck basic construction") {
     CHECK(deck1[0].suit_ == "Hearts");
     CHECK(deck1[0].range_ == "2");
     CHECK(deck1[0].game_value_ == 2);
-    CHECK(deck1[0].face_ == true);
     CHECK(deck1[0].suit_ == deck2[0].suit_);
     CHECK(deck1[0].range_ == deck2[0].range_);
     CHECK(deck1[0].game_value_ == deck2[0].game_value_);
-    CHECK(deck1[0].face_ == deck2[0].face_);
-  }
+    }
 
   SUBCASE("Deck construction create the same deck") {
     const auto deck1 = d1.get_deck();
@@ -39,7 +37,6 @@ TEST_CASE("Deck basic construction") {
     CHECK(top.suit_ == "Diamonds");
     CHECK(top.range_ == "A");
     CHECK(top.game_value_ == 11);
-    CHECK(top.face_ == true);
     CHECK(d1.size() == (initial_size - 1));
     CHECK(d1.size() == 155);
   }
@@ -57,7 +54,7 @@ TEST_CASE("Deck basic construction") {
     d1.topCard();
     CHECK(d1.size() == 150);
 
-    el::Card card1{"Diamonds", "8", 8, true};
+    el::Card card1{"Diamonds", "8", 8};
     CHECK(d1.topCard() == card1);
     CHECK(d1.size() == 149);
 
@@ -66,7 +63,7 @@ TEST_CASE("Deck basic construction") {
     }
     CHECK(d1.size() == 136);
 
-    el::Card card2{"Spades", "7", 7, true};
+    el::Card card2{"Spades", "7", 7};
     CHECK(d1.topCard() == card2);
     CHECK(d1.size() == 135);
 
@@ -96,12 +93,12 @@ TEST_CASE("Deck basic construction") {
     CHECK_THROWS_WITH(d1.topCard(), "Not enough cards, reset the game!");
   }
   SUBCASE("Card operator==") {
-    el::Card c1{"Hearts", "2", 2, true};
-    el::Card c2{"Hearts", "3", 2, true};
-    el::Card c3{"Clubs", "2", 2, true};
-    el::Card c4{"Hearts", "2", 3, true};
-    el::Card c5{"Spades", "4", 4, true};
-    el::Card c6{"Hearts", "2", 3, false};
+    el::Card c1{"Hearts", "2", 2};
+    el::Card c2{"Hearts", "3", 2};
+    el::Card c3{"Clubs", "2", 2,};
+    el::Card c4{"Hearts", "2", 3};
+    el::Card c5{"Spades", "4", 4};
+    el::Card c6{"Hearts", "2", 3};
     CHECK((c1 == c1) == true);
     CHECK((c1 == c5) == false);
     CHECK((c1 == c2) == false);
