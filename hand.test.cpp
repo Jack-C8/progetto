@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "hand.hpp"
+
 #include "card.hpp"
-#include "methods.hpp"
 #include "doctest.h"
 
 TEST_CASE("Testing the Hand class methods") {
@@ -52,30 +52,16 @@ TEST_CASE("Testing the Hand class methods") {
 
     CHECK(hand3.hand_score() == 21);
     CHECK(hand3.blackjack() == true);
-    CHECK(hand.cansplit() == false);
 
     CHECK(hand4.hand_score() == 20);
-    CHECK(hand4.cansplit() == true);
     hand4.add_card(c1);
     CHECK(hand4.hand_score() == 21);
-    CHECK(hand4.blackjack() == false);
-
-    el::Hand splitted = split(hand4, deck);
-    CHECK(splitted.hand_size() == 2);
-    CHECK(splitted.hand_score() == 21);
-    CHECK(splitted.blackjack() == true);
-    CHECK(hand4.hand_size() == 2);
-    CHECK(hand4.hand_score() == 20);
-    CHECK(hand4.cansplit() == true);
-    hand4.add_card(c3);
-    CHECK(hand4.hand_score() == 23);
     CHECK(hand4.blackjack() == false);
   }
 
   SUBCASE("All throws of the class") {
     CHECK_THROWS_WITH(hand3.add_card(c3),
                       "You can't hit, your score is the highest possible");
-    CHECK_THROWS_WITH(split(hand3, deck), "You can't split these cards!");
     CHECK_THROWS_WITH(hand3.hand_draw(deck),
                       "You can't hit, your score is the highest possible");
     hand.add_card(c5);

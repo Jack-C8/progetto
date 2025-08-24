@@ -31,23 +31,4 @@ void bot2(Deck& deck, Hand& hand) {
     hand.hand_draw(deck);
   }
 }
-
-Hand split(Hand& original, Deck& deck) {
-  if (original.cansplit() == false) {
-    throw std::runtime_error{"You can't split these cards!"};
-  }
-
-  const Card c1 = original.hand_element(0);
-  const Card c2 = original.hand_element(1);
-
-  Hand splitted;
-  splitted.add_card(c2);
-  original.remove_card();
-
-  splitted.hand_draw(deck);
-  original.hand_draw(deck);
-
-  return splitted;
-}
-
 }  // namespace el

@@ -1,6 +1,5 @@
 #ifndef EL_CARD_HPP
 #define EL_CARD_HPP
-
 #include <string>
 #include <vector>
 
@@ -32,5 +31,5 @@ class Deck {
 
   const std::vector<Card> &get_deck() const;
 };
-}  // namespace el
+}
 #endif

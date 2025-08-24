@@ -10,7 +10,7 @@ Card::Card(const std::string &suit, const std::string &range,
            int const game_value, bool const face)
     : suit_{suit}, range_{range}, game_value_{game_value}, face_{face} {}
 
-bool operator==(const Card &one, const Card &other) {
+bool operator==(const Card& one, const Card& other) {
   if ((one.suit_ == other.suit_) && (one.range_ == other.range_)) {
     return true;
   }

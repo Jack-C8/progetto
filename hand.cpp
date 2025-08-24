@@ -50,14 +50,6 @@ void Hand::add_card(const Card& c) {
 
 void Hand::remove_card() { hand_.pop_back(); }
 
-bool Hand::cansplit() {
-  if (hand_.size() == 2 && hand_[0].range_ == hand_[1].range_) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 bool Hand::blackjack() {
   if (hand_size() == 2 && hand_score() == 21) {
     return true;

@@ -39,8 +39,6 @@ void bot1(Deck& deck, Hand& hand);
 
 void bot2(Deck& deck, Hand& hand);
 
-Hand split(Hand& original, Deck& deck);
-
 }
 
 #endif
