@@ -2,8 +2,8 @@
 #define EL_HAND_HPP
 
 #include <numeric>
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 #include "card.hpp"
 
@@ -31,5 +31,5 @@ class Hand {
 
   bool blackjack();
 };
-} 
+}  // namespace el
 #endif

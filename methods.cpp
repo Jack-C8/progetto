@@ -29,6 +29,7 @@ void bot1(Deck& deck, Hand& hand) {
 void bot2(Deck& deck, Hand& hand) {
   while (hand.hand_score() <= 17) {
     hand.hand_draw(deck);
-  }
 }
-}  // namespace el
+}
+
+}

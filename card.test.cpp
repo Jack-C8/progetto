@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "card.hpp"
+
 #include "doctest.h"
 
 TEST_CASE("Deck basic construction") {
@@ -20,7 +21,7 @@ TEST_CASE("Deck basic construction") {
     CHECK(deck1[0].suit_ == deck2[0].suit_);
     CHECK(deck1[0].range_ == deck2[0].range_);
     CHECK(deck1[0].game_value_ == deck2[0].game_value_);
-    }
+  }
 
   SUBCASE("Deck construction create the same deck") {
     const auto deck1 = d1.get_deck();
@@ -79,7 +80,8 @@ TEST_CASE("Deck basic construction") {
         for (int j{0}; j < 13; ++j) {
           CHECK(deck3[static_cast<size_t>(j + (13 * i))].suit_ == suits[i]);
           CHECK(deck3[static_cast<size_t>(j + (13 * i))].range_ == ranges[j]);
-          CHECK(deck3[static_cast<size_t>(j + (13 * i))].game_value_ == game_values[j]);
+          CHECK(deck3[static_cast<size_t>(j + (13 * i))].game_value_ ==
+                game_values[j]);
         }
       }
     }
@@ -95,7 +97,11 @@ TEST_CASE("Deck basic construction") {
   SUBCASE("Card operator==") {
     el::Card c1{"Hearts", "2", 2};
     el::Card c2{"Hearts", "3", 2};
-    el::Card c3{"Clubs", "2", 2,};
+    el::Card c3{
+        "Clubs",
+        "2",
+        2,
+    };
     el::Card c4{"Hearts", "2", 3};
     el::Card c5{"Spades", "4", 4};
     el::Card c6{"Hearts", "2", 3};
@@ -103,8 +109,7 @@ TEST_CASE("Deck basic construction") {
     CHECK((c1 == c5) == false);
     CHECK((c1 == c2) == false);
     CHECK((c1 == c3) == false);
-    CHECK((c1 == c4) ==
-          true);
+    CHECK((c1 == c4) == true);
     CHECK((c1 == c6) == true);
   }
 }

@@ -1,17 +1,17 @@
+#include "basegraphics.hpp"
+
 #include <SFML/Graphics.hpp>
+#include <cassert>
 #include <cmath>
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <functional>
-#include <cassert>
-#include "basegraphics.hpp"
+
 #include "CardRenderer.hpp"
-// #include "Grafiche.hpp"
 #include "card.hpp"
 #include "hand.hpp"
-// namespace el {
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
               float angle_of_rotation) {
@@ -22,36 +22,36 @@ void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
   window.draw(text);
 }
 
-void drawCircle(sf::RenderWindow& window, float x, float y, float raggio,
-                sf::Color sfondo, float thickness, sf::Color bordi) {
-  sf::CircleShape cerchio(raggio);
-  cerchio.setPosition(x - raggio, y - raggio);
-  cerchio.setFillColor(sfondo);
-  cerchio.setOutlineThickness(thickness);
-  cerchio.setOutlineColor(bordi);
-  window.draw(cerchio);
+void drawCircle(sf::RenderWindow& window, float x, float y, float radius,
+                sf::Color background, float thickness, sf::Color borders) {
+  sf::CircleShape circle(radius);
+  circle.setPosition(x - radius, y - radius);
+  circle.setFillColor(background);
+  circle.setOutlineThickness(thickness);
+  circle.setOutlineColor(borders);
+  window.draw(circle);
 }
 sf::RectangleShape RectangularButton(sf::RenderWindow& window, float x, float y,
-                                     float w, float h, sf::Color sfondo,
-                                     float thickness, sf::Color bordi,
+                                     float w, float h, sf::Color background,
+                                     float thickness, sf::Color borders,
                                      float angle_of_rotation) {
   sf::RectangleShape rect(sf::Vector2f(w, h));
   rect.setPosition(x, y);
-  rect.setOutlineColor(bordi);
+  rect.setOutlineColor(borders);
   rect.setOutlineThickness(thickness);
-  rect.setFillColor(sfondo);
+  rect.setFillColor(background);
   rect.setRotation(angle_of_rotation);
   return rect;
 }
 
 void drawRect(sf::RenderWindow& window, float x, float y, float w, float h,
-              sf::Color sfondo, float thickness, sf::Color bordi,
+              sf::Color background, float thickness, sf::Color borders,
               float angle_of_rotation) {
   sf::RectangleShape rect(sf::Vector2f(w, h));
   rect.setPosition(x, y);
-  rect.setOutlineColor(bordi);
+  rect.setOutlineColor(borders);
   rect.setOutlineThickness(thickness);
-  rect.setFillColor(sfondo);
+  rect.setFillColor(background);
   rect.setRotation(angle_of_rotation);
   window.draw(rect);
 }
@@ -60,8 +60,8 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
                                        const sf::Font& font,
                                        unsigned int charSize,
                                        sf::Vector2f center, float radius,
-                                       float startAngleDeg, float totalAngleDeg
-                                       ) {
+                                       float startAngleDeg,
+                                       float totalAngleDeg) {
   std::vector<sf::Text> letters;
   float angleStep = totalAngleDeg / static_cast<float>(text.size() - 1);
 

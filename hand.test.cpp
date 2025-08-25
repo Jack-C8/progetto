@@ -7,14 +7,14 @@
 TEST_CASE("Testing the Hand class methods") {
   el::Deck deck{};
   el::Hand hand{};
-  el::Card c1{"Hearts", "A", 11, true};
-  el::Card c2{"Clubs", "5", 5, true};
+  el::Card c1{"Hearts", "A", 11};
+  el::Card c2{"Clubs", "5", 5};
   el::Hand hand1{c1, c2};
-  el::Card c3{"Spades", "3", 3, true};
-  el::Card c4{"Diamonds", "8", 8, true};
+  el::Card c3{"Spades", "3", 3};
+  el::Card c4{"Diamonds", "8", 8};
   el::Hand hand2{c3, c4};
-  el::Card c5{"Diamonds", "J", 10, true};
-  el::Card c6{"Clubs", "A", 11, true};
+  el::Card c5{"Diamonds", "J", 10};
+  el::Card c6{"Clubs", "A", 11};
   el::Hand hand3{c5, c6};
   el::Hand hand4{c5, c5};
 

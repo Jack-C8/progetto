@@ -16,7 +16,6 @@ struct GameState {
   Hand bot1_hand;
   Hand bot2_hand;
   Hand dealer_hand;
-  Hand splitted_hand{};
   bool has_split{false};
   bool bot1_turn{true};
   bool your_turn{false};
@@ -27,9 +26,12 @@ struct GameState {
   bool stand{false};
   bool wait{false};
   int your_score{0};
-  int splitted_score{0};
   bool game_over{false};
-
+  bool payingmode = false;
+  bool double_down{false};
+  bool dealer_card_shown{false};
+  bool you_won;
+  bool draw;
   GameState();
 };
 
@@ -38,6 +40,7 @@ void dealer(Deck& deck, Hand& hand);
 void bot1(Deck& deck, Hand& hand);
 
 void bot2(Deck& deck, Hand& hand);
+
 
 }
 

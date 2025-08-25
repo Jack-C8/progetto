@@ -23,7 +23,6 @@ sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   renderTexture.create(63.f,88.f);
   renderTexture.clear(sf::Color::White);
 
-  // Testo della carta
   sf::Text text;
   text.setFont(font);
   text.setString(card.range_);
@@ -32,7 +31,6 @@ sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   text.setPosition(5.f, 5.f);
   renderTexture.draw(text);
 
-  // Immagine del seme
   auto it = suitTextures.find(card.suit_);
   if (it != suitTextures.end()) {
     sf::Sprite suitSprite(it->second);
@@ -42,7 +40,7 @@ sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   }
 
   renderTexture.display();
-  return renderTexture.getTexture();  // ritorna copia temporanea della texture
+  return renderTexture.getTexture(); 
 }
 
 void CardRenderer::drawCard(sf::RenderWindow& window, const el::Card& card, float x, float y, float a) {

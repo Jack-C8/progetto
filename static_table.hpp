@@ -4,16 +4,21 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "basegraphics.hpp"
+
 #include "CardRenderer.hpp"
-// #include "Grafiche.hpp"
+#include "basegraphics.hpp"
 #include "card.hpp"
 #include "hand.hpp"
-
+#pragma once
 void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
-               float fishes_left, int score,
-               const sf::Sprite& sprite, const sf::Sprite& sprite2,
-              
-               const std::vector<sf::Text>& allLetters
-               );
-               
+                     float fishes_left, int score, const sf::Sprite& sprite,
+                     const sf::Sprite& sprite2,
+
+                     std::vector<sf::Text>& allLetters);
+
+extern ::sf::RectangleShape hit_button;
+extern ::sf::RectangleShape stand_button;
+extern ::sf::RectangleShape double_button;
+void First_Window(sf::RenderWindow& first_window, sf::Font& font);
+extern ::sf::RectangleShape input_box;
+extern ::sf::RectangleShape ok_button;

@@ -1,70 +1,140 @@
+#include "static_table.hpp"
+
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "basegraphics.hpp"
+
 #include "CardRenderer.hpp"
-// #include "Grafiche.hpp"
+#include "basegraphics.hpp"
 #include "card.hpp"
 #include "hand.hpp"
-#include "static_table.hpp"
+sf::RectangleShape hit_button;
+sf::RectangleShape stand_button;
+sf::RectangleShape double_button;
+sf::RectangleShape input_box;
+sf::RectangleShape ok_button;
+sf::Sprite sprite;
+sf::Sprite sprite2;
+
 void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
-               float fishes_left, int score,
-               const sf::Sprite& sprite, const sf::Sprite& sprite2,
-               
-               const std::vector<sf::Text>& allLetters
-               ) 
-{
-    // Sfondo del tavolo
-    drawCircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f, sf::Color(210,180,140));
-    drawCircle(window, 715, 0, 320, sf::Color::Black, 5, sf::Color::White);
+                     float fishes_left, int score, const sf::Sprite& sprite,
+                     const sf::Sprite& sprite2,
 
-    // Caselle giocatori e dealer
-    drawRect(window, 660, 740, 120, 120, sf::Color(139,0,0), 3.f, sf::Color(212,175,55), 0); // YOU
-    drawRect(window, 440, 741, 200, 120, sf::Color(210,180,140), 3.f, sf::Color(101,67,33), 0); // fish slot
-    drawRect(window, 645, 600, 63, 88, sf::Color::White, 0.f, sf::Color::White, 0); // card 1 you
-    drawRect(window, 725, 600, 63, 88, sf::Color::White, 0.f, sf::Color::White, 0); // card 2 you
-    drawRect(window, 645, 130, 63, 88, sf::Color::White, 0.f, sf::Color::White, 0); // card 1 dealer
-    drawRect(window, 725, 130, 63, 88, sf::Color::White, 0.f, sf::Color::White, 0); // card 2 dealer
+                     std::vector<sf::Text>& allLetters) {
+  drawCircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f,
+             sf::Color(210, 180, 140));
+  drawCircle(window, 715, 0, 320, sf::Color::Black, 5, sf::Color::White);
 
-    drawRect(window, 310, 420, 63, 88, sf::Color::White, 0.f, sf::Color::White, 45);  // carta 1 P1
-    drawRect(window, 365, 475, 63, 88, sf::Color::White, 0.f, sf::Color::White, 45);  // carta 2 P1
-    drawRect(window, 1033, 513, 63, 88, sf::Color::White, 0.f, sf::Color::White, 315); // carta 1 P2
-    drawRect(window, 1090, 460, 63, 88, sf::Color::White, 0.f, sf::Color::White, 315); // carta 2 P2
+  drawRect(window, 660, 740, 120, 120, sf::Color(139, 0, 0), 3.f,
+           sf::Color(212, 175, 55), 0);
+  drawRect(window, 435, 741, 205, 120, sf::Color(210, 180, 140), 3.f,
+           sf::Color(101, 67, 33), 0);
+  drawRect(window, 645, 600, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           0);
+  drawRect(window, 725, 600, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           0);
+  drawRect(window, 645, 130, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           0);
+  drawRect(window, 725, 130, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           0);
 
-    // Slot carte aggiuntive
-    drawRect(window, 990, 415, 63, 88, sf::Color::Transparent, 1.f, sf::Color::Yellow, 315); 
-    drawRect(window, 410, 375, 63, 88, sf::Color::Transparent, 1.f, sf::Color::Yellow, 45);  
-    drawRect(window, 685, 500, 63, 88, sf::Color::Transparent, 1.f, sf::Color::Yellow, 0);   
+  drawRect(window, 310, 420, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           45);
+  drawRect(window, 365, 475, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           45);
+  drawRect(window, 1033, 513, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           315);
+  drawRect(window, 1090, 460, 63, 88, sf::Color::White, 0.f, sf::Color::White,
+           315);
+  drawRect(window, 990, 415, 63, 88, sf::Color::Transparent, 1.f,
+           sf::Color::Yellow, 315);
+  drawRect(window, 410, 375, 63, 88, sf::Color::Transparent, 1.f,
+           sf::Color::Yellow, 45);
+  drawRect(window, 685, 500, 63, 88, sf::Color::Transparent, 1.f,
+           sf::Color::Yellow, 0);
 
-    // Box giocatori
-    drawRect(window, 190, 540, 130, 130, sf::Color(10,17,114), 3.f, sf::Color(212,175,55), 45); // P1 box
-    drawRect(window, 1250, 530, 130, 130, sf::Color(10,17,114), 3.f, sf::Color(212,175,55), 45); // P2 box
+  drawRect(window, 190, 540, 130, 130, sf::Color(10, 17, 114), 3.f,
+           sf::Color(212, 175, 55), 45);
+  drawRect(window, 1250, 530, 130, 130, sf::Color(10, 17, 114), 3.f,
+           sf::Color(212, 175, 55), 45);
 
-    // Bottoni
-    
+  double_button =
+      RectangularButton(window, 915, 810, 100, 50, sf::Color(150, 150, 150), 2,
+                        sf::Color::White, 0);
 
-    // Testi
-    DrawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
-    DrawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
-    DrawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
-    DrawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
-    DrawText(window, font, "DOUBLE", 980, 820, 25, sf::Color::White, 0);
-    DrawText(window, font, "SPLIT", 867, 820, 25, sf::Color::White, 0);
-    DrawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
-    DrawText(window, font, "Current Score:", 765, 495, 15, sf::Color::Black, 0);
-    DrawText(window, font, std::to_string(score), 800, 510, 50, sf::Color::Black, 0);
-    DrawText(window, font, "FISH BALANCE", 470, 750, 20, sf::Color::Black, 0);
-    DrawText(window, font, std::to_string(fishes_left), 470, 805, 30, sf::Color::Black, 0);
+  hit_button =
+      RectangularButton(window, 850, 740, 100, 50, sf::Color(150, 150, 150), 2,
+                        sf::Color::White, 0);
+  stand_button =
+      RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
+                        sf::Color::White, 0);
+  window.draw(hit_button);
+  window.draw(double_button);
+  window.draw(stand_button);
 
-    // Cerchietti rossi numerati
-   
+  DrawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
+  DrawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
+  DrawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
+  DrawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
+  DrawText(window, font, "DOUBLE", 915, 815, 25, sf::Color::White, 0);
+  DrawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
+  DrawText(window, font, "Current Score:", 620, 400, 30, sf::Color::Black, 0);
+  DrawText(window, font, std::to_string(score), 680, 420, 50, sf::Color::Black,
+           0);
+  DrawText(window, font, "FISH BALANCE:", 470, 750, 20, sf::Color::Black, 0);
+  DrawText(window, font, std::to_string(fishes_left), 440, 810, 30,
+           sf::Color::Black, 0);
+  auto curved1 = createCurvedText("BLACKJACK PAYS 3 TO 2", font, 15,
+                                  {715.f, 15.f}, 260.f, 180.f, 180.f);
+  auto curved2 =
+      createCurvedText("DEALER MUST STAND ON 17, AND MUST DRAW TO 16", font, 15,
+                       {715.f, 15.f}, 350.f, 180.f, 180.f);
+  allLetters.insert(allLetters.end(), curved1.begin(), curved1.end());
+  allLetters.insert(allLetters.end(), curved2.begin(), curved2.end());
 
-    // Testi curvi e sprites
-    for (const auto& letter : allLetters) window.draw(letter);
-    window.draw(sprite);
-    window.draw(sprite2);
-  
+  for (const auto& letter : allLetters) window.draw(letter);
+  window.draw(sprite);
+  window.draw(sprite2);
+}
+void First_Window(sf::RenderWindow& first_window, sf::Font& font) {
+  std::vector<std::string> rules = {
+      "Welcome to Blackjack!",
+      "Get as close to 21 as possible without going over.",
+      "Beat the dealer to win!",
+      "",
+      "How to play:",
+      "- Each player starts with 2 cards.Face cards are worth 10, Aces can "
+      "be 1 or 11, and all other cards are their number value.",
+      "- Hit to take another card, Stand to keep your total.",
+      "- Double Down: Feeling confident? Double your bet and get exactly one "
+      "more card before standing.Use it wisely!",
+      "- Dealer draws until reaching 17 or higher.",
+      "- Bust if you go over 21.",
+      "-This table admits a maximum budget of 1000000",
+      "",
+      "Tips:",
+      "-Always watch the dealer's cards",
+      "-Do not forget to smartly manage your fish, hit wisely, and aim for "
+      "that perfect 21!",
+      "Good luck, have fun, and may the cards be ever in your favor!"};
+
+  std::vector<sf::Text> ruleTexts;
+  float startY = 80.f;
+  for (size_t i = 0; i < rules.size(); ++i) {
+    DrawText(first_window, font, rules[i], 50.f, startY + i * 30.f, 25,
+             sf::Color::Black, 0.);
+  }
+  DrawText(first_window, font, "OK", 685, 758, 30, sf::Color::Black, 0.);
+  DrawText(first_window, font, "Enter fish amount:", 608, 580, 25,
+           sf::Color::Black, 0.);
+  ok_button = {RectangularButton(first_window, 655, 750, 100, 50,
+                                 sf::Color::White, 4, sf::Color(180, 180, 180),
+                                 0)};
+
+  input_box = {RectangularButton(first_window, 615, 620, 200, 50,
+                                 sf::Color::White, 3, sf::Color::Black, 0)};
 }

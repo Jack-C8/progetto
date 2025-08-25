@@ -1,4 +1,5 @@
 #include "hand.hpp"
+
 #include "card.hpp"
 
 namespace el {
@@ -33,7 +34,8 @@ int Hand::hand_score() const {
 
 void Hand::hand_draw(Deck& deck) {
   if (hand_score() >= 21) {
-    throw std::runtime_error{"You can't hit, your score is the highest possible"};
+    throw std::runtime_error{
+        "You can't hit, your score is the highest possible"};
   }
   Card top = deck.topCard();
   hand_.emplace_back(top);
@@ -42,7 +44,8 @@ Card Hand::hand_element(int number) const { return hand_[number]; }
 
 void Hand::add_card(const Card& c) {
   if (hand_score() >= 21) {
-    throw std::runtime_error{"You can't hit, your score is the highest possible"};
+    throw std::runtime_error{
+        "You can't hit, your score is the highest possible"};
   }
 
   hand_.push_back(c);
@@ -57,4 +60,4 @@ bool Hand::blackjack() {
     return false;
   }
 }
-}
+}  // namespace el
