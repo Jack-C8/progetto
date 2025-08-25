@@ -110,7 +110,7 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
 
-  CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
+  el::CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
 
   std::vector<sf::Text> allLetters;
 

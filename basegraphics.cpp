@@ -12,6 +12,8 @@
 #include "CardRenderer.hpp"
 #include "card.hpp"
 #include "hand.hpp"
+
+namespace el{
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
               float angle_of_rotation) {
@@ -84,4 +86,5 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
   }
 
   return letters;
+}
 }

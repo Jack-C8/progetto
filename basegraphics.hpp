@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+namespace{
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
               float angle_of_rotation);
@@ -21,3 +23,4 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
                                        sf::Vector2f center, float radius,
                                        float startAngleDeg,
                                        float totalAngleDeg);
+}

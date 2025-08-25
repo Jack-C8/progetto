@@ -12,6 +12,8 @@
 #include "basegraphics.hpp"
 #include "card.hpp"
 #include "hand.hpp"
+
+namespace el{
 sf::RectangleShape hit_button;
 sf::RectangleShape stand_button;
 sf::RectangleShape double_button;
@@ -137,4 +139,5 @@ void First_Window(sf::RenderWindow& first_window, sf::Font& font) {
 
   input_box = {RectangularButton(first_window, 615, 620, 200, 50,
                                  sf::Color::White, 3, sf::Color::Black, 0)};
+}
 }

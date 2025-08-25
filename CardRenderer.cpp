@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
+namespace el{
 CardRenderer::CardRenderer(const std::string& fontPath, const std::string& suitFolder) {
   if (!font.loadFromFile(fontPath)) {
     std::cerr << "Errore: font non caricato!\n";
@@ -49,4 +50,5 @@ void CardRenderer::drawCard(sf::RenderWindow& window, const el::Card& card, floa
   sprite.setPosition(x, y);
   sprite.rotate(a);
   window.draw(sprite);
+}
 }

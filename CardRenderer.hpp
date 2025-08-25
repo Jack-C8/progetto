@@ -3,6 +3,8 @@
 #include <map>
 #pragma once
 
+namespace el{
+  
 class CardRenderer {
  public:
   CardRenderer(const std::string& fontPath, const std::string& suitFolder);
@@ -15,3 +17,4 @@ class CardRenderer {
 
   sf::Texture generateCardTexture(const el::Card& card);
 };
+}
