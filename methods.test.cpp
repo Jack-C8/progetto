@@ -12,7 +12,7 @@ TEST_CASE("Testing methods and main") {
     CHECK(state.bot1_hand.hand_size() == 2);
     CHECK(state.bot2_hand.hand_size() == 2);
     CHECK(state.dealer_hand.hand_size() == 2);
-    CHECK(state.deck.size() == 52 - 8);
+    CHECK(state.deck.size() == 156 - 8);
     CHECK(state.your_score == state.your_hand.hand_score());
   }
   SUBCASE("Players") {

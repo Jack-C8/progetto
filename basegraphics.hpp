@@ -6,7 +6,7 @@
 
 namespace el {
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
-              float x, float y, int size, sf::Color color,
+              float x, float y, unsigned int size, sf::Color color,
               float angle_of_rotation);
 void drawCircle(sf::RenderWindow& window, float x, float y, float radius,
                 sf::Color background, float thickness, sf::Color borders);

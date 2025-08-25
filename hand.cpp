@@ -40,7 +40,7 @@ void Hand::hand_draw(Deck& deck) {
   Card top = deck.topCard();
   hand_.emplace_back(top);
 }
-Card Hand::hand_element(int number) const { return hand_[number]; }
+Card Hand::hand_element(std::size_t number) const { return hand_[number]; }
 
 void Hand::add_card(const Card& c) {
   if (hand_score() >= 21) {
@@ -60,4 +60,4 @@ bool Hand::blackjack() {
     return false;
   }
 }
-}  // namespace el
+}  

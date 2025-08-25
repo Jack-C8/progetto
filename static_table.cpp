@@ -14,14 +14,12 @@
 #include "hand.hpp"
 
 namespace el{
-  
+
 sf::RectangleShape hit_button;
 sf::RectangleShape stand_button;
 sf::RectangleShape double_button;
 sf::RectangleShape input_box;
 sf::RectangleShape ok_button;
-sf::Sprite sprite;
-sf::Sprite sprite2;
 
 void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
                      float fishes_left, int score, const sf::Sprite& sprite,
@@ -66,14 +64,14 @@ void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
            sf::Color(212, 175, 55), 45);
 
   double_button =
-      RectangularButton(window, 915, 810, 100, 50, sf::Color(150, 150, 150), 2,
+      RectangularButton(915, 810, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0);
 
   hit_button =
-      RectangularButton(window, 850, 740, 100, 50, sf::Color(150, 150, 150), 2,
+      RectangularButton(850, 740, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0);
   stand_button =
-      RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
+      RectangularButton(980, 740, 100, 50, sf::Color(150, 150, 150), 2,
                         sf::Color::White, 0);
   window.draw(hit_button);
   window.draw(double_button);
@@ -128,17 +126,17 @@ void First_Window(sf::RenderWindow& first_window, sf::Font& font) {
   std::vector<sf::Text> ruleTexts;
   float startY = 80.f;
   for (size_t i = 0; i < rules.size(); ++i) {
-    DrawText(first_window, font, rules[i], 50.f, startY + i * 30.f, 25,
+    DrawText(first_window, font, rules[i], 50.f, startY + static_cast<float>(i) * 30.f, 25,
              sf::Color::Black, 0.);
   }
   DrawText(first_window, font, "OK", 685, 758, 30, sf::Color::Black, 0.);
   DrawText(first_window, font, "Enter fish amount:", 608, 580, 25,
            sf::Color::Black, 0.);
-  ok_button = {RectangularButton(first_window, 655, 750, 100, 50,
+  ok_button = {RectangularButton(655, 750, 100, 50,
                                  sf::Color::White, 4, sf::Color(180, 180, 180),
                                  0)};
 
-  input_box = {RectangularButton(first_window, 615, 620, 200, 50,
+  input_box = {RectangularButton(615, 620, 200, 50,
                                  sf::Color::White, 3, sf::Color::Black, 0)};
 }
 }

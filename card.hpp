@@ -30,5 +30,5 @@ class Deck {
 
   const std::vector<Card> &get_deck() const;
 };
-}  // namespace el
+}  
 #endif

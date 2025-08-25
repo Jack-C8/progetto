@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "card.hpp"
+
 #include "doctest.h"
 
 TEST_CASE("Deck basic construction") {
@@ -73,8 +74,7 @@ TEST_CASE("Deck basic construction") {
     std::string ranges[] = {"2", "3",  "4", "5", "6", "7", "8",
                             "9", "10", "J", "Q", "K", "A"};
     int game_values[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
-    for (int n{0}; n < 3; ++n)  // 3 mazzi
-    {
+    for (int n{0}; n < 3; ++n) {
       for (int i{0}; i < 4; ++i) {
         for (int j{0}; j < 13; ++j) {
           CHECK(deck3[static_cast<size_t>(j + (13 * i))].suit_ == suits[i]);

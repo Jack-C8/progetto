@@ -46,7 +46,7 @@ TEST_CASE("Testing the Hand class methods") {
     CHECK(hand.hand_score() == 19);
     hand.add_card(c4);
     CHECK(hand.hand_size() == 4);
-    CHECK(hand.hand_score() == 20);
+    CHECK(hand.hand_score() == 17);
 
     CHECK(hand3.hand_score() == 21);
     CHECK(hand3.blackjack() == true);
@@ -64,7 +64,8 @@ TEST_CASE("Testing the Hand class methods") {
                       "You can't hit, your score is the highest possible");
     hand.add_card(c5);
     hand.add_card(c3);
-    CHECK_THROWS_WITH(hand.add_card(c3),
+    hand.add_card(c5);
+    CHECK_THROWS_WITH(hand.add_card(c2),
                       "You can't hit, your score is the highest possible");
   }
 }

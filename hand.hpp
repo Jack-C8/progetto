@@ -23,7 +23,7 @@ class Hand {
 
   void hand_draw(el::Deck& deck);
 
-  Card hand_element(int number) const;
+  Card hand_element(std::size_t number) const;
 
   void add_card(const Card& c);
 
@@ -31,5 +31,5 @@ class Hand {
 
   bool blackjack();
 };
-}  // namespace el
+}  
 #endif

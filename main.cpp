@@ -58,7 +58,7 @@ int main() {
         first_window.close();
       }
       if (event.type == sf::Event::TextEntered) {
-        if (std::isdigit(event.text.unicode)) {
+        if (std::isdigit(static_cast<unsigned char>(event.text.unicode))) {
           input_str += static_cast<char>(event.text.unicode);
         } else if (event.text.unicode == 8 && !input_str.empty()) {
           input_str.pop_back();
@@ -74,7 +74,7 @@ int main() {
             try {
               int temp = std::stoi(input_str);
               if (temp > 0 && temp <= MAX_FISH) {
-                fishes_left = temp;
+                fishes_left = static_cast<float>(temp);
                 first_window.close();
               } else if (temp > MAX_FISH) {
                 error_message =
@@ -135,11 +135,10 @@ int main() {
   sprite2.setPosition(830, 10);
 
   sf::RectangleShape bet_box = el::RectangularButton(
-      window, 565, 400, 300, 80, sf::Color::White, 3., sf::Color::Black, 0.);
+      565, 400, 300, 80, sf::Color::White, 3., sf::Color::Black, 0.);
 
-  sf::RectangleShape ok_bet =
-      el::RectangularButton(window, 655, 500, 120, 60, sf::Color(200, 200, 200),
-                            2., sf::Color::Black, 0);
+  sf::RectangleShape ok_bet = el::RectangularButton(
+      655, 500, 120, 60, sf::Color(200, 200, 200), 2., sf::Color::Black, 0);
   sf::Text bet_text;
   bet_text.setFont(font);
   bet_text.setCharacterSize(40);
@@ -154,7 +153,7 @@ int main() {
       }
       if (bettingMode) {
         if (event.type == sf::Event::TextEntered) {
-          if (std::isdigit(event.text.unicode)) {
+          if (std::isdigit(static_cast<unsigned char>(event.text.unicode))) {
             if (bet_input.size() < 6)
               bet_input += static_cast<char>(event.text.unicode);
           } else if (event.text.unicode == 8 && !bet_input.empty()) {
@@ -168,14 +167,15 @@ int main() {
           if (ok_bet.getGlobalBounds().contains(mouse) && !bet_input.empty()) {
             try {
               int temp_bet = std::stoi(bet_input);
-              if (temp_bet > 0 && temp_bet <= (int)fishes_left) {
+              if (temp_bet > 0 && temp_bet <= static_cast<int>(fishes_left)){
                 actual_bet = temp_bet;
                 bettingMode = false;
                 fishes_left -= static_cast<float>(actual_bet);
                 state = el::GameState();
               } else {
-                error_message = "Puntata non valida (saldo: " +
-                                std::to_string((int)fishes_left) + ")";
+                error_message =
+                    "Puntata non valida (saldo: " +
+                    std::to_string(static_cast<float>(fishes_left)) + ")";
                 error_timer.restart();
               }
             } catch (...) {
@@ -209,22 +209,25 @@ int main() {
                         sprite2, allLetters);
 
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.your_hand.hand_element(i),
+      renderer.drawCard(window, state.your_hand.hand_element(static_cast<std::size_t>(i)),
                         640.f + 90.f * static_cast<float>(i), 600, 0);
     }
 
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.bot1_hand.hand_element(i),
+      renderer.drawCard(window,
+                        state.bot1_hand.hand_element(static_cast<size_t>(i)),
                         310.f + 55.f * static_cast<float>(i),
                         420.f + 55.f * static_cast<float>(i), 45);
     }
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.bot2_hand.hand_element(i),
+      renderer.drawCard(window,
+                        state.bot2_hand.hand_element(static_cast<size_t>(i)),
                         1033.f + 57.f * static_cast<float>(i),
                         513.f - 53.f * static_cast<float>(i), 315);
     }
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.dealer_hand.hand_element(i),
+      renderer.drawCard(window,
+                        state.dealer_hand.hand_element(static_cast<size_t>(i)),
                         645.f + 80.f * static_cast<float>(i), 130, 0);
       if (state.dealer_card_shown == false) {
         el::drawRect(window, 725, 130, 63, 88, sf::Color::Black, 0.,
@@ -295,21 +298,21 @@ int main() {
     }
 
     for (int i = 2; i < state.your_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.your_hand.hand_element(i),
+      renderer.drawCard(window, state.your_hand.hand_element(static_cast<std::size_t>(i)),
                         685.f + 75.f * static_cast<float>(i - 2), 500.f, 0);
     }
     for (int i = 2; i < state.bot1_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.bot1_hand.hand_element(i),
+      renderer.drawCard(window, state.bot1_hand.hand_element(static_cast<std::size_t>(i)),
                         410.f + 55.f * static_cast<float>(i - 2),
                         320.f + 55.f * static_cast<float>(i - 1), 45);
     }
     for (int i = 2; i < state.bot2_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.bot2_hand.hand_element(i),
+      renderer.drawCard(window, state.bot2_hand.hand_element(static_cast<std::size_t>(i)),
                         990.f + 55.f * static_cast<float>(i - 2),
                         415.f - 55.f * static_cast<float>(i - 2), 315);
     }
     for (int i = 2; i < state.dealer_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.dealer_hand.hand_element(i), 645.f,
+      renderer.drawCard(window, state.dealer_hand.hand_element(static_cast<std::size_t>(i)), 645.f,
                         130.f + 55.f * static_cast<float>(i - 2), 0);
     }
 

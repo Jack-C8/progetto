@@ -23,7 +23,7 @@ Deck::Deck() {
                           "9", "10", "J", "Q", "K", "A"};
   int game_value[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
 
-  for (int n{0}; n < 3; ++n)  // 3 mazzi
+  for (int n{0}; n < 3; ++n) 
   {
     for (int i{0}; i < 4; ++i) {
       for (int j{0}; j < 13; ++j) {
@@ -51,4 +51,4 @@ Card Deck::topCard() {
 size_t Deck::size() const { return deck_.size(); }
 
 const std::vector<Card> &Deck::get_deck() const { return deck_; }
-}  // namespace el
+} 
