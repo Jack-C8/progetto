@@ -51,4 +51,4 @@ Card Deck::topCard() {
 size_t Deck::size() const { return deck_.size(); }
 
 const std::vector<Card> &Deck::get_deck() const { return deck_; }
-}  // namespace el
+}  
