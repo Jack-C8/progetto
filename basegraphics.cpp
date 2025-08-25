@@ -33,7 +33,7 @@ void drawCircle(sf::RenderWindow& window, float x, float y, float radius,
   circle.setOutlineColor(borders);
   window.draw(circle);
 }
-sf::RectangleShape RectangularButton(sf::RenderWindow& window, float x, float y,
+sf::RectangleShape RectangularButton(float x, float y,
                                      float w, float h, sf::Color background,
                                      float thickness, sf::Color borders,
                                      float angle_of_rotation) {
