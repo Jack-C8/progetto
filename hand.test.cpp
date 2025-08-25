@@ -1,6 +1,4 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "hand.hpp"
-
 #include "card.hpp"
 #include "doctest.h"
 
