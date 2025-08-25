@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace{
+namespace el{
 void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, int size, sf::Color color,
               float angle_of_rotation);
