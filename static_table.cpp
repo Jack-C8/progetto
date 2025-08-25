@@ -14,6 +14,7 @@
 #include "hand.hpp"
 
 namespace el{
+  
 sf::RectangleShape hit_button;
 sf::RectangleShape stand_button;
 sf::RectangleShape double_button;

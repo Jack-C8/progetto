@@ -69,7 +69,7 @@ int main() {
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),
                            static_cast<float>(event.mouseButton.y));
-        if (ok_button.getGlobalBounds().contains(mouse)) {
+        if (el::ok_button.getGlobalBounds().contains(mouse)) {
           if (!input_str.empty()) {
             try {
               int temp = std::stoi(input_str);
@@ -95,10 +95,10 @@ int main() {
     input_text.setString(input_str);
 
     first_window.clear(sf::Color(0, 150, 80));
-    first_window.draw(input_box);
-    first_window.draw(ok_button);
+    first_window.draw(el::input_box);
+    first_window.draw(el::ok_button);
     first_window.draw(input_text);
-    First_Window(first_window, font);
+    el::First_Window(first_window, font);
 
     if (!error_message.empty()) {
       el::DrawText(first_window, font, error_message, 570, 700, 25,
@@ -193,20 +193,20 @@ int main() {
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x),
                               static_cast<float>(event.mouseButton.y));
-        if (hit_button.getGlobalBounds().contains(mousePos)) {
+        if (el::hit_button.getGlobalBounds().contains(mousePos)) {
           state.hit = true;
         }
-        if (stand_button.getGlobalBounds().contains(mousePos)) {
+        if (el::stand_button.getGlobalBounds().contains(mousePos)) {
           state.stand = true;
         }
-        if (double_button.getGlobalBounds().contains(mousePos)) {
+        if (el::double_button.getGlobalBounds().contains(mousePos)) {
           state.double_down = true;
         }
       }
     }
     window.clear(sf::Color(20, 20, 20));
-    DrawStaticTable(window, font, fishes_left, state.your_score, sprite,
-                    sprite2, allLetters);
+    el::DrawStaticTable(window, font, fishes_left, state.your_score, sprite,
+                        sprite2, allLetters);
 
     for (int i = 0; i <= 1; i++) {
       renderer.drawCard(window, state.your_hand.hand_element(i),

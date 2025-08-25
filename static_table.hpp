@@ -11,7 +11,7 @@
 #include "hand.hpp"
 #pragma once
 
-namespace {
+namespace el{
 void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
                      float fishes_left, int score, const sf::Sprite& sprite,
                      const sf::Sprite& sprite2,
