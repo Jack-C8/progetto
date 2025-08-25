@@ -8,8 +8,6 @@
 TEST_CASE("Testing methods and main") {
   el::GameState state;
   el::Deck deck;
-  el::Hand dealer(deck.topCard(), deck.topCard());
-  el::dealer(deck, dealer);
 
   SUBCASE("Gamestate Constructor") {
     CHECK(state.your_hand.hand_size() == 2);
