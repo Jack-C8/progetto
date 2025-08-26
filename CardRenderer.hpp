@@ -1,15 +1,17 @@
 #include <SFML/Graphics.hpp>
-#include "card.hpp"
 #include <map>
+
+#include "card.hpp"
 #pragma once
 
-namespace el{
-  
+namespace el {
+
 class CardRenderer {
  public:
   CardRenderer(const std::string& fontPath, const std::string& suitFolder);
 
-  void drawCard(sf::RenderWindow& window, const el::Card& card, float x, float y, float a);
+  void drawCard(sf::RenderWindow& window, const el::Card& card, float x,
+                float y, float a);
 
  private:
   sf::Font font;

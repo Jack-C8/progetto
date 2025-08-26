@@ -1,9 +1,11 @@
 #include "CardRenderer.hpp"
+
 #include <iostream>
 #include <stdexcept>
 
-namespace el{
-CardRenderer::CardRenderer(const std::string& fontPath, const std::string& suitFolder) {
+namespace el {
+CardRenderer::CardRenderer(const std::string& fontPath,
+                           const std::string& suitFolder) {
   if (!font.loadFromFile(fontPath)) {
     std::cerr << "Errore: font non caricato!\n";
   }
@@ -21,14 +23,16 @@ CardRenderer::CardRenderer(const std::string& fontPath, const std::string& suitF
 
 sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   sf::RenderTexture renderTexture;
-  renderTexture.create(63.f,88.f);
+  renderTexture.create(63.f, 88.f);
   renderTexture.clear(sf::Color::White);
 
   sf::Text text;
   text.setFont(font);
   text.setString(card.range_);
   text.setCharacterSize(20);
-  text.setFillColor((card.suit_ == "Hearts" || card.suit_ == "Diamonds") ? sf::Color::Red : sf::Color::Black);
+  text.setFillColor((card.suit_ == "Hearts" || card.suit_ == "Diamonds")
+                        ? sf::Color::Red
+                        : sf::Color::Black);
   text.setPosition(5.f, 5.f);
   renderTexture.draw(text);
 
@@ -41,10 +45,11 @@ sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   }
 
   renderTexture.display();
-  return renderTexture.getTexture(); 
+  return renderTexture.getTexture();
 }
 
-void CardRenderer::drawCard(sf::RenderWindow& window, const el::Card& card, float x, float y, float a) {
+void CardRenderer::drawCard(sf::RenderWindow& window, const el::Card& card,
+                            float x, float y, float a) {
   sf::Texture texture = generateCardTexture(card);
   sf::Sprite sprite(texture);
   sprite.setPosition(x, y);
