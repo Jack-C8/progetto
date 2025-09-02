@@ -2,7 +2,7 @@
 #include "basegraphics.hpp" // dove hai RectangularButton ecc.
 namespace el{
 // Costruttore
-Buttons::Buttons(sf::Font& font) : font(font) {
+Buttons::Buttons(sf::Font& f) : font(f) {
     hit_button    = RectangularButton(850, 740, 100, 50, sf::Color(150,150,150), 2, sf::Color::White, 0);
     stand_button  = RectangularButton(980, 740, 100, 50, sf::Color(150,150,150), 2, sf::Color::White, 0);
     double_button = RectangularButton(915, 810, 100, 50, sf::Color(150,150,150), 2, sf::Color::White, 0);
@@ -10,12 +10,7 @@ Buttons::Buttons(sf::Font& font) : font(font) {
     input_box     = RectangularButton(615, 620, 200, 50, sf::Color::White, 3, sf::Color::Black, 0);
 }
 
-// Disegna un bottone specifico
-void Buttons::draw(sf::RenderWindow& window,  sf::RectangleShape& button) {
-    window.draw(button);
-}
 
-// Disegna i bottoni della prima schermata
 void Buttons::DrawFirstButtons(sf::RenderWindow& window) {
     window.draw(hit_button);
     window.draw(stand_button);
