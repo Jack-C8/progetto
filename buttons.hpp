@@ -15,8 +15,7 @@ class Buttons {
 public:
     Buttons(sf::Font& font);
 
-    // disegna un bottone specifico
-    void draw(sf::RenderWindow& window, sf::RectangleShape& button);
+    
 void DrawFirstButtons(sf::RenderWindow& window);
     // getter per i bottoni
     sf::RectangleShape& getHitButton()   { return hit_button; }
