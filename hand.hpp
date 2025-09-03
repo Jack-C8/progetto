@@ -31,5 +31,5 @@ class Hand {
 
   bool blackjack();
 };
-}  
+}  // namespace el
 #endif

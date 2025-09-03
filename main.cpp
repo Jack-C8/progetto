@@ -31,6 +31,7 @@ int main() {
 
   sf::Clock error_timer;
 
+
   sf::RenderWindow first_window(sf::VideoMode(1430, 1000), "Insert fishes");
 
   sf::Text input_text;

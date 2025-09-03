@@ -60,4 +60,5 @@ bool Hand::blackjack() {
     return false;
   }
 }
+
 }  

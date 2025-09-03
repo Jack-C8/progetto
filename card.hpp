@@ -5,7 +5,8 @@
 
 namespace el {
 
-struct Card {
+class Card {
+ public:
   std::string suit_;
   std::string range_;
   int game_value_;
@@ -30,5 +31,5 @@ class Deck {
 
   const std::vector<Card> &get_deck() const;
 };
-}  
+}  // namespace el
 #endif
