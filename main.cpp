@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
+#include "buttons.hpp"
 #include "CardRenderer.hpp"
 #include "basegraphics.hpp"
 #include "card.hpp"
@@ -23,6 +23,8 @@ int main() {
   sf::Font font;
   el::GameState state;
   if (!font.loadFromFile("arial.ttf")) return -1;
+  el::Buttons buttons(font);
+  
 
   float fishes_left = 0.0f;
   int actual_bet{0};
@@ -70,7 +72,7 @@ int main() {
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),
                            static_cast<float>(event.mouseButton.y));
-        if (el::ok_button.getGlobalBounds().contains(mouse)) {
+        if (buttons.getOkButton().getGlobalBounds().contains(mouse)) {
           if (!input_str.empty()) {
             try {
               int temp = std::stoi(input_str);
@@ -96,8 +98,8 @@ int main() {
     input_text.setString(input_str);
 
     first_window.clear(sf::Color(0, 150, 80));
-    first_window.draw(el::input_box);
-    first_window.draw(el::ok_button);
+    first_window.draw(buttons.getInputBox());
+    first_window.draw(buttons.getOkButton());
     first_window.draw(input_text);
     el::First_Window(first_window, font);
 
@@ -194,13 +196,13 @@ int main() {
           event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x),
                               static_cast<float>(event.mouseButton.y));
-        if (el::hit_button.getGlobalBounds().contains(mousePos)) {
+        if (buttons.getHitButton().getGlobalBounds().contains(mousePos)) {
           state.hit = true;
         }
-        if (el::stand_button.getGlobalBounds().contains(mousePos)) {
+        if (buttons.getStandButton().getGlobalBounds().contains(mousePos)) {
           state.stand = true;
         }
-        if (el::double_button.getGlobalBounds().contains(mousePos)) {
+        if (buttons.getDoubleButton().getGlobalBounds().contains(mousePos)) {
           state.double_down = true;
         }
       }
@@ -208,6 +210,7 @@ int main() {
     window.clear(sf::Color(20, 20, 20));
     el::DrawStaticTable(window, font, fishes_left, state.your_score, sprite,
                         sprite2, allLetters);
+                        buttons.DrawFirstButtons(window);
 
     for (int i = 0; i <= 1; i++) {
       renderer.drawCard(window, state.your_hand.hand_element(static_cast<std::size_t>(i)),
