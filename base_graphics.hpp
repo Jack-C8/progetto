@@ -1,11 +1,17 @@
+#ifndef EL_BASE_GRAPHICS_HPP
+#define EL_BASE_GRAPHICS_HPP 
+
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <cassert>
+#include <functional>
+#include <iostream>
 
 namespace el {
-void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
+void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, unsigned int size, sf::Color color,
               float angle_of_rotation);
 void drawCircle(sf::RenderWindow& window, float x, float y, float radius,
@@ -24,3 +30,5 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
                                        float startAngleDeg,
                                        float totalAngleDeg);
 }
+
+#endif

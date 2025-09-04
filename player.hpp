@@ -11,21 +11,32 @@ namespace el {
 enum class PlayerType { Human, Bot1, Bot2, Dealer };
 
 class Player {
-  public:
+ private:
   PlayerType type_;
   Hand hand_;
   float fishes_;
   float bet_;
-  bool standing_{false}; //not private because we want access to them.
+  bool standing_{false};
+  
 
-
+ public:
   Player(PlayerType type, float fishes, float bet);
 
   void hit(Deck& deck);
 
   void stand();
 
-  void double_down(Deck& deck);
+  void doubleDown(Deck& deck);
+
+  PlayerType getType() const;
+
+  float& getFishes();
+
+  float& getBet();
+
+  Hand& getHand();
+
+  bool& isStanding();
 };
 
 }  // namespace el

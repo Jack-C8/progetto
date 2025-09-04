@@ -1,8 +1,12 @@
+#ifndef EL_CARD_RENDERER_HPP
+#define EL_CARD_RENDERER_HPP
+
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <map>
+#include <stdexcept>
 
 #include "card.hpp"
-#pragma once
 
 namespace el {
 
@@ -19,4 +23,6 @@ class CardRenderer {
 
   sf::Texture generateCardTexture(const el::Card& card);
 };
-}
+}  // namespace el
+
+#endif

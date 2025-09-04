@@ -1,20 +1,11 @@
-#include "basegraphics.hpp"
+#include "base_graphics.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <cassert>
-#include <cmath>
-#include <functional>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <vector>
-
-#include "CardRenderer.hpp"
 #include "card.hpp"
+#include "card_renderer.hpp"
 #include "hand.hpp"
 
 namespace el {
-void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
+void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, unsigned int size, sf::Color color,
               float angle_of_rotation) {
   sf::Text text(str, font, size);
@@ -87,4 +78,4 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
 
   return letters;
 }
-}  
+}  // namespace el

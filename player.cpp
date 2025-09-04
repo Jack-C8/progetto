@@ -8,11 +8,11 @@ namespace el {
 Player::Player(PlayerType type, float fishes, float bet)
     : type_(type), fishes_(fishes), bet_(bet) {}
 
-void Player::hit(Deck& deck) { hand_.hand_draw(deck); }
+void Player::hit(Deck& deck) { hand_.handDraw(deck); }
 
 void Player::stand() { standing_ = true; }
 
-void Player::double_down(Deck& deck) {
+void Player::doubleDown(Deck& deck) {
   if (fishes_ >= bet_) {
     hit(deck);
     fishes_ -= bet_;
@@ -22,5 +22,15 @@ void Player::double_down(Deck& deck) {
     throw std::runtime_error{"You can't double down!"};
   }
 }
+
+PlayerType Player::getType() const { return type_; }
+
+float& Player::getFishes() { return fishes_; }
+
+float& Player::getBet() { return bet_; }
+
+Hand& Player::getHand() { return hand_; }
+
+bool& Player::isStanding() { return standing_; }
 
 };  // namespace el

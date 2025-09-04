@@ -12,8 +12,8 @@ TEST_CASE("Deck basic construction") {
     CHECK(d1.size() == 156);
     CHECK(d2.size() == d1.size());
 
-    const auto deck1 = d1.get_deck();
-    const auto deck2 = d2.get_deck();
+    const auto deck1 = d1.getDeck();
+    const auto deck2 = d2.getDeck();
 
     CHECK(deck1[0].suit_ == "Hearts");
     CHECK(deck1[0].range_ == "2");
@@ -24,8 +24,8 @@ TEST_CASE("Deck basic construction") {
   }
 
   SUBCASE("Deck construction create the same deck") {
-    const auto deck1 = d1.get_deck();
-    const auto deck2 = d2.get_deck();
+    const auto deck1 = d1.getDeck();
+    const auto deck2 = d2.getDeck();
 
     for (size_t i = 0; i < d1.size(); ++i) {
       CHECK(el::operator==(deck1[i], deck2[i]));
@@ -69,7 +69,7 @@ TEST_CASE("Deck basic construction") {
     CHECK(d1.size() == 135);
 
     el::Deck d3{};
-    const auto deck3 = d3.get_deck();
+    const auto deck3 = d3.getDeck();
     std::string suits[] = {"Hearts", "Clubs", "Spades", "Diamonds"};
     std::string ranges[] = {"2", "3",  "4", "5", "6", "7", "8",
                             "9", "10", "J", "Q", "K", "A"};

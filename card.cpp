@@ -1,16 +1,12 @@
 #include "card.hpp"
 
-#include <algorithm>
-#include <random>
-#include <stdexcept>
-
 namespace el {
 
-Card::Card(const std::string &suit, const std::string &range,
-           int const game_value)
+Card::Card(const std::string& suit, const std::string& range,
+           int const& game_value)
     : suit_{suit}, range_{range}, game_value_{game_value} {}
 
-bool operator==(const Card &one, const Card &other) {
+bool operator==(const Card& one, const Card& other) {
   if ((one.suit_ == other.suit_) && (one.range_ == other.range_)) {
     return true;
   }
@@ -47,7 +43,7 @@ Card Deck::topCard() {
   return top;
 }
 
-size_t Deck::size() const { return deck_.size(); }
+unsigned int Deck::size() const { return deck_.size(); }
 
-const std::vector<Card> &Deck::get_deck() const { return deck_; }
+const std::vector<Card> &Deck::getDeck() const { return deck_; }
 }  // namespace el

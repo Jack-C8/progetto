@@ -1,7 +1,4 @@
-#include "CardRenderer.hpp"
-
-#include <iostream>
-#include <stdexcept>
+#include "card_renderer.hpp"
 
 namespace el {
 CardRenderer::CardRenderer(const std::string& fontPath,

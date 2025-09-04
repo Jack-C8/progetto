@@ -1,5 +1,8 @@
 #ifndef EL_CARD_HPP
 #define EL_CARD_HPP
+#include <algorithm>
+#include <random>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -11,11 +14,11 @@ class Card {
   std::string range_;
   int game_value_;
 
-  Card(const std::string &suit_, const std::string &range_,
-       int const game_value_);
+  Card(const std::string& suit_, const std::string& range_,
+       int const& game_value_);
 };
 
-bool operator==(const Card &one, const Card &other);
+bool operator==(const Card& one, const Card& other);
 
 class Deck {
   std::vector<Card> deck_;
@@ -27,9 +30,9 @@ class Deck {
 
   Card topCard();
 
-  size_t size() const;
+  unsigned int size() const;
 
-  const std::vector<Card> &get_deck() const;
+  const std::vector<Card> &getDeck() const;
 };
 }  // namespace el
 #endif

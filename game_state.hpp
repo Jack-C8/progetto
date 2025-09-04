@@ -1,5 +1,5 @@
-#ifndef EL_GAMESTATE_HPP
-#define EL_GAMESTATE_HPP
+#ifndef EL_GAME_STATE_HPP
+#define EL_GAME_STATE_HPP
 
 #include <vector>
 
@@ -10,15 +10,17 @@
 namespace el {
 
 class GameState {
- public:
+  private:
   Deck deck_;
   std::vector<Player> players_;
-  int current_turn{0};
-  bool round_over{false};
+  bool roundOver{false};
   float humanStartingFishes_;
   float humanGameBet_;
+  bool dealerCardShown{false};
 
- public:
+  public:
+  int currentTurn{0};
+
   GameState(float humanStartingFishes, float humanGameBet);
 
   void startGame(float humanFishes, float humanBet);
@@ -27,14 +29,18 @@ class GameState {
 
   void advanceTurn();
 
-  void botLogic1(Player& bot1, Hand& dealerHand);
+  void botLogic1(Player& bot1, const Hand& dealerHand);
 
-  void botLogic2(Player& bot2, Hand& dealerHand);
+  void botLogic2(Player& bot2, const Hand& dealerHand);
 
   void dealerLogic(Player& player);
+
+  std::vector<Player>& getPlayers() { return players_; }
+
+
 };
 
-void payout(GameState& state);
+void payOut(GameState& state);
 
 };  // namespace el
 
