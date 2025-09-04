@@ -1,60 +1,153 @@
+#include <functional>
+
 #include "base_graphics.hpp"
 #include "buttons.hpp"
 #include "card.hpp"
 #include "card_renderer.hpp"
+#include "first_window.hpp"
 #include "game_state.hpp"
 #include "hand.hpp"
 #include "player.hpp"
 #include "static_table.hpp"
 
 int main() {
-  // Clock
-  // Font
-  // Button
-  // Error_time
-  // Error_message
-  // CardRenderer
-  unsigned int humanFishes;
-  unsigned int humanBet;  // definite una volta fatto input
+  sf::Clock stop;
+  std::function<void()> afterWait;
+  sf::Font font;
+  if (!font.loadFromFile("assets/fonts/arial.ttf")) {
+    return -1;
+  }
+  el::Buttons buttons(font);
+  std::string bet_input;
+  sf::Clock error_timer;
+  std::string error_message;
+  el::CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
+  sf::RenderWindow window(sf::VideoMode(1430, 1000), "Blackjack Simulator",
+                          sf::Style::Default);
+  sf::Texture texture1;
+  if (!texture1.loadFromFile("assets/Images/Fishcontainer.png")) {
+    return -1;
+  }
+  sf::Texture texture2;
+  if (!texture2.loadFromFile("assets/Images/cardcontainer.png")) {
+    return -1;
+  }
+  sf::Text bet_text;
+  bet_text.setFont(font);
+  bet_text.setCharacterSize(40);
+  bet_text.setFillColor(sf::Color::Black);
+  bet_text.setPosition(580, 410);
 
-  // Prima finestra con istruzioni e fish iniziali e definizione di humanFishes
+  unsigned int currentTurn{5};
+  std::vector<float> roundOver;
+  float humanFishes = el::firstwindow();
+  float humanBet;  // = el::bettingMode();
 
-  // Overlay per bet di gioco con bettingMode e definizione di humanBet
+  // per betText usare funzione
 
-  // PROBLEMA! Non posso inizializzare state senza bet, ma betting Mode parte
-  // solo se current_turn esiste;
+  el::GameState state(humanFishes, humanBet);
 
-  // Dichiarazione di state, prima o dopo overlay;
+  while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      }
+      if (currentTurn == 5) {
+        if (event.type == sf::Event::TextEntered) {
+          if (std::isdigit(static_cast<unsigned char>(event.text.unicode))) {
+            if (bet_input.size() < 6)
+              bet_input += static_cast<char>(event.text.unicode);
+          } else if (event.text.unicode == 8 && !bet_input.empty()) {
+            bet_input.pop_back();
+          }
+        }
+        if (event.type == sf::Event::MouseButtonPressed &&
+            event.mouseButton.button == sf::Mouse::Left) {
+          sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),
+                             static_cast<float>(event.mouseButton.y));
+          if (buttons.getOk_bet().getGlobalBounds().contains(mouse) &&
+              !bet_input.empty()) {
+            try {
+              int temp_bet = std::stoi(bet_input);
+              if (temp_bet > 0 && temp_bet <= static_cast<int>(humanFishes)) {
+                humanBet = temp_bet;
+                currentTurn = 0;
+                humanFishes -= static_cast<float>(humanBet);
+                el::GameState state(humanFishes, humanBet);
+              } else {
+                error_message =
+                    "Puntata non valida (saldo: " +
+                    std::to_string(static_cast<float>(humanFishes)) + ")";
+                error_timer.restart();
+              }
+            } catch (...) {
+              error_message = "Valore non valido!";
+              error_timer.restart();
+            }
+          }
+        }
+      }
+      state.startGame(humanBet, humanFishes);
+      window.clear(sf::Color(20, 20, 20));
+      el::drawStaticTable(window, font, humanFishes,
+                          state.getPlayers()[1].getHand().handScore(), texture1,
+                          texture2, state, renderer, currentTurn);
+      buttons.drawFirstButtons(window);  // commentino
+      assert(currentTurn == 0);
+      state.nextTurn(currentTurn);  // bot1
 
-  // state.current_turn = 0; e così parte il game vero e proprio
+      // turno nostro
+      if (state.getPlayers()[1].isStanding() == false && currentTurn == 1) {
+        if (event.type == sf::Event::MouseButtonPressed &&
+            event.mouseButton.button == sf::Mouse::Left && currentTurn == 1) {
+          sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x),
+                                static_cast<float>(event.mouseButton.y));
+          if (buttons.getHitButton().getGlobalBounds().contains(mousePos)) {
+            state.getPlayers()[1].hit(state.getDeck());
+          }
+          if (buttons.getStandButton().getGlobalBounds().contains(mousePos)) {
+            state.getPlayers()[1].stand();
+          }
+          if (buttons.getDoubleButton().getGlobalBounds().contains(mousePos)) {
+            state.getPlayers()[1].doubleDown(state.getDeck());
+          }
+        }
+      }
 
-  // DrawStatic e DrawButton (Tavolo e Bottoni);
+      state.advanceTurn(currentTurn);
+      assert(currentTurn == 2);  // bot2
+      state.nextTurn(currentTurn);
+      assert(currentTurn == 3);
+      state.nextTurn(currentTurn);  // dealer
+      // el::drawcards_after_turn(state); creare funzione
 
-  // Disegno delle carte accedendo ai personaggi.
-  // state.players_[i].hand_.hand_element(1) e (2)
-  // NB finché current_turn !=3 la seconda carta del dealer è coperta!
+      // Overlay per bet di gioco con bettingMode e definizione di humanBet
 
-  // state.nextTurn() turno del bot1 con current_turn che passa da 0 a 1
+      // Disegno delle carte accedendo ai personaggi. FARE FUNZIONE
 
-  // turno umano gestito dai bottoni (if current_turn == 1)!
-  // i bottoni chiamano la funzione
-  // state.players_[current_turn].hit(state.deck_)
+      // state.players_[i].hand_.hand_element(1) e (2)
 
-  // state.advanceTurn() con current_turn che avanza a due.
+      assert(currentTurn == 4);
 
-  // state.nextTurn() cioè bot2 current da 2 a 3.
+      if (currentTurn == static_cast<unsigned int>(4)) {
+        std::vector<float> roundOver = payOut(state, currentTurn, window, font,
+                                              buttons, bet_text, bet_input);
+      }
+      if (!error_message.empty() &&
+          error_timer.getElapsedTime().asSeconds() < 2.5f) {
+        el::drawRect(window, 465, 250, 500, 80, sf::Color(200, 0, 0, 200), 2.,
+                     sf::Color::White, 0);
 
-  // state.nextTurn() cioè dealer current da 3 a 4.
-  // qui viene scoperta la carta del dealer.
+        sf::Text err_text(error_message, font, 30);
+        err_text.setFillColor(sf::Color::White);
+        sf::FloatRect bounds = err_text.getLocalBounds();
+        err_text.setPosition(465.f + 250.f - bounds.width / 2.f,
+                             250.f + 40.f - bounds.height / 2.f);
+        window.draw(err_text);
+      }
 
-  // payOut con current_turn = 4 che ritorna le fish rimaste.
-
-  // advanceTurn e current == 5 (viene attivato round_over) e bettingMode;
-
-  // startGame(ritorno di payOut, nuova bet da bettingMode.)
-
-  // PROBLEMI: ogni volta le bet dei bot tornano a 1000 perché non ci salviamo
-  // se vincono o perdono siccome si tratta di un ciclone while direi di mettere
-  // bettingMode in 5 e startGame in 6 se no rischiamo che il gioco riparta di
-  // continuo.
-}
+      assert(currentTurn == 5);
+      state.startGame(roundOver[0], roundOver[1]);
+    }
+  }

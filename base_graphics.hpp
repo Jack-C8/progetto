@@ -1,14 +1,10 @@
 #ifndef EL_BASE_GRAPHICS_HPP
-#define EL_BASE_GRAPHICS_HPP 
+#define EL_BASE_GRAPHICS_HPP
 
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include <stdexcept>
 #include <string>
 #include <vector>
-#include <cassert>
-#include <functional>
-#include <iostream>
 
 namespace el {
 void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
@@ -29,6 +25,9 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
                                        sf::Vector2f center, float radius,
                                        float startAngleDeg,
                                        float totalAngleDeg);
-}
+
+sf::Sprite getsprite(sf::RenderWindow& window, float x, float y, float x_scale,
+                     float y_scale, sf::Texture texture);
+}  // namespace el
 
 #endif

@@ -1,9 +1,5 @@
 #include "base_graphics.hpp"
 
-#include "card.hpp"
-#include "card_renderer.hpp"
-#include "hand.hpp"
-
 namespace el {
 void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, unsigned int size, sf::Color color,
@@ -35,6 +31,15 @@ sf::RectangleShape RectangularButton(float x, float y, float w, float h,
   rect.setFillColor(background);
   rect.setRotation(angle_of_rotation);
   return rect;
+}
+
+sf::Sprite getsprite(sf::RenderWindow& window, float x, float y, float x_scale,
+                     float y_scale, sf::Texture texture) {
+  sf::Sprite sprite;
+  sprite.setTexture(texture);
+  sprite.setScale(x_scale, y_scale);
+  sprite.setPosition(x, y);
+  return sprite;
 }
 
 void drawRect(sf::RenderWindow& window, float x, float y, float w, float h,

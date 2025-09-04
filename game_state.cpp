@@ -27,22 +27,22 @@ void GameState::startGame(float humanFishes, float humanBet) {
   }
 }
 
-void GameState::nextTurn() {
+void GameState::nextTurn(unsigned int& currentTurn) {
   Player& current = getPlayers()[currentTurn];
 
   if (current.getType() == PlayerType::Bot1) {
     botLogic1(current, players_.back().getHand());
-    advanceTurn();
+    advanceTurn(currentTurn);
   } else if (current.getType() == PlayerType::Dealer) {
     dealerLogic(current);
-    advanceTurn();
+    advanceTurn(currentTurn);
   } else if (current.getType() == PlayerType::Bot2) {
     botLogic2(current, players_.back().getHand());
-    advanceTurn();
+    advanceTurn(currentTurn);
   }
 }
 
-void GameState::advanceTurn() {
+void GameState::advanceTurn(unsigned int& currentTurn) {
   ++currentTurn;
   if (currentTurn >= getPlayers().size()) {
     roundOver = true;
@@ -103,25 +103,64 @@ void GameState::dealerLogic(Player& dealer) {
   dealer.stand();
 }
 
+Deck& GameState::getDeck() { return deck_; }
+
 std::vector<Player>& GameState::getPlayers() { return players_; }
 
-void payOut(GameState& state) {
+std::vector<float> payOut(GameState& state, unsigned int& currentTurn,
+                          sf::RenderWindow& window, sf::Font& font,
+                          el::Buttons buttons, sf::Text bet_text,
+                          std::string bet_input) {
+  std::vector<float> utilities;
+  drawRect(window, 0, 0, 1430, 1000, sf::Color(0, 0, 0, 150), 0,
+           sf::Color::Transparent, 0);
+  drawText(window, font, "BOT 1", 100, 20, 50, sf::Color::White, 0);
+  drawText(window, font, "YOU", 530, 20, 50, sf::Color::White, 0);
+  drawText(window, font, "BOT 2", 960, 20, 50, sf::Color::White, 0);
+
   int dealerScore = state.getPlayers().back().getHand().handScore();
 
   for (int i = 0; i < 3; ++i) {
     if (state.getPlayers()[i].getHand().blackjack() == true) {
       state.getPlayers()[i].getFishes() +=
           (2.5 * state.getPlayers()[i].getBet());
+      drawText(window, font, "YOU WON", 100 + i * 430, 50, 50, sf::Color::White,
+               0);
+
       break;
     }
 
     if (state.getPlayers()[i].getHand().handScore() > dealerScore &&
         state.getPlayers()[i].getHand().handScore() <= 21) {
-      state.getPlayers()[i].getFishes() += state.getPlayers()[i].getBet();
+      drawText(window, font, "YOU WON!", 100 + i * 430, 50, 50,
+               sf::Color::White, 0);
+      state.getPlayers()[i].getFishes() += (2 * state.getPlayers()[i].getBet());
     } else if (state.getPlayers()[i].getHand().handScore() < 21 &&
                dealerScore > 21) {
+      drawText(window, font, "YOU WON!", 100 + i * 430, 50, 50,
+               sf::Color::White, 0);
+      state.getPlayers()[i].getFishes() += (2 * state.getPlayers()[i].getBet());
+
+    } else if (state.getPlayers()[i].getHand().handScore() == dealerScore &&
+               dealerScore <= 21) {
       state.getPlayers()[i].getFishes() += state.getPlayers()[i].getBet();
+      drawText(window, font, "IT'S A DRAW!", 100 + i * 430, 50, 50,
+               sf::Color::White, 0);
+
+    } else {
+      drawText(window, font, "YOU LOST!", 100 + i * 430, 50, 50,
+               sf::Color::White, 0);
     }
   }
+  utilities[0] = state.getPlayers()[1].getFishes();
+
+  state.advanceTurn(currentTurn);
+  buttons.drawPayingModeButtons(window);
+  el::drawText(window, font, "Inserisci puntata:", 610, 350, 25,
+               sf::Color::White, 0);
+  bet_text.setString(bet_input);
+  window.draw(bet_text);
+  utilities[1] = std::stoi(bet_input);
+  return utilities;
 }
 };  // namespace el

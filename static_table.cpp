@@ -2,17 +2,11 @@
 
 namespace el {
 
-sf::RectangleShape hit_button;
-sf::RectangleShape stand_button;
-sf::RectangleShape double_button;
-sf::RectangleShape input_box;
-sf::RectangleShape ok_button;
-
 void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
-                     float fishes_left, int score, const sf::Sprite& sprite,
-                     const sf::Sprite& sprite2,
-
-                     std::vector<sf::Text>& allLetters) {
+                     float fishes_left, int score, const sf::Texture texture1,
+                     const sf::Texture texture2, GameState& state,
+                     CardRenderer& renderer, unsigned int& currentTurn) {
+  std::vector<sf::Text> allLetters;
   drawCircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f,
              sf::Color(210, 180, 140));
   drawCircle(window, 715, 0, 320, sf::Color::Black, 5, sf::Color::White);
@@ -50,17 +44,6 @@ void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
   drawRect(window, 1250, 530, 130, 130, sf::Color(10, 17, 114), 3.f,
            sf::Color(212, 175, 55), 45);
 
-  double_button = RectangularButton(915, 810, 100, 50, sf::Color(150, 150, 150),
-                                    2, sf::Color::White, 0);
-
-  hit_button = RectangularButton(850, 740, 100, 50, sf::Color(150, 150, 150), 2,
-                                 sf::Color::White, 0);
-  stand_button = RectangularButton(980, 740, 100, 50, sf::Color(150, 150, 150),
-                                   2, sf::Color::White, 0);
-  window.draw(hit_button);
-  window.draw(double_button);
-  window.draw(stand_button);
-
   drawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
   drawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
   drawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
@@ -82,8 +65,31 @@ void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
   allLetters.insert(allLetters.end(), curved2.begin(), curved2.end());
 
   for (const auto& letter : allLetters) window.draw(letter);
-  window.draw(sprite);
-  window.draw(sprite2);
+  window.draw(getsprite(window, 638, 10, 0.8f, 0.6f, texture1));
+  window.draw(getsprite(window, 830, 10, 0.08f, 0.1f, texture2));
+  for (unsigned int i = 0; i < 2; i++) {
+    renderer.drawCard(window, state.getPlayers()[1].getHand().handElement(i),
+                      640.f + 90.f * static_cast<float>(i), 600, 0);
+  }
+
+  for (unsigned int i = 0; i < 2; i++) {
+    renderer.drawCard(window, state.getPlayers()[0].getHand().handElement(i),
+                      310.f + 55.f * static_cast<float>(i),
+                      420.f + 55.f * static_cast<float>(i), 45);
+  }
+  for (unsigned int i = 0; i < 2; i++) {
+    renderer.drawCard(window, state.getPlayers()[2].getHand().handElement(i),
+                      1033.f + 57.f * static_cast<float>(i),
+                      513.f - 53.f * static_cast<float>(i), 315);
+  }
+  for (unsigned int i = 0; i < 2; i++) {
+    renderer.drawCard(window, state.getPlayers()[3].getHand().handElement(i),
+                      645.f + 80.f * static_cast<float>(i), 130, 0);
+    if (!currentTurn == 3 && currentTurn < 5) {
+      el::drawRect(window, 725, 130, 63, 88, sf::Color::Blue, 0.,
+                   sf::Color::White, 0.);
+    }
+  }
 }
 void firstWindow(sf::RenderWindow& first_window, sf::Font& font) {
   std::vector<std::string> rules = {
@@ -116,10 +122,5 @@ void firstWindow(sf::RenderWindow& first_window, sf::Font& font) {
   drawText(first_window, font, "OK", 685, 758, 30, sf::Color::Black, 0.);
   drawText(first_window, font, "Enter fish amount:", 608, 580, 25,
            sf::Color::Black, 0.);
-  ok_button = {RectangularButton(655, 750, 100, 50, sf::Color::White, 4,
-                                 sf::Color(180, 180, 180), 0)};
-
-  input_box = {RectangularButton(615, 620, 200, 50, sf::Color::White, 3,
-                                 sf::Color::Black, 0)};
 }
 }  // namespace el
