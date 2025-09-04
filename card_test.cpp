@@ -12,8 +12,8 @@ TEST_CASE("Deck basic construction") {
     CHECK(d1.size() == 156);
     CHECK(d2.size() == d1.size());
 
-    const auto deck1 = d1.get_deck();
-    const auto deck2 = d2.get_deck();
+    const auto deck1 = d1.getDeck();
+    const auto deck2 = d2.getDeck();
 
     CHECK(deck1[0].suit_ == "Hearts");
     CHECK(deck1[0].range_ == "2");
@@ -24,8 +24,8 @@ TEST_CASE("Deck basic construction") {
   }
 
   SUBCASE("Deck construction create the same deck") {
-    const auto deck1 = d1.get_deck();
-    const auto deck2 = d2.get_deck();
+    const auto deck1 = d1.getDeck();
+    const auto deck2 = d2.getDeck();
 
     for (size_t i = 0; i < d1.size(); ++i) {
       CHECK(el::operator==(deck1[i], deck2[i]));
@@ -69,13 +69,12 @@ TEST_CASE("Deck basic construction") {
     CHECK(d1.size() == 135);
 
     el::Deck d3{};
-    const auto deck3 = d3.get_deck();
+    const auto deck3 = d3.getDeck();
     std::string suits[] = {"Hearts", "Clubs", "Spades", "Diamonds"};
     std::string ranges[] = {"2", "3",  "4", "5", "6", "7", "8",
                             "9", "10", "J", "Q", "K", "A"};
     int game_values[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
-    for (int n{0}; n < 3; ++n)  // 3 mazzi
-    {
+    for (int n{0}; n < 3; ++n) {
       for (int i{0}; i < 4; ++i) {
         for (int j{0}; j < 13; ++j) {
           CHECK(deck3[static_cast<size_t>(j + (13 * i))].suit_ == suits[i]);

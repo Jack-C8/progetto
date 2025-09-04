@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
+#include "buttons.hpp"
 #include "CardRenderer.hpp"
 #include "basegraphics.hpp"
 #include "card.hpp"
@@ -23,6 +23,8 @@ int main() {
   sf::Font font;
   el::GameState state;
   if (!font.loadFromFile("arial.ttf")) return -1;
+  el::Buttons buttons(font);
+  
 
   float fishes_left = 0.0f;
   int actual_bet{0};
@@ -30,6 +32,7 @@ int main() {
   std::string bet_input;
 
   sf::Clock error_timer;
+
 
   sf::RenderWindow first_window(sf::VideoMode(1430, 1000), "Insert fishes");
 
@@ -58,7 +61,7 @@ int main() {
         first_window.close();
       }
       if (event.type == sf::Event::TextEntered) {
-        if (std::isdigit(event.text.unicode)) {
+        if (std::isdigit(static_cast<unsigned char>(event.text.unicode))) {
           input_str += static_cast<char>(event.text.unicode);
         } else if (event.text.unicode == 8 && !input_str.empty()) {
           input_str.pop_back();
@@ -67,13 +70,14 @@ int main() {
 
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
-        sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),static_cast<float>( event.mouseButton.y));
-        if (ok_button.getGlobalBounds().contains(mouse)) {
+        sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),
+                           static_cast<float>(event.mouseButton.y));
+        if (buttons.getOkButton().getGlobalBounds().contains(mouse)) {
           if (!input_str.empty()) {
             try {
               int temp = std::stoi(input_str);
               if (temp > 0 && temp <= MAX_FISH) {
-                fishes_left = temp;
+                fishes_left = static_cast<float>(temp);
                 first_window.close();
               } else if (temp > MAX_FISH) {
                 error_message =
@@ -94,14 +98,14 @@ int main() {
     input_text.setString(input_str);
 
     first_window.clear(sf::Color(0, 150, 80));
-    first_window.draw(input_box);
-    first_window.draw(ok_button);
+    first_window.draw(buttons.getInputBox());
+    first_window.draw(buttons.getOkButton());
     first_window.draw(input_text);
-    First_Window(first_window, font);
+    el::First_Window(first_window, font);
 
     if (!error_message.empty()) {
-      DrawText(first_window, font, error_message, 570, 700, 25, sf::Color::Red,
-               0);
+      el::DrawText(first_window, font, error_message, 570, 700, 25,
+                   sf::Color::Red, 0);
     }
     first_window.draw(initial_sprite);
     first_window.display();
@@ -110,7 +114,7 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(1430, 1000), "BlackJack Simulator",
                           sf::Style::Default);
 
-  CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
+  el::CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
 
   std::vector<sf::Text> allLetters;
 
@@ -133,12 +137,11 @@ int main() {
   sprite2.setScale(0.08f, 0.1f);
   sprite2.setPosition(830, 10);
 
-  sf::RectangleShape bet_box = RectangularButton(
-      window, 565, 400, 300, 80, sf::Color::White, 3., sf::Color::Black, 0.);
+  sf::RectangleShape bet_box = el::RectangularButton(
+      565, 400, 300, 80, sf::Color::White, 3., sf::Color::Black, 0.);
 
-  sf::RectangleShape ok_bet =
-      RectangularButton(window, 655, 500, 120, 60, sf::Color(200, 200, 200), 2.,
-                        sf::Color::Black, 0);
+  sf::RectangleShape ok_bet = el::RectangularButton(
+      655, 500, 120, 60, sf::Color(200, 200, 200), 2., sf::Color::Black, 0);
   sf::Text bet_text;
   bet_text.setFont(font);
   bet_text.setCharacterSize(40);
@@ -153,7 +156,7 @@ int main() {
       }
       if (bettingMode) {
         if (event.type == sf::Event::TextEntered) {
-          if (std::isdigit(event.text.unicode)) {
+          if (std::isdigit(static_cast<unsigned char>(event.text.unicode))) {
             if (bet_input.size() < 6)
               bet_input += static_cast<char>(event.text.unicode);
           } else if (event.text.unicode == 8 && !bet_input.empty()) {
@@ -162,18 +165,20 @@ int main() {
         }
         if (event.type == sf::Event::MouseButtonPressed &&
             event.mouseButton.button == sf::Mouse::Left) {
-          sf::Vector2f mouse(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+          sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),
+                             static_cast<float>(event.mouseButton.y));
           if (ok_bet.getGlobalBounds().contains(mouse) && !bet_input.empty()) {
             try {
               int temp_bet = std::stoi(bet_input);
-              if (temp_bet > 0 && temp_bet <= (int)fishes_left) {
+              if (temp_bet > 0 && temp_bet <= static_cast<int>(fishes_left)){
                 actual_bet = temp_bet;
                 bettingMode = false;
                 fishes_left -= static_cast<float>(actual_bet);
                 state = el::GameState();
               } else {
-                error_message = "Puntata non valida (saldo: " +
-                                std::to_string((int)fishes_left) + ")";
+                error_message =
+                    "Puntata non valida (saldo: " +
+                    std::to_string(static_cast<float>(fishes_left)) + ")";
                 error_timer.restart();
               }
             } catch (...) {
@@ -189,41 +194,48 @@ int main() {
       }
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
-        sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
-        if (hit_button.getGlobalBounds().contains(mousePos)) {
+        sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x),
+                              static_cast<float>(event.mouseButton.y));
+        if (buttons.getHitButton().getGlobalBounds().contains(mousePos)) {
           state.hit = true;
         }
-        if (stand_button.getGlobalBounds().contains(mousePos)) {
+        if (buttons.getStandButton().getGlobalBounds().contains(mousePos)) {
           state.stand = true;
         }
-        if (double_button.getGlobalBounds().contains(mousePos)) {
+        if (buttons.getDoubleButton().getGlobalBounds().contains(mousePos)) {
           state.double_down = true;
         }
       }
     }
     window.clear(sf::Color(20, 20, 20));
-    DrawStaticTable(window, font, fishes_left, state.your_score, sprite,
-                    sprite2, allLetters);
+    el::DrawStaticTable(window, font, fishes_left, state.your_score, sprite,
+                        sprite2, allLetters);
+                        buttons.DrawFirstButtons(window);
 
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.your_hand.hand_element(i), 640.f + 90.f * static_cast<float>(i),
-                        600, 0);
+      renderer.drawCard(window, state.your_hand.hand_element(static_cast<std::size_t>(i)),
+                        640.f + 90.f * static_cast<float>(i), 600, 0);
     }
 
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.bot1_hand.hand_element(i), 310.f + 55.f * static_cast<float>(i),
+      renderer.drawCard(window,
+                        state.bot1_hand.hand_element(static_cast<size_t>(i)),
+                        310.f + 55.f * static_cast<float>(i),
                         420.f + 55.f * static_cast<float>(i), 45);
     }
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.bot2_hand.hand_element(i), 1033.f + 57.f * static_cast<float>(i),
+      renderer.drawCard(window,
+                        state.bot2_hand.hand_element(static_cast<size_t>(i)),
+                        1033.f + 57.f * static_cast<float>(i),
                         513.f - 53.f * static_cast<float>(i), 315);
     }
     for (int i = 0; i <= 1; i++) {
-      renderer.drawCard(window, state.dealer_hand.hand_element(i), 645.f + 80.f * static_cast<float>(i),
-                        130, 0);
+      renderer.drawCard(window,
+                        state.dealer_hand.hand_element(static_cast<size_t>(i)),
+                        645.f + 80.f * static_cast<float>(i), 130, 0);
       if (state.dealer_card_shown == false) {
-        drawRect(window, 725, 130, 63, 88, sf::Color::Black, 0.,
-                 sf::Color::Black, 0.);
+        el::drawRect(window, 725, 130, 63, 88, sf::Color::Black, 0.,
+                     sf::Color::Black, 0.);
       }
     }
     if (state.bot1_turn == true) {
@@ -233,10 +245,12 @@ int main() {
 
       stop.restart();
       afterWait = [&]() { state.your_turn = true; };
-      drawCircle(window, 195, 570, 4., sf::Color::Green, 2., sf::Color::White);
+      el::drawCircle(window, 195, 570, 4., sf::Color::Green, 2.,
+                     sf::Color::White);
 
     } else if (state.your_turn) {
-      drawCircle(window, 670, 770, 4., sf::Color::Green, 2., sf::Color::White);
+      el::drawCircle(window, 670, 770, 4., sf::Color::Green, 2.,
+                     sf::Color::White);
 
       if (state.hit) {
         state.your_hand.hand_draw(state.deck);
@@ -276,7 +290,8 @@ int main() {
       state.wait = true;
       stop.restart();
       afterWait = [&]() { state.dealer_turn = true; };
-      drawCircle(window, 1255, 560, 4., sf::Color::Green, 2., sf::Color::White);
+      el::drawCircle(window, 1255, 560, 4., sf::Color::Green, 2.,
+                     sf::Color::White);
     }
     if (state.dealer_turn == true) {
       dealer(state.deck, state.dealer_hand);
@@ -287,41 +302,45 @@ int main() {
     }
 
     for (int i = 2; i < state.your_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.your_hand.hand_element(i),
+      renderer.drawCard(window, state.your_hand.hand_element(static_cast<std::size_t>(i)),
                         685.f + 75.f * static_cast<float>(i - 2), 500.f, 0);
     }
     for (int i = 2; i < state.bot1_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.bot1_hand.hand_element(i),
-                        410.f + 55.f * static_cast<float>(i - 2), 320.f + 55.f * static_cast<float>(i - 1), 45);
+      renderer.drawCard(window, state.bot1_hand.hand_element(static_cast<std::size_t>(i)),
+                        410.f + 55.f * static_cast<float>(i - 2),
+                        320.f + 55.f * static_cast<float>(i - 1), 45);
     }
     for (int i = 2; i < state.bot2_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.bot2_hand.hand_element(i),
-                        990.f + 55.f * static_cast<float>(i-2), 415.f - 55.f * static_cast<float>(i - 2), 315);
+      renderer.drawCard(window, state.bot2_hand.hand_element(static_cast<std::size_t>(i)),
+                        990.f + 55.f * static_cast<float>(i - 2),
+                        415.f - 55.f * static_cast<float>(i - 2), 315);
     }
     for (int i = 2; i < state.dealer_hand.hand_size(); ++i) {
-      renderer.drawCard(window, state.dealer_hand.hand_element(i),
-                        645.f , 130.f + 55.f * static_cast<float>(i - 2), 0);
+      renderer.drawCard(window, state.dealer_hand.hand_element(static_cast<std::size_t>(i)), 645.f,
+                        130.f + 55.f * static_cast<float>(i - 2), 0);
     }
 
     if (bettingMode) {
-      drawRect(window, 0, 0, 1430, 1000, sf::Color(0, 0, 0, 150), 0.,
-               sf::Color::Transparent, 0.);
+      el::drawRect(window, 0, 0, 1430, 1000, sf::Color(0, 0, 0, 150), 0.,
+                   sf::Color::Transparent, 0.);
       window.draw(bet_box);
       window.draw(ok_bet);
       if (state.you_won) {
-        DrawText(window, font, "YOU WON", 520, 100, 80, sf::Color::White, 0);
+        el::DrawText(window, font, "YOU WON", 520, 100, 80, sf::Color::White,
+                     0);
       } else if (state.draw) {
-        DrawText(window, font, "IT'S A DRAW", 520, 100, 80, sf::Color::White,
-                 0);
+        el::DrawText(window, font, "IT'S A DRAW", 520, 100, 80,
+                     sf::Color::White, 0);
       } else {
-        DrawText(window, font, "YOU LOST", 520, 100, 80, sf::Color::White, 0);
+        el::DrawText(window, font, "YOU LOST", 520, 100, 80, sf::Color::White,
+                     0);
       }
 
       bet_text.setString(bet_input);
       window.draw(bet_text);
-      DrawText(window, font, "OK", 690, 510, 30, sf::Color::Black, 0);
-      DrawText(window, font, "Inserisci puntata:", 610, 350, 25,
-               sf::Color::White, 0);
+      el::DrawText(window, font, "OK", 690, 510, 30, sf::Color::Black, 0);
+      el::DrawText(window, font, "Inserisci puntata:", 610, 350, 25,
+                   sf::Color::White, 0);
     }
     if (state.payingmode) {
       state.payingmode = false;
@@ -339,7 +358,7 @@ int main() {
         fishes_left += static_cast<float>(actual_bet * 2);
         state.you_won = true;
       } else if (player_score <= 21 && player_score > dealer_score) {
-        fishes_left +=static_cast<float>(actual_bet * 2);
+        fishes_left += static_cast<float>(actual_bet * 2);
         state.you_won = true;
       } else if (player_score <= 21 && player_score == dealer_score) {
         fishes_left += static_cast<float>(actual_bet);
@@ -347,15 +366,15 @@ int main() {
       }
       bet_text.setString(bet_input);
       window.draw(bet_text);
-      DrawText(window, font, "OK", 690, 510, 30, sf::Color::Black, 0);
-      DrawText(window, font, "Inserisci puntata:", 610, 350, 25,
-               sf::Color::White, 0);
+      el::DrawText(window, font, "OK", 690, 510, 30, sf::Color::Black, 0);
+      el::DrawText(window, font, "Inserisci puntata:", 610, 350, 25,
+                   sf::Color::White, 0);
     }
 
     if (!error_message.empty() &&
         error_timer.getElapsedTime().asSeconds() < 2.5f) {
-      drawRect(window, 465, 250, 500, 80, sf::Color(200, 0, 0, 200), 2.,
-               sf::Color::White, 0);
+      el::drawRect(window, 465, 250, 500, 80, sf::Color(200, 0, 0, 200), 2.,
+                   sf::Color::White, 0);
 
       sf::Text err_text(error_message, font, 30);
       err_text.setFillColor(sf::Color::White);
@@ -366,5 +385,5 @@ int main() {
       state.dealer_card_shown = true;
     }
     window.display();
-}
+  }
 }

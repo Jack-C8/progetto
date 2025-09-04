@@ -1,19 +1,12 @@
-#include "basegraphics.hpp"
+#include "base_graphics.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <cassert>
-#include <cmath>
-#include <functional>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <vector>
-
-#include "CardRenderer.hpp"
 #include "card.hpp"
+#include "card_renderer.hpp"
 #include "hand.hpp"
-void DrawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
-              float x, float y, int size, sf::Color color,
+
+namespace el {
+void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
+              float x, float y, unsigned int size, sf::Color color,
               float angle_of_rotation) {
   sf::Text text(str, font, size);
   text.setFillColor(color);
@@ -31,9 +24,9 @@ void drawCircle(sf::RenderWindow& window, float x, float y, float radius,
   circle.setOutlineColor(borders);
   window.draw(circle);
 }
-sf::RectangleShape RectangularButton(sf::RenderWindow& window, float x, float y,
-                                     float w, float h, sf::Color background,
-                                     float thickness, sf::Color borders,
+sf::RectangleShape RectangularButton(float x, float y, float w, float h,
+                                     sf::Color background, float thickness,
+                                     sf::Color borders,
                                      float angle_of_rotation) {
   sf::RectangleShape rect(sf::Vector2f(w, h));
   rect.setPosition(x, y);
@@ -66,7 +59,7 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
   float angleStep = totalAngleDeg / static_cast<float>(text.size() - 1);
 
   for (std::size_t i = 0; i < text.size(); ++i) {
-    float angleDeg = startAngleDeg - i * angleStep;
+    float angleDeg = startAngleDeg - static_cast<float>(i) * angleStep;
     float angleRad = angleDeg * 3.14159265f / 180.f;
 
     float x = center.x + radius * std::cos(angleRad);
@@ -85,3 +78,4 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
 
   return letters;
 }
+}  // namespace el

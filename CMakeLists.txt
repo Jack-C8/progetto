@@ -38,7 +38,22 @@ endif()
 
 # trova SFML
 find_package(SFML 2.6 COMPONENTS graphics REQUIRED)
+# copia le risorse (immagini/font) accanto all'eseguibile
+# aggiungi qui i nomi dei file che ti servono
+set(foto
+    arial.ttf
+    cardcontainer.png
+    Fishcontainer.png
+    initial_decoration.png
+)
 
+foreach(foto ${FOTO})
+    add_custom_command(TARGET progetto POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_SOURCE_DIR}/${foto}
+            $<TARGET_FILE_DIR:progetto>/${foto})
+endforeach()
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 # eseguibile principale
 add_executable(progetto
     main.cpp
@@ -62,7 +77,7 @@ target_link_libraries(progetto PRIVATE sfml-graphics)
 
 # test (opzionale)
 if (BUILD_TESTING)
-  add_executable(progetto.t card.test.cpp card.cpp hand.cpp  basegraphics.cpp static_table.cpp methods.cpp CardRenderer.cpp)
+  add_executable(progetto.t card.test.cpp methods.test.cpp hand.test.cpp card.cpp hand.cpp  basegraphics.cpp static_table.cpp methods.cpp CardRenderer.cpp)
   target_include_directories(progetto.t PRIVATE ${CMAKE_SOURCE_DIR})
   target_compile_options(progetto.t PRIVATE ${PROGETTO_WARNINGS} ${PROGETTO_SANITIZERS})
   target_link_options(progetto.t PRIVATE ${PROGETTO_SANITIZERS})

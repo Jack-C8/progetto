@@ -1,26 +1,14 @@
 #include "static_table.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <vector>
+namespace el {
 
-#include "CardRenderer.hpp"
-#include "basegraphics.hpp"
-#include "card.hpp"
-#include "hand.hpp"
 sf::RectangleShape hit_button;
 sf::RectangleShape stand_button;
 sf::RectangleShape double_button;
 sf::RectangleShape input_box;
 sf::RectangleShape ok_button;
-sf::Sprite sprite;
-sf::Sprite sprite2;
 
-void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
+void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
                      float fishes_left, int score, const sf::Sprite& sprite,
                      const sf::Sprite& sprite2,
 
@@ -62,31 +50,28 @@ void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
   drawRect(window, 1250, 530, 130, 130, sf::Color(10, 17, 114), 3.f,
            sf::Color(212, 175, 55), 45);
 
-  double_button =
-      RectangularButton(window, 915, 810, 100, 50, sf::Color(150, 150, 150), 2,
-                        sf::Color::White, 0);
+  double_button = RectangularButton(915, 810, 100, 50, sf::Color(150, 150, 150),
+                                    2, sf::Color::White, 0);
 
-  hit_button =
-      RectangularButton(window, 850, 740, 100, 50, sf::Color(150, 150, 150), 2,
-                        sf::Color::White, 0);
-  stand_button =
-      RectangularButton(window, 980, 740, 100, 50, sf::Color(150, 150, 150), 2,
-                        sf::Color::White, 0);
+  hit_button = RectangularButton(850, 740, 100, 50, sf::Color(150, 150, 150), 2,
+                                 sf::Color::White, 0);
+  stand_button = RectangularButton(980, 740, 100, 50, sf::Color(150, 150, 150),
+                                   2, sf::Color::White, 0);
   window.draw(hit_button);
   window.draw(double_button);
   window.draw(stand_button);
 
-  DrawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
-  DrawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
-  DrawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
-  DrawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
-  DrawText(window, font, "DOUBLE", 915, 815, 25, sf::Color::White, 0);
-  DrawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
-  DrawText(window, font, "Current Score:", 620, 400, 30, sf::Color::Black, 0);
-  DrawText(window, font, std::to_string(score), 680, 420, 50, sf::Color::Black,
+  drawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
+  drawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
+  drawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
+  drawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
+  drawText(window, font, "DOUBLE", 915, 815, 25, sf::Color::White, 0);
+  drawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
+  drawText(window, font, "Current Score:", 620, 400, 30, sf::Color::Black, 0);
+  drawText(window, font, std::to_string(score), 680, 420, 50, sf::Color::Black,
            0);
-  DrawText(window, font, "FISH BALANCE:", 470, 750, 20, sf::Color::Black, 0);
-  DrawText(window, font, std::to_string(fishes_left), 440, 810, 30,
+  drawText(window, font, "FISH BALANCE:", 470, 750, 20, sf::Color::Black, 0);
+  drawText(window, font, std::to_string(fishes_left), 440, 810, 30,
            sf::Color::Black, 0);
   auto curved1 = createCurvedText("BLACKJACK PAYS 3 TO 2", font, 15,
                                   {715.f, 15.f}, 260.f, 180.f, 180.f);
@@ -100,7 +85,7 @@ void DrawStaticTable(sf::RenderWindow& window, sf::Font& font,
   window.draw(sprite);
   window.draw(sprite2);
 }
-void First_Window(sf::RenderWindow& first_window, sf::Font& font) {
+void firstWindow(sf::RenderWindow& first_window, sf::Font& font) {
   std::vector<std::string> rules = {
       "Welcome to Blackjack!",
       "Get as close to 21 as possible without going over.",
@@ -125,16 +110,16 @@ void First_Window(sf::RenderWindow& first_window, sf::Font& font) {
   std::vector<sf::Text> ruleTexts;
   float startY = 80.f;
   for (size_t i = 0; i < rules.size(); ++i) {
-    DrawText(first_window, font, rules[i], 50.f, startY + i * 30.f, 25,
-             sf::Color::Black, 0.);
+    drawText(first_window, font, rules[i], 50.f,
+             startY + static_cast<float>(i) * 30.f, 25, sf::Color::Black, 0.);
   }
-  DrawText(first_window, font, "OK", 685, 758, 30, sf::Color::Black, 0.);
-  DrawText(first_window, font, "Enter fish amount:", 608, 580, 25,
+  drawText(first_window, font, "OK", 685, 758, 30, sf::Color::Black, 0.);
+  drawText(first_window, font, "Enter fish amount:", 608, 580, 25,
            sf::Color::Black, 0.);
-  ok_button = {RectangularButton(first_window, 655, 750, 100, 50,
-                                 sf::Color::White, 4, sf::Color(180, 180, 180),
-                                 0)};
+  ok_button = {RectangularButton(655, 750, 100, 50, sf::Color::White, 4,
+                                 sf::Color(180, 180, 180), 0)};
 
-  input_box = {RectangularButton(first_window, 615, 620, 200, 50,
-                                 sf::Color::White, 3, sf::Color::Black, 0)};
+  input_box = {RectangularButton(615, 620, 200, 50, sf::Color::White, 3,
+                                 sf::Color::Black, 0)};
 }
+}  // namespace el

@@ -17,19 +17,19 @@ class Hand {
 
   Hand(const Card c1, const Card c2);
 
-  int hand_size();
+  int handSize() const;
 
-  int hand_score() const;
+  int handScore() const;
 
-  void hand_draw(el::Deck& deck);
+  void handDraw(el::Deck& deck);
 
-  Card hand_element(int number) const;
+  Card handElement(unsigned int& number) const;
 
-  void add_card(const Card& c);
+  void addCard(Card& c);
 
-  void remove_card();
+  void removeCard();
 
-  bool blackjack();
+  bool blackjack() const;
 };
 }  // namespace el
 #endif
