@@ -56,7 +56,7 @@ TEST_CASE("Deck basic construction") {
     CHECK(d1.size() == 150);
 
     el::Card card1{"Diamonds", "8", 8};
-    CHECK(d1.topCard() == card1);
+    CHECK(d1.topCard() == card1); // Sfruttiamo il fatto che quando il mazzo viene generato le carte sono in un ordine predefinito
     CHECK(d1.size() == 149);
 
     for (int i{}; i < 13; ++i) {
@@ -110,5 +110,32 @@ TEST_CASE("Deck basic construction") {
     CHECK((c1 == c3) == false);
     CHECK((c1 == c4) == true);
     CHECK((c1 == c6) == true);
+  }
+  SUBCASE("Deck shuffle") {
+   el::Deck d3;
+   el::Deck d4;
+   auto D3 = d3.get_deck();
+   auto D4 = d4.get_deck();
+   bool verifica = true;
+   for (int i{}; i<156; ++i) {
+    if(!(D3[i] == D4[i])) {
+      verifica = false;
+      break;
+    }
+   }
+   CHECK(verifica == true);
+
+   d3.shuffle();
+   d4.shuffle();
+   auto D5 = d3.get_deck();
+   auto D6 = d4.get_deck();
+   bool verifica = true;
+   for (int i{}; i<156; ++i) {
+    if(D5[i] == D6[i]) {
+      verifica = false;
+      break;
+    }
+   }
+   CHECK(verifica == true);
   }
 }
