@@ -85,7 +85,7 @@ void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
   for (unsigned int i = 0; i < 2; i++) {
     renderer.drawCard(window, state.getPlayers()[3].getHand().handElement(i),
                       645.f + 80.f * static_cast<float>(i), 130, 0);
-    if (!currentTurn == 3 && currentTurn < 5) {
+    if (currentTurn != 3) {
       el::drawRect(window, 725, 130, 63, 88, sf::Color::Blue, 0.,
                    sf::Color::White, 0.);
     }

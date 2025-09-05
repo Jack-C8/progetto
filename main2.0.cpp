@@ -11,27 +11,40 @@
 #include "static_table.hpp"
 
 int main() {
-  sf::Clock stop;
-  std::function<void()> afterWait;
-  sf::Font font;
+  sf::Clock stop;  // orologio per rallentare
+
+  std::function<void()> afterWait;  // rallentamenti
+
+  sf::Font font;  // font
   if (!font.loadFromFile("assets/fonts/arial.ttf")) {
     return -1;
   }
-  el::Buttons buttons(font);
-  std::string bet_input;
+
+  el::Buttons buttons(font);  // creazione dei bottoni
+
+  std::string bet_input;  // inizializzazione di bet_input
+
   sf::Clock error_timer;
+
   std::string error_message;
-  el::CardRenderer renderer("assets/fonts/arial.ttf", "assets/suits");
-  sf::RenderWindow window(sf::VideoMode(1430, 1000), "Blackjack Simulator",
-                          sf::Style::Default);
+
+  el::CardRenderer renderer("assets/fonts/arial.ttf",
+                            "assets/suits");  // creazione grafica delle carte
+
+  sf::RenderWindow window(
+      sf::VideoMode(1430, 1000), "Blackjack Simulator",
+      sf::Style::Default);  // creazione della finestra di gioco
+
   sf::Texture texture1;
   if (!texture1.loadFromFile("assets/Images/Fishcontainer.png")) {
     return -1;
   }
+
   sf::Texture texture2;
   if (!texture2.loadFromFile("assets/Images/cardcontainer.png")) {
     return -1;
   }
+
   sf::Text bet_text;
   bet_text.setFont(font);
   bet_text.setCharacterSize(40);
@@ -40,7 +53,8 @@ int main() {
 
   unsigned int currentTurn{5};
   std::vector<float> roundOver;
-  float humanFishes = el::firstwindow();
+  float humanFishes = el::firstwindow();  // non è così se alle fishes vogliamo
+                                          // togliere la puntata
   float humanBet;  // = el::bettingMode();
 
   // per betText usare funzione
@@ -53,7 +67,8 @@ int main() {
       if (event.type == sf::Event::Closed) {
         window.close();
       }
-      if (currentTurn == 5) {
+      //betting Mode
+      if (currentTurn == 5 && state.getRoundOver() == false) {
         if (event.type == sf::Event::TextEntered) {
           if (std::isdigit(static_cast<unsigned char>(event.text.unicode))) {
             if (bet_input.size() < 6)
@@ -61,13 +76,15 @@ int main() {
           } else if (event.text.unicode == 8 && !bet_input.empty()) {
             bet_input.pop_back();
           }
-        }
+        } //gestione dell'inserimento della puntata
         if (event.type == sf::Event::MouseButtonPressed &&
             event.mouseButton.button == sf::Mouse::Left) {
           sf::Vector2f mouse(static_cast<float>(event.mouseButton.x),
                              static_cast<float>(event.mouseButton.y));
           if (buttons.getOk_bet().getGlobalBounds().contains(mouse) &&
               !bet_input.empty()) {
+
+                //controllo che mouse sia su ok e che bet non sia vuoto
             try {
               int temp_bet = std::stoi(bet_input);
               if (temp_bet > 0 && temp_bet <= static_cast<int>(humanFishes)) {
@@ -87,6 +104,7 @@ int main() {
             }
           }
         }
+        //validazione della puntata
       }
       state.startGame(humanBet, humanFishes);
       window.clear(sf::Color(20, 20, 20));

@@ -1,4 +1,6 @@
 #include "base_graphics.hpp"
+#include "game_state.hpp"
+#include "card_renderer.hpp"
 
 namespace el {
 void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
@@ -82,5 +84,28 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
   }
 
   return letters;
+}
+
+void drawNewCards(sf::RenderWindow& window, el::GameState& state,
+                  CardRenderer& renderer) {
+  for (unsigned int i = 0; i <= 1; i++) {
+    renderer.drawCard(window, state.getPlayers()[1].getHand().handElement(i),
+                      640.f + 90.f * static_cast<float>(i), 600, 0);
+  }
+
+  for (unsigned int i = 0; i <= 1; i++) {
+    renderer.drawCard(window, state.getPlayers()[0].getHand().handElement(i),
+                      310.f + 55.f * static_cast<float>(i),
+                      420.f + 55.f * static_cast<float>(i), 45);
+  }
+  for (unsigned int i = 0; i <= 1; i++) {
+    renderer.drawCard(window, state.getPlayers()[2].getHand().handElement(i),
+                      1033.f + 57.f * static_cast<float>(i),
+                      513.f - 53.f * static_cast<float>(i), 315);
+  }
+  for (unsigned int i = 0; i <= 1; i++) {
+    renderer.drawCard(window, state.getPlayers()[3].getHand().handElement(i),
+                      645.f + 80.f * static_cast<float>(i), 130, 0);
+  }
 }
 }  // namespace el

@@ -6,7 +6,14 @@
 #include <string>
 #include <vector>
 
+#include "card_renderer.hpp"
+#include "game_state.hpp"
+
 namespace el {
+
+class GameState;
+class CardRenderer;
+
 void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
               float x, float y, unsigned int size, sf::Color color,
               float angle_of_rotation);
@@ -28,6 +35,9 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
 
 sf::Sprite getsprite(sf::RenderWindow& window, float x, float y, float x_scale,
                      float y_scale, sf::Texture texture);
+
+void drawNewCards(sf::RenderWindow& window, GameState& state,
+                  CardRenderer& renderer);
 }  // namespace el
 
 #endif
