@@ -19,6 +19,7 @@ class Buttons {
   Buttons(sf::Font& font);
 
   void drawFirstButtons(sf::RenderWindow& window);
+  void drawPayingModeButtons(sf::RenderWindow& window);
   sf::RectangleShape& getHitButton() { return hit_button_; }
   sf::RectangleShape& getStandButton() { return stand_button_; }
   sf::RectangleShape& getDoubleButton() { return double_button_; }
@@ -26,7 +27,6 @@ class Buttons {
   sf::RectangleShape& getInputBox() { return input_box_; }
   sf::RectangleShape& getOk_bet() { return ok_bet_; }
   sf::RectangleShape& getBet_box() { return bet_box_; }
-  void drawPayingModeButtons(sf::RenderWindow& window);
 };
 }  // namespace el
 #endif

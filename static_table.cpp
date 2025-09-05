@@ -3,9 +3,9 @@
 namespace el {
 
 void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
-                     float fishes_left, int score, const sf::Texture texture1,
-                     const sf::Texture texture2, GameState& state,
-                     CardRenderer& renderer, unsigned int& currentTurn) {
+                     float fishes_left, int score, const sf::Texture& texture1,
+                     const sf::Texture& texture2, GameState& state,
+                     CardRenderer& renderer, unsigned int currentTurn) {
   std::vector<sf::Text> allLetters;
   drawCircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f,
              sf::Color(210, 180, 140));
@@ -64,7 +64,10 @@ void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
   allLetters.insert(allLetters.end(), curved1.begin(), curved1.end());
   allLetters.insert(allLetters.end(), curved2.begin(), curved2.end());
 
-  for (const auto& letter : allLetters) window.draw(letter);
+  for (const auto& letter : allLetters) {
+    window.draw(letter);
+  }
+
   window.draw(getsprite(window, 638, 10, 0.8f, 0.6f, texture1));
   window.draw(getsprite(window, 830, 10, 0.08f, 0.1f, texture2));
   for (unsigned int i = 0; i < 2; i++) {

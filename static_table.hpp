@@ -14,9 +14,9 @@
 
 namespace el {
 void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
-                     float fishes_left, int score, const sf::Texture texture1,
-                     const sf::Texture texture2,
-                      GameState& state, CardRenderer& renderer, unsigned int& currentTurn);
+                     float fishes_left, int score, const sf::Texture& texture1,
+                     const sf::Texture& texture2,
+                      GameState& state, CardRenderer& renderer, unsigned int currentTurn);
 
 void firstWindow(sf::RenderWindow& first_window, sf::Font& font);
 
