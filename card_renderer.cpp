@@ -3,7 +3,7 @@
 namespace el {
 CardRenderer::CardRenderer(const std::string& fontPath,
                            const std::string& suitFolder) {
-  if (!font.loadFromFile(fontPath)) {
+  if (!font_.loadFromFile(fontPath)) {
     std::cerr << "Errore: font non caricato!\n";
   }
 
@@ -11,7 +11,7 @@ CardRenderer::CardRenderer(const std::string& fontPath,
   for (const auto& suit : suits) {
     sf::Texture tex;
     if (tex.loadFromFile(suitFolder + "/" + suit + ".png")) {
-      suitTextures[suit] = tex;
+      suitTextures_[suit] = tex;
     } else {
       std::cerr << "Errore caricando il seme: " << suit << std::endl;
     }
@@ -24,7 +24,7 @@ sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   renderTexture.clear(sf::Color::White);
 
   sf::Text text;
-  text.setFont(font);
+  text.setFont(font_);
   text.setString(card.range_);
   text.setCharacterSize(20);
   text.setFillColor((card.suit_ == "Hearts" || card.suit_ == "Diamonds")
@@ -33,8 +33,8 @@ sf::Texture CardRenderer::generateCardTexture(const el::Card& card) {
   text.setPosition(5.f, 5.f);
   renderTexture.draw(text);
 
-  auto it = suitTextures.find(card.suit_);
-  if (it != suitTextures.end()) {
+  auto it = suitTextures_.find(card.suit_);
+  if (it != suitTextures_.end()) {
     sf::Sprite suitSprite(it->second);
     suitSprite.setScale(0.8f, 0.8f);
     suitSprite.setPosition(30.f, 40.f);
