@@ -42,7 +42,7 @@ TEST_CASE("Deck basic construction") {
     CHECK(d1.size() == 155);
   }
 
-  SUBCASE("topCard method multiple time") {
+  SUBCASE("topCard method multiple times") {
     d1.topCard();
     CHECK(d1.size() == 155);
 
@@ -114,8 +114,8 @@ TEST_CASE("Deck basic construction") {
   SUBCASE("Deck shuffle") {
    el::Deck d3;
    el::Deck d4;
-   auto D3 = d3.get_deck();
-   auto D4 = d4.get_deck();
+   auto D3 = d3.getDeck();
+   auto D4 = d4.getDeck();
    bool verifica = true;
    for (int i{}; i<156; ++i) {
     if(!(D3[i] == D4[i])) {
@@ -127,8 +127,8 @@ TEST_CASE("Deck basic construction") {
 
    d3.shuffle();
    d4.shuffle();
-   auto D5 = d3.get_deck();
-   auto D6 = d4.get_deck();
+   auto D5 = d3.getDeck();
+   auto D6 = d4.getDeck();
    bool verifica = true;
    for (int i{}; i<156; ++i) {
     if(D5[i] == D6[i]) {
