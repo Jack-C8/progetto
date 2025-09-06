@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "base_graphics.hpp"
 namespace el {
 class Buttons {
   sf::RectangleShape hit_button_;
@@ -12,7 +13,6 @@ class Buttons {
   sf::RectangleShape ok_button_;
   sf::RectangleShape bet_box_;
   sf::RectangleShape ok_bet_;
-
   sf::Font& font;
 
  public:
@@ -24,8 +24,8 @@ class Buttons {
   sf::RectangleShape& getDoubleButton() { return double_button_; }
   sf::RectangleShape& getOkButton() { return ok_button_; }
   sf::RectangleShape& getInputBox() { return input_box_; }
-  sf::RectangleShape& getOk_bet() { return ok_bet_; }
-  sf::RectangleShape& getBet_box() { return bet_box_; }
+  sf::RectangleShape& getOkBet() { return ok_bet_; }
+  sf::RectangleShape& getBetBox() { return bet_box_; }
   void drawPayingModeButtons(sf::RenderWindow& window);
 };
 }  // namespace el

@@ -1,7 +1,5 @@
 #include "buttons.hpp"
 
-#include "base_graphics.hpp"
-
 namespace el {
 Buttons::Buttons(sf::Font& f) : font(f) {
   hit_button_ = RectangularButton(850, 740, 100, 50, sf::Color(150, 150, 150),
@@ -34,4 +32,4 @@ void Buttons::drawPayingModeButtons(sf::RenderWindow& window) {
   window.draw(ok_bet_);
   drawText(window, font, "OK", 690, 510, 30, sf::Color::Black, 0);
 }
-}
+}  // namespace el

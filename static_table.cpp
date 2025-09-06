@@ -3,10 +3,12 @@
 namespace el {
 
 void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
-                     float fishes_left, int score, const sf::Texture texture1,
-                     const sf::Texture texture2, GameState& state,
-                     CardRenderer& renderer, unsigned int& currentTurn) {
-  std::vector<sf::Text> allLetters;
+                     float fishes_left, int score, const sf::Texture& texture1,
+                     const sf::Texture& texture2,
+
+                     std::vector<sf::Text>& allLetters) {
+  el::Buttons buttons(font);
+
   drawCircle(window, 715, 0, 715, sf::Color(0, 150, 80), 10.f,
              sf::Color(210, 180, 140));
   drawCircle(window, 715, 0, 320, sf::Color::Black, 5, sf::Color::White);
@@ -43,12 +45,10 @@ void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
            sf::Color(212, 175, 55), 45);
   drawRect(window, 1250, 530, 130, 130, sf::Color(10, 17, 114), 3.f,
            sf::Color(212, 175, 55), 45);
+  buttons.drawFirstButtons(window);
 
   drawText(window, font, "PLAYER 1", 160, 590, 20, sf::Color::White, 45);
   drawText(window, font, "PLAYER 2", 1210, 640, 20, sf::Color::White, 315);
-  drawText(window, font, "STAND", 990, 750, 25, sf::Color::White, 0);
-  drawText(window, font, "HIT", 880, 750, 25, sf::Color::White, 0);
-  drawText(window, font, "DOUBLE", 915, 815, 25, sf::Color::White, 0);
   drawText(window, font, "YOU", 675, 775, 40, sf::Color::White, 0);
   drawText(window, font, "Current Score:", 620, 400, 30, sf::Color::Black, 0);
   drawText(window, font, std::to_string(score), 680, 420, 50, sf::Color::Black,
@@ -65,33 +65,11 @@ void drawStaticTable(sf::RenderWindow& window, sf::Font& font,
   allLetters.insert(allLetters.end(), curved2.begin(), curved2.end());
 
   for (const auto& letter : allLetters) window.draw(letter);
-  window.draw(getsprite(window, 638, 10, 0.8f, 0.6f, texture1));
-  window.draw(getsprite(window, 830, 10, 0.08f, 0.1f, texture2));
-  for (unsigned int i = 0; i < 2; i++) {
-    renderer.drawCard(window, state.getPlayers()[1].getHand().handElement(i),
-                      640.f + 90.f * static_cast<float>(i), 600, 0);
-  }
-
-  for (unsigned int i = 0; i < 2; i++) {
-    renderer.drawCard(window, state.getPlayers()[0].getHand().handElement(i),
-                      310.f + 55.f * static_cast<float>(i),
-                      420.f + 55.f * static_cast<float>(i), 45);
-  }
-  for (unsigned int i = 0; i < 2; i++) {
-    renderer.drawCard(window, state.getPlayers()[2].getHand().handElement(i),
-                      1033.f + 57.f * static_cast<float>(i),
-                      513.f - 53.f * static_cast<float>(i), 315);
-  }
-  for (unsigned int i = 0; i < 2; i++) {
-    renderer.drawCard(window, state.getPlayers()[3].getHand().handElement(i),
-                      645.f + 80.f * static_cast<float>(i), 130, 0);
-    if (currentTurn != 3) {
-      el::drawRect(window, 725, 130, 63, 88, sf::Color::Blue, 0.,
-                   sf::Color::White, 0.);
-    }
-  }
+  window.draw(getSprite(638, 10, 0.8f, 0.6f, texture1));
+  window.draw(getSprite(830, 10, 0.08f, 0.1f, texture2));
 }
-void firstWindow(sf::RenderWindow& first_window, sf::Font& font) {
+void First_Window(sf::RenderWindow& first_window, sf::Font& font) {
+  el::Buttons buttons(font);
   std::vector<std::string> rules = {
       "Welcome to Blackjack!",
       "Get as close to 21 as possible without going over.",
@@ -122,5 +100,28 @@ void firstWindow(sf::RenderWindow& first_window, sf::Font& font) {
   drawText(first_window, font, "OK", 685, 758, 30, sf::Color::Black, 0.);
   drawText(first_window, font, "Enter fish amount:", 608, 580, 25,
            sf::Color::Black, 0.);
+}
+void overlay(sf::RenderWindow& window, Buttons& buttons, GameState& state,
+             sf::Font& font, sf::Text& bet_text, const std::string& bet_input) {
+  drawRect(window, 0, 0, 1430, 1000, sf::Color(0, 0, 0, 150), 0.,
+           sf::Color::Transparent, 0.);
+
+  window.draw(buttons.getBetBox());
+  window.draw(buttons.getOkBet());
+
+  if (state.you_won) {
+    drawText(window, font, "YOU WON", 520, 50, 80, sf::Color::White, 0);
+  } else if (state.draw) {
+    drawText(window, font, "IT'S A DRAW", 520, 50, 80, sf::Color::White, 0);
+  } else if (!state.you_won && !state.draw) {
+    drawText(window, font, "YOU LOST", 520, 50, 80, sf::Color::White, 0);
+  }
+
+  bet_text.setString(bet_input);
+  window.draw(bet_text);
+
+  drawText(window, font, "OK", 690, 510, 30, sf::Color::Black, 0);
+  drawText(window, font, "Inserisci puntata:", 610, 350, 25, sf::Color::White,
+           0);
 }
 }  // namespace el

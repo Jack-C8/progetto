@@ -1,7 +1,7 @@
 #include "first_window.hpp"
 
 namespace el {
-float firstwindow() {
+float firstWindow() {
   sf::RenderWindow first_window(sf::VideoMode(1430, 1000), "Insert fishes");
   sf::Font font;
   if (!font.loadFromFile("assets/fonts/arial.ttf")) return -1;
@@ -57,12 +57,11 @@ float firstwindow() {
     }
 
     input_text.setString(input_str);
-
     first_window.clear(sf::Color(0, 150, 80));
     first_window.draw(buttons.getInputBox());
     first_window.draw(buttons.getOkButton());
     first_window.draw(input_text);
-    el::firstWindow(first_window, font);
+    First_Window(first_window, font);
 
     if (!error_message.empty()) {
       el::drawText(first_window, font, error_message, 570, 700, 25,

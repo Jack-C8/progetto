@@ -9,30 +9,28 @@
 namespace el {
 
 class Card {
- public:
   std::string suit_;
   std::string range_;
   int game_value_;
 
-  Card(const std::string& suit_, const std::string& range_,
-       int const& game_value_);
+ public:
+  Card(const std::string &suit_, const std::string &range_,
+       int const game_value_);
+  std::string getSuit() const { return suit_; }
+  std::string getRange() const { return range_; }
+  int getGameValue() const { return game_value_; }
+  bool operator==(const Card &other) const;
 };
-
-bool operator==(const Card& one, const Card& other);
 
 class Deck {
   std::vector<Card> deck_;
 
  public:
   Deck();
-
   void shuffle();
-
   Card topCard();
-
-  unsigned int size() const;
-
-  const std::vector<Card> &getDeck() const;
+  size_t size() const;
+  const std::vector<Card>& getDeck() const;
 };
 }  // namespace el
 #endif

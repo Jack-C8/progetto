@@ -1,33 +1,25 @@
 cmake_minimum_required(VERSION 3.28)
 project(progettopf VERSION 0.1.0)
 
-# abilita il supporto per i test
 include(CTest)
-
-# esporta il compilation database (utile per clangd, clang-tidy, ecc.)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# richiedi C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# warning utili
-# meglio su target specifici invece che globali
 set(PROGETTO_WARNINGS
     -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion
     -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast
     -fno-omit-frame-pointer
 )
 
-# asserzioni della standard library
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   list(APPEND PROGETTO_WARNINGS -D_GLIBCXX_ASSERTIONS)
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   list(APPEND PROGETTO_WARNINGS -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE)
 endif()
 
-# sanitizers in Debug
 set(PROGETTO_SANITIZERS "")
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   list(APPEND PROGETTO_SANITIZERS -fsanitize=address,undefined)
@@ -36,51 +28,54 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   endif()
 endif()
 
-# trova SFML
 find_package(SFML 2.6 COMPONENTS graphics REQUIRED)
-# copia le risorse (immagini/font) accanto all'eseguibile
-# aggiungi qui i nomi dei file che ti servono
-set(foto
-    arial.ttf
-    cardcontainer.png
-    Fishcontainer.png
-    initial_decoration.png
-)
 
-foreach(foto ${FOTO})
-    add_custom_command(TARGET progetto POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_SOURCE_DIR}/${foto}
-            $<TARGET_FILE_DIR:progetto>/${foto})
-endforeach()
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 # eseguibile principale
-add_executable(progetto
+add_executable(progetto.t
     main.cpp
     card.cpp
-    basegraphics.cpp
-    CardRenderer.cpp
+    base_graphics.cpp
+    card_renderer.cpp
     hand.cpp
-    methods.cpp
+  first_window.cpp
     static_table.cpp
+    buttons.cpp
+    methods.cpp
 )
 
-# includi la cartella corrente (header e cpp stanno qui)
-target_include_directories(progetto PRIVATE ${CMAKE_SOURCE_DIR})
+# copia la cartella assets
+add_custom_command(TARGET progetto.t POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:progetto.t>/assets
+)
 
-# aggiungi flag di compilazione e sanitizers
-target_compile_options(progetto PRIVATE ${PROGETTO_WARNINGS} ${PROGETTO_SANITIZERS})
-target_link_options(progetto PRIVATE ${PROGETTO_SANITIZERS})
 
-# linka SFML
-target_link_libraries(progetto PRIVATE sfml-graphics)
+
+target_include_directories(progetto.t PRIVATE ${CMAKE_SOURCE_DIR})
+target_compile_options(progetto.t PRIVATE ${PROGETTO_WARNINGS} ${PROGETTO_SANITIZERS})
+target_link_options(progetto.t PRIVATE ${PROGETTO_SANITIZERS})
+target_link_libraries(progetto.t PRIVATE sfml-graphics)
 
 # test (opzionale)
 if (BUILD_TESTING)
-  add_executable(progetto.t card.test.cpp methods.test.cpp hand.test.cpp card.cpp hand.cpp  basegraphics.cpp static_table.cpp methods.cpp CardRenderer.cpp)
-  target_include_directories(progetto.t PRIVATE ${CMAKE_SOURCE_DIR})
-  target_compile_options(progetto.t PRIVATE ${PROGETTO_WARNINGS} ${PROGETTO_SANITIZERS})
-  target_link_options(progetto.t PRIVATE ${PROGETTO_SANITIZERS})
-  target_link_libraries(progetto.t PRIVATE sfml-graphics)
-  add_test(NAME progetto.t COMMAND progetto.t)
+  add_executable(progetto_tests
+      card_test.cpp
+      methods_test.cpp
+      methods.cpp
+      first_window.cpp
+      hand_test.cpp
+      card.cpp
+      hand.cpp
+      buttons.cpp
+      base_graphics.cpp
+      static_table.cpp
+    
+      card_renderer.cpp
+  )
+  target_include_directories(progetto_tests PRIVATE ${CMAKE_SOURCE_DIR})
+  target_compile_options(progetto_tests PRIVATE ${PROGETTO_WARNINGS} ${PROGETTO_SANITIZERS})
+  target_link_options(progetto_tests PRIVATE ${PROGETTO_SANITIZERS})
+  target_link_libraries(progetto_tests PRIVATE sfml-graphics)
+  add_test(NAME progetto_tests COMMAND progetto_tests)
 endif()

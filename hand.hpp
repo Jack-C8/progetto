@@ -15,21 +15,21 @@ class Hand {
  public:
   Hand();
 
-  Hand(const Card c1, const Card c2);
+  Hand(Card c1, Card c2);
 
-  int handSize() const;
+  int handSize();
 
   int handScore() const;
 
   void handDraw(el::Deck& deck);
 
-  Card handElement(unsigned int& number) const;
+  Card handElement(std::size_t number) const;
 
-  void addCard(Card& c);
+  void addCard(const Card& c);
 
   void removeCard();
 
-  bool blackjack() const;
+  bool blackjack();
 };
 }  // namespace el
 #endif

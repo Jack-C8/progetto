@@ -1,26 +1,23 @@
 #include "hand.hpp"
 
-#include "card.hpp"
-
 namespace el {
-
-Hand::Hand(const Card c1, const Card c2) {
-  hand_.push_back(c1);
-  hand_.push_back(c2);
+Hand::Hand(Card c1, Card c2) {
+  hand_.emplace_back(c1);
+  hand_.emplace_back(c2);
 }
 
 Hand::Hand() {}
 
-int Hand::handSize() const { return static_cast<int>(hand_.size()); }
+int Hand::handSize() { return static_cast<int>(hand_.size()); }
 
 int Hand::handScore() const {
   int score = std::accumulate(
       hand_.begin(), hand_.end(), 0,
-      [](int acc, Card card) { return acc + card.game_value_; });
+      [](int acc, Card card) { return acc + card.getGameValue(); });
 
   int aces = 0;
-  for (const auto& card : hand_) {
-    if (card.range_ == "A") {
+  for (Card card : hand_) {
+    if (card.getRange() == "A") {
       ++aces;
     }
   }
@@ -40,25 +37,24 @@ void Hand::handDraw(Deck& deck) {
   Card top = deck.topCard();
   hand_.emplace_back(top);
 }
-Card Hand::handElement(unsigned int& number) const { return hand_[number]; }
+Card Hand::handElement(std::size_t number) const { return hand_[number]; }
 
-void Hand::addCard(Card& c) {
+void Hand::addCard(const Card& c) {
   if (handScore() >= 21) {
     throw std::runtime_error{
         "You can't hit, your score is the highest possible"};
   }
 
-  hand_.push_back(c);
+  hand_.emplace_back(c);
 }
 
 void Hand::removeCard() { hand_.pop_back(); }
 
-bool Hand::blackjack() const {
+bool Hand::blackjack() {
   if (handSize() == 2 && handScore() == 21) {
     return true;
   } else {
     return false;
   }
 }
-
-}  
+}  // namespace el

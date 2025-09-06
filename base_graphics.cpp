@@ -1,6 +1,4 @@
 #include "base_graphics.hpp"
-#include "game_state.hpp"
-#include "card_renderer.hpp"
 
 namespace el {
 void drawText(sf::RenderWindow& window, sf::Font& font, const std::string& str,
@@ -22,6 +20,14 @@ void drawCircle(sf::RenderWindow& window, float x, float y, float radius,
   circle.setOutlineColor(borders);
   window.draw(circle);
 }
+sf::Text getText(sf::Font& font, const std::string& str, float x, float y,
+                 unsigned int size, sf::Color color, float angle_of_rotation) {
+  sf::Text text(str, font, size);
+  text.setFillColor(color);
+  text.setPosition(x, y);
+  text.setRotation(angle_of_rotation);
+  return text;
+}
 sf::RectangleShape RectangularButton(float x, float y, float w, float h,
                                      sf::Color background, float thickness,
                                      sf::Color borders,
@@ -33,15 +39,6 @@ sf::RectangleShape RectangularButton(float x, float y, float w, float h,
   rect.setFillColor(background);
   rect.setRotation(angle_of_rotation);
   return rect;
-}
-
-sf::Sprite getsprite(sf::RenderWindow& window, float x, float y, float x_scale,
-                     float y_scale, sf::Texture texture) {
-  sf::Sprite sprite;
-  sprite.setTexture(texture);
-  sprite.setScale(x_scale, y_scale);
-  sprite.setPosition(x, y);
-  return sprite;
 }
 
 void drawRect(sf::RenderWindow& window, float x, float y, float w, float h,
@@ -86,26 +83,12 @@ std::vector<sf::Text> createCurvedText(const std::string& text,
   return letters;
 }
 
-void drawNewCards(sf::RenderWindow& window, el::GameState& state,
-                  CardRenderer& renderer) {
-  for (unsigned int i = 0; i <= 1; i++) {
-    renderer.drawCard(window, state.getPlayers()[1].getHand().handElement(i),
-                      640.f + 90.f * static_cast<float>(i), 600, 0);
-  }
-
-  for (unsigned int i = 0; i <= 1; i++) {
-    renderer.drawCard(window, state.getPlayers()[0].getHand().handElement(i),
-                      310.f + 55.f * static_cast<float>(i),
-                      420.f + 55.f * static_cast<float>(i), 45);
-  }
-  for (unsigned int i = 0; i <= 1; i++) {
-    renderer.drawCard(window, state.getPlayers()[2].getHand().handElement(i),
-                      1033.f + 57.f * static_cast<float>(i),
-                      513.f - 53.f * static_cast<float>(i), 315);
-  }
-  for (unsigned int i = 0; i <= 1; i++) {
-    renderer.drawCard(window, state.getPlayers()[3].getHand().handElement(i),
-                      645.f + 80.f * static_cast<float>(i), 130, 0);
-  }
+sf::Sprite getSprite(float x, float y, float x_scale, float y_scale,
+                     sf::Texture texture) {
+  sf::Sprite sprite;
+  sprite.setTexture(texture);
+  sprite.setScale(x_scale, y_scale);
+  sprite.setPosition(x, y);
+  return sprite;
 }
 }  // namespace el
