@@ -19,6 +19,7 @@ class Buttons {
   Buttons(sf::Font& font);
 
   void drawFirstButtons(sf::RenderWindow& window);
+  void drawPayingModeButtons(sf::RenderWindow& window);
   sf::RectangleShape& getHitButton() { return hit_button_; }
   sf::RectangleShape& getStandButton() { return stand_button_; }
   sf::RectangleShape& getDoubleButton() { return double_button_; }
